@@ -12,6 +12,7 @@ const pretendard = localFont({
 export const metadata: Metadata = {
 	title: "돈돈이",
 	description: "청소년 금융/경제 지식 플랫폼",
+	manifest: "/manifest.json",
 };
 
 export default function RootLayout({

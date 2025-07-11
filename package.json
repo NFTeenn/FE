@@ -12,6 +12,7 @@
 		"reporter": "biome check --reporter=summary"
 	},
 	"dependencies": {
+		"@ducanh2912/next-pwa": "^10.2.9",
 		"@hookform/resolvers": "^5.1.1",
 		"@tailwindcss/postcss": "^4.1.11",
 		"@tanstack/react-query": "^5.82.0",
@@ -30,6 +31,7 @@
 		"@types/node": "^20",
 		"@types/react": "^18",
 		"@types/react-dom": "^18",
-		"typescript": "^5"
+		"typescript": "^5",
+		"webpack": "^5.100.0"
 	}
 }
