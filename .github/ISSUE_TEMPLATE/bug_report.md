@@ -2,7 +2,7 @@
 name: Bug report
 about: 애플리케이션에 문제가 생겼을 때 사용하는 이슈
 title: "[Bug]"
-labels: ''
+labels: Bug
 assignees: ''
 
 ---
