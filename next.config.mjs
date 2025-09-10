@@ -1,12 +1,43 @@
 import withPWAInit from "@ducanh2912/next-pwa";
+import { fileURLToPath } from 'url';
+import path, { dirname } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
+const nextConfig = {
+  reactStrictMode: true,
+  
+  webpack: (config) => {
+    // 절대 경로 지정정
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      '@': path.resolve(__dirname, 'src'),
+      '@app': path.resolve(__dirname, 'src/app'),
+      '@entities': path.resolve(__dirname, 'src/entities'),
+      '@features': path.resolve(__dirname, 'src/features'),
+      '@shared': path.resolve(__dirname, 'src/shared'),
+      '@widgets': path.resolve(__dirname, 'src/widgets'),
+    };
+    
+    return config;
+  },
+  
+  pageExtensions: ['tsx', 'ts', 'jsx', 'js'],
+  
+  images: {
+    domains: ['images.unsplash.com', 'source.unsplash.com'],
+  },
+  
+  swcMinify: true,
+};
 
 const withPWA = withPWAInit({
-	dest: "public",
+  dest: 'public',
+  disable: process.env.NODE_ENV === 'development',
+  register: true,
+  skipWaiting: true,
 });
 
-export default withPWA({
-	nextConfig,
-});
+export default withPWA(nextConfig);
