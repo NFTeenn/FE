@@ -1,0 +1,88 @@
+@import "tailwindcss/preflight";
+@import "tailwindcss/utilities";
+
+:root {
+  --background: 0 0% 100%;
+  --foreground: 222.2 84% 4.9%;
+  --brand-main: 263 70% 50%;
+  --brand-dark: 263 70% 40%;
+}
+
+.dark {
+  --background: 222.2 84% 4.9%;
+  --foreground: 210 40% 98%;
+  --brand-main: 263 70% 60%;
+  --brand-dark: 263 70% 50%;
+}
+
+/* Base styles */
+body {
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  color: hsl(var(--foreground));
+}
+
+h1 {
+  font-size: 2.25rem;
+  line-height: 2.5rem;
+}
+
+h2 {
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+}
+
+h3 {
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+
+/* Brand colors */
+.text-brand-main {
+  color: hsl(var(--brand-main));
+}
+
+.bg-brand-main {
+  background-color: hsl(var(--brand-main));
+}
+
+.bg-brand-dark {
+  background-color: hsl(var(--brand-dark));
+}
+
+.border-brand-main {
+  border-color: hsl(var(--brand-main));
+}
+
+/* Responsive typography */
+@media (min-width: 768px) {
+  h1 {
+    font-size: 3rem;
+    line-height: 1;
+  }
+  
+  h2 {
+    font-size: 2.25rem;
+    line-height: 2.5rem;
+  }
+  
+  h3 {
+    font-size: 1.875rem;
+    line-height: 2.25rem;
+  }
+}
+
+/* Dark mode */
+.dark h1,
+.dark h2,
+.dark h3,
+.dark h4,
+.dark h5,
+.dark h6 {
+  color: white;
+}
