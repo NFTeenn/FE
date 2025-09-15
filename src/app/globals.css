@@ -1,13 +1,11 @@
 @import "tailwindcss";
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css");
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&family=Pixelify+Sans:wght@400..700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
 
 html,
 body {
 	max-width: 100vw;
 	overflow-x: hidden;
-}
-
-* {
-	box-sizing: border-box;
 	padding: 0;
 	margin: 0;
 }
@@ -33,7 +31,16 @@ a {
 	--text-color-100: #94a3b8;
 	--text-color-200: #64748b;
 
-	--default-font-family: "Pretendard-Regular";
+	--font-roboto: 'Roboto', sans-serif;
+}
+
+
+:root {
+	--font-sans: 'PretendardVariable', Pretendard, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+}
+
+html, body {
+	font-family: var(--font-sans);
 }
 
 
