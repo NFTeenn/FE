@@ -1,8 +1,8 @@
 {
 	"editor.defaultFormatter": "biomejs.biome",
-
+	"biome.lsp.trace.server": "verbose",
 	"editor.codeActionsOnSave": {
-		"quickfix.biome": "explicit",
-		"source.organizeImports.biome": "explicit"
+		"source.organizeImports.biome": "explicit",
+		"source.fixAll.biome": "explicit"
 	}
 }
