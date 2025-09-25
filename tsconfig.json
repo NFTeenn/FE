@@ -19,12 +19,12 @@
 		],
 		"baseUrl": ".",
 		"paths": {
-		  "@/*": ["./src/*"],
-		  "@/app/*": ["./src/app/*"],
-		  "@/entities/*": ["./src/entities/*"],
-		  "@/features/*": ["./src/features/*"],
-		  "@/shared/*": ["./src/shared/*"],
-		  "@/widgets/*": ["./src/widgets/*"]
+			"@/*": ["./src/*"],
+			"@/app/*": ["./src/app/*"],
+			"@/entities/*": ["./src/entities/*"],
+			"@/features/*": ["./src/features/*"],
+			"@/shared/*": ["./src/shared/*"],
+			"@/widgets/*": ["./src/widgets/*"]
 		}
 	},
 	"include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
