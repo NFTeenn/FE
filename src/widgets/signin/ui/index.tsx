@@ -1,5 +1,4 @@
 import Image from "next/image";
-import Link from "next/link";
 import google_logo from "@/shared/assets/google_logo.svg";
 
 export default function Signin() {
