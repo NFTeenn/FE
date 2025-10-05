@@ -8,7 +8,7 @@ export default function Signin() {
 			<div className="basis-1/2 flex flex-col items-center justify-center">
 				<h1 className="text-[4rem] font-semibold mb-31">로그인</h1>
 				<a
-					href={`api/auth/google`}
+					href="api/auth/google"
 					className="flex justify-center items-center w-auto py-5 px-15 gap-5 border border-300 rounded-[36px] cursor-pointer"
 				>
 					<Image src={google_logo} alt="logo" width={28} height={28} />
