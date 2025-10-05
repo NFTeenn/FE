@@ -1,6 +1,5 @@
-import { NextResponse } from "next/server";
+import { signIn } from "@/auth";
 
-export async function GET() {
-	const url = `${process.env.NEXT_PUBLIC_BASE_URL}/oauth2/authorization/google`;
-	return NextResponse.redirect(url);
-}
+export const GET = () => {
+	return signIn("google");
+};
