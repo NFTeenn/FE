@@ -1,5 +1,8 @@
+"use client"
+
 import Image from "next/image";
 import google_logo from "@/shared/assets/google_logo.svg";
+import { authCheck } from "../api";
 
 export default function Signin() {
 	return (
@@ -16,6 +19,9 @@ export default function Signin() {
 						Google계정으로 로그인
 					</span>
 				</a>
+				<form action={authCheck} >
+					<button type="submit">sdasds</button>
+				</form>
 			</div>
 		</div>
 	);
