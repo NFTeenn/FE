@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import TanstackProvider from "./_provider/tanstackProvider";
+import Sidebar from "@/widgets/sidebar/layout";
 
 export const metadata: Metadata = {
 	title: "NFTeen",
@@ -12,11 +13,15 @@ export default function RootLayout({
 }: {
 	children: React.ReactNode;
 }) {
+
 	return (
 		<html lang="ko">
-			<body>
+			<body >
 				<TanstackProvider>
-					<main className="min-h-screen bg-gray-50">{children}</main>
+					<main className="min-h-screen bg-brand-bg">
+						<Sidebar />
+						{children}
+					</main>
 				</TanstackProvider>
 			</body>
 		</html>
