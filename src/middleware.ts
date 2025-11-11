@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { getToken } from "next-auth/jwt";
 import { auth } from "@/auth";
 
 export default auth(async (req) => {
@@ -6,8 +7,6 @@ export default auth(async (req) => {
 
 	if (req.auth) {
 		try {
-			const { getToken } = await import("next-auth/jwt");
-
 			const token = await getToken({
 				req,
 				secret: process.env.AUTH_SECRET,
