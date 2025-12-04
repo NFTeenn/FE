@@ -14,7 +14,7 @@ export default auth(async (req) => {
 
 			if (token?.idToken) {
 				response.cookies.set("idToken", token.idToken, {
-					httpOnly: true,
+					httpOnly: false,
 					secure: process.env.NODE_ENV === "production",
 					sameSite: "lax",
 					maxAge: 30 * 24 * 60 * 60, // 30일
