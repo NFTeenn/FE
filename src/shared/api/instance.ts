@@ -1,5 +1,4 @@
 import axios from "axios";
-import { cookies } from "next/headers";
 
 export const instance = axios.create({
 	baseURL: process.env.NEXT_PUBLIC_BASE_URL,
@@ -10,8 +9,16 @@ export const instance = axios.create({
 instance.interceptors.request.use(
 	async (config) => {
 		try {
-			const cookieStore = cookies();
-			const idToken = cookieStore.get("idToken")?.value;
+			let idToken = null;
+			if (typeof window === "undefined") {
+				const { cookies } = await import("next/headers");
+				const cookieStore = cookies();
+				idToken = cookieStore.get("idToken")?.value;
+			} else {
+				idToken = document.cookie.split("idToken=")[1].split(";")[0];
+			}
+
+			console.log("idToken", idToken);
 
 			if (idToken) {
 				config.headers.Authorization = `Bearer ${idToken}`;
