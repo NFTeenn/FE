@@ -11,7 +11,7 @@ export default function Sidebar() {
     ];
 
     return (
-        <div className="sticky top-0 left-0 h-screen w-64 bg-white border-r border-gray-300 flex flex-col items-center pt-10">
+        <div className="sticky top-0 left-0 h-screen w-64 bg-white border-r border-gray-300 flex flex-col items-center pt-10 shrink-0">
             {/* 로고 */}
             <div className="w-full h-24 flex justify-center items-center">
                 <div className="w-20 h-20 bg-gray-200 rounded-full"></div>
@@ -34,7 +34,7 @@ export default function Sidebar() {
 
             {/* Logout */}
             <div className=" w-full flex justify-center absolute bottom-10">
-                <button className="w-4/5 h-9 rounded-lg border border-gray-300 text-black font-medium hover:bg-gray-100 transition-colors cursor-pointer">로그아웃</button>
+                <button type='button' className="w-4/5 h-9 rounded-lg border border-gray-300 text-black font-medium hover:bg-gray-100 transition-colors cursor-pointer">로그아웃</button>
             </div>
         </div>
     );
