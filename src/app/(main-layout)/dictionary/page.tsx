@@ -23,12 +23,12 @@ export default function Dictionary() {
                 <div className="grid grid-cols-2 gap-2 w-full">
                     {words?.map((word) => (
                         <Link
-                            key={word.word}
+                            key={word.subject}
                             href={""}
                             className="flex justify-start items-center relative gap-2.5 px-5 py-[13px] rounded-[9px] bg-white border-[0.95px] border-black/20"
                         >
                             <p className="font-medium text-left text-black">
-                                사회보장제도
+                                {word.subject}
                             </p>
                         </Link>
                     ))}
