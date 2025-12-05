@@ -8,5 +8,5 @@ interface WordType {
 
 export const getWord = async (): Promise<WordType[]> => {
 	const response = await instance.get("/home/word");
-	return response.data;
+	return response.data.words;
 };
