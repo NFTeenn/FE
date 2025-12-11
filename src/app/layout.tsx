@@ -18,9 +18,9 @@ export default function RootLayout({
 		<html lang="ko">
 			<body >
 				<TanstackProvider>
-					<main className="min-h-screen bg-brand-bg">
+					<main className="flex w-full min-h-screen bg-brand-bg">
 						<Sidebar />
-						{children}
+						<div className="flex-1">{children}</div>
 					</main>
 				</TanstackProvider>
 			</body>

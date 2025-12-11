@@ -13,7 +13,7 @@ export default function Sidebar() {
   ];
 
     return (
-        <div className="fixed top-0 left-0 h-screen w-64 bg-white border-r border-gray-300 flex flex-col items-center pt-10">
+        <div className="relative top-0 left-0 h-screen w-64 bg-white border-r border-gray-300 flex flex-col items-center pt-10">
             {/* 로고 */}
             <div className="w-full h-24 flex justify-center items-center">
                 <div className="w-20 h-20 bg-gray-200 rounded-full"></div>
