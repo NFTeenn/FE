@@ -6,8 +6,8 @@ import { useSearchParams } from "next/navigation";
 
 export default function Dictionary() {
     const searchParams = useSearchParams();
-    const isWord = String(searchParams.get("word"))?.length > 0 ? true : false;
-    console.log(isWord)
+    const word = searchParams.get("word");
+    const isWord = word !== null && word.length > 0;
 
     return (
         isWord ? <WordSearchResult /> : <TodayWord />
