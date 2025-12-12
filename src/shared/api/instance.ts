@@ -18,8 +18,6 @@ instance.interceptors.request.use(
 				idToken = document.cookie.split("idToken=")[1].split(";")[0];
 			}
 
-			console.log("idToken", idToken);
-
 			if (idToken) {
 				config.headers.Authorization = `Bearer ${idToken}`;
 			} else {
