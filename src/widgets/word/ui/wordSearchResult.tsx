@@ -34,8 +34,6 @@ export default function WordSearchResult() {
     }
   }, [initialWord, mutate]);
 
-
-
   return (
     <div className="flex flex-col justify-center items-center w-full h-screen px-40">
       <header className="w-full flex items-center gap-6">
