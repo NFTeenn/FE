@@ -4,6 +4,7 @@ import dondon from "src/shared/assets/mypage_dondon.svg";
 import storage from "src/shared/assets/storage.svg";
 import medal from "src/shared/assets/medal.svg";
 import shop from "src/shared/assets/shop.svg";
+import MyPageSidebar from "@/widgets/sidebar/ui/myPageSidebar";
 
 export default function MyPage() {
   return (
@@ -32,7 +33,7 @@ export default function MyPage() {
               { img: shop, label: "상점", size: 40 },
             ].map((item, i) => (
               <div key={i} className="flex flex-col items-center">
-                <Image src={item.img} alt={item.label} width={item.size} height={item.size} className="w-[4rem] z-10"/>
+                <Image src={item.img} alt={item.label} width={item.size} height={item.size} className="w-[4rem] z-10" />
                 <div className="w-20 h-12 bg-white border border-black/20 rounded-xl -mt-3 
                                 flex items-center justify-center text-sm">
                   {item.label}
@@ -51,7 +52,7 @@ export default function MyPage() {
 
         {/* Bowl */}
         <div className="absolute bottom-[-10%] left-[20%] -translate-x-1/2 z-[999] ">
-          <Image src={bowl} alt="bowl" className="w-[19vw] h-auto pointer-events-none"/>
+          <Image src={bowl} alt="bowl" className="w-[19vw] h-auto pointer-events-none" />
         </div>
       </div>
 
@@ -88,8 +89,8 @@ export default function MyPage() {
             이름
           </div>
         </div>
-
       </div>
+      <MyPageSidebar />
 
     </div>
   );
