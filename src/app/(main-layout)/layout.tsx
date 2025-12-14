@@ -1,4 +1,4 @@
-import Sidebar from "@/widgets/sidebar";
+import NavigationSidebar from "@/widgets/sidebar/ui/navigationSidebar";
 
 export default function MainLayout({
   children,
@@ -7,7 +7,7 @@ export default function MainLayout({
 }) {
   return (
     <>
-      <Sidebar />
+      <NavigationSidebar />
       <div className="flex-1">{children}</div>
     </>
 

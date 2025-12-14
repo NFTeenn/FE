@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 
-export default function Sidebar() {
+export default function NavigationSidebar() {
     const menuItems = [
         { name: '메인페이지', path: '/main' },
         { name: '경제사전', path: '/dictionary' },
