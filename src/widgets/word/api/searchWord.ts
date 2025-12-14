@@ -1,12 +1,13 @@
 import { instance } from "@/shared/api/instance";
 
-interface WordType {
-  subject: string;
-  word: string;
-  description: string;
+interface Word {
+	num: number;
+	word: string;
+	description: string;
+	subject: string;
 }
 
-export const searchWord = async ({search}: {search: string}): Promise<WordType[]> => {
+export const searchWord = async ({search}: {search: string}): Promise<Word[]> => {
   const response = await instance.post("/home/word/search", {search});
   return response.data;
 };

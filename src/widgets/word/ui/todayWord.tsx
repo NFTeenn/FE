@@ -2,13 +2,13 @@
 
 import Link from "next/link";
 import Search from "@/shared/assets/search";
-import useGetWord from "@/widgets/word/model/useGetWord";
+import useGetWords from "@/widgets/word/model/useGetWords";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function TodayWord() {
   const router = useRouter();
-  const { data: words } = useGetWord();
+  const { data: words } = useGetWords();
   const [word, setWord] = useState("");
 
   return (
@@ -29,12 +29,12 @@ export default function TodayWord() {
         <div className="grid grid-cols-2 gap-2 w-full">
           {words?.map((word) => (
             <Link
-              key={word}
-              href={`/dictionary?word=${word}`}
+              key={word.num}
+              href={`/dictionary?word=${word.word}`}
               className="flex justify-start items-center relative gap-2.5 px-5 py-[13px] rounded-[9px] bg-white border-[0.95px] border-black/20"
             >
               <p className="font-medium text-left text-black">
-                {word}
+                {word.word}
               </p>
             </Link>
           ))}

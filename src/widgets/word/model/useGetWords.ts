@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
-import { getWord } from "../api/getWord";
+import { getWords } from "../api/getWords";
 
 export default function useGetWord() {
 	return useQuery({
 		queryKey: ["word"],
-		queryFn: () => getWord(),
+		queryFn: () => getWords(),
 	});
 }
