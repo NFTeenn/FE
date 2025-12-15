@@ -8,6 +8,6 @@ interface Word {
 }
 
 export const searchWord = async ({search}: {search: string}): Promise<Word[]> => {
-  const response = await instance.post("/home/word/search", {search});
+  const response = await instance.post("/home/words/search", {search});
   return response.data;
 };
