@@ -1,5 +1,5 @@
+// src/shared/api/instance.ts
 import axios from "axios";
-import { cookies } from "next/headers";
 
 export const instance = axios.create({
 	baseURL: process.env.NEXT_PUBLIC_BASE_URL,
@@ -7,16 +7,32 @@ export const instance = axios.create({
 	withCredentials: true,
 });
 
-instance.interceptors.request.use(
-	async (config) => {
-		try {
-			const cookieStore = cookies();
-			const idToken = cookieStore.get("idToken")?.value;
+// 쿠키에서 값을 읽는 헬퍼 함수
+function getCookie(name: string): string | null {
+	if (typeof window === 'undefined') return null;
+	
+	const value = `; ${document.cookie}`;
+	const parts = value.split(`; ${name}=`);
+	
+	if (parts.length === 2) {
+		return parts.pop()?.split(';').shift() || null;
+	}
+	
+	return null;
+}
 
-			if (idToken) {
-				config.headers.Authorization = `Bearer ${idToken}`;
-			} else {
-				console.warn("No idToken in cookies");
+instance.interceptors.request.use(
+	(config) => {
+		try {
+			// Client-side에서만 쿠키 읽기
+			if (typeof window !== 'undefined') {
+				const idToken = getCookie("idToken");
+
+				if (idToken) {
+					config.headers.Authorization = `Bearer ${idToken}`;
+				} else {
+					console.warn("No idToken in cookies");
+				}
 			}
 
 			return config;
@@ -27,7 +43,7 @@ instance.interceptors.request.use(
 	},
 	(error) => {
 		return Promise.reject(error);
-	},
+	}
 );
 
 instance.interceptors.response.use(
@@ -40,11 +56,15 @@ instance.interceptors.response.use(
 		if (status === 401 || status === 403) {
 			console.error("Authentication failed - Re-authentication needed");
 
-			const authError = new Error("Authentication failed");
+			// Client-side에서 로그인 페이지로 리다이렉트
+			if (typeof window !== 'undefined') {
+				window.location.href = '/login';
+			}
 
+			const authError = new Error("Authentication failed");
 			return Promise.reject(authError);
 		}
 
 		return Promise.reject(error);
-	},
+	}
 );
