@@ -1,13 +1,15 @@
 import { instance } from "@/shared/api/instance";
 
+export type AchievementCode = "FIRST_DONDON";
+
 interface Achievement {
-    code: string;
-    title: string;
-    description: string;
-    achieved: boolean;
+	code: AchievementCode;
+	title: string;
+	description: string;
+	achieved: boolean;
 }
 
-export const getAchievement = async (): Promise<Achievement[]> => {
-  const response = await instance.get("/grow/prize");
-  return response.data.prizes;
-}
+export const getAchievement = async (): Promise<Achievement[] | []> => {
+	const response = await instance.get("/grow/prizes");
+	return response.data ?? [];
+};
