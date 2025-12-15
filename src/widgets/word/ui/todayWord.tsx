@@ -1,10 +1,10 @@
-"use client"
+"use client";
 
 import Link from "next/link";
-import Search from "@/shared/assets/search";
-import useGetWords from "@/widgets/word/model/useGetWords";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import Search from "@/shared/assets/search";
+import { useGetWords } from "../model/useGetWords";
 
 export default function TodayWord() {
   const router = useRouter();
@@ -14,7 +14,7 @@ export default function TodayWord() {
   return (
     <div className="flex flex-col justify-center items-center w-full h-screen px-40">
       <h1 className="text-[4rem] font-semibold">돈돈 경제사전</h1>
-      <div className="flex justify-center itemsㅌ-center relative overflow-hidden w-full px-5 py-4 rounded-2xl bg-white border border-black/20">
+      <div className="flex justify-center items-center relative overflow-hidden w-full px-5 py-4 rounded-2xl bg-white border border-black/20">
         <input
           type="text"
           placeholder="검색할 경제 단어를 입력해주세요"
@@ -22,7 +22,10 @@ export default function TodayWord() {
           value={word}
           onChange={(e) => setWord(e.target.value)}
         />
-        <Search className="cursor-pointer" onClick={() => router.push(`/dictionary?word=${word}`)} />
+        <Search
+          className="cursor-pointer"
+          onClick={() => router.push(`/dictionary?word=${word}`)}
+        />
       </div>
       <div className="flex flex-col justify-center items-start w-full mt-4">
         <p className="text-200 font-semibold indent-1">오늘의 경제 단어</p>
@@ -33,9 +36,7 @@ export default function TodayWord() {
               href={`/dictionary?word=${word.word}`}
               className="flex justify-start items-center relative gap-2.5 px-5 py-[13px] rounded-[9px] bg-white border-[0.95px] border-black/20"
             >
-              <p className="font-medium text-left text-black">
-                {word.word}
-              </p>
+              <p className="font-medium text-left text-black">{word.word}</p>
             </Link>
           ))}
         </div>
