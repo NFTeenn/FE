@@ -1,18 +1,21 @@
-"use client"
+"use client";
 
-import Search from '@/shared/assets/search'
-import React, { useEffect, useState } from 'react'
-import useSearchWord from '../model/useSearchWord';
-import { useRouter, useSearchParams } from 'next/navigation';
-import Star from '@/shared/assets/star';
+import { useRouter, useSearchParams } from "next/navigation";
+import type React from "react";
+import { useEffect, useState } from "react";
+import Search from "@/shared/assets/search";
+import Star from "@/shared/assets/star";
+import { useSaveLikes } from "@/shared/model/useSaveLikes";
+import useSearchWord from "../model/useSearchWord";
 
 export default function WordSearchResult() {
-
   const router = useRouter();
   const searchParams = useSearchParams();
   const initialWord = searchParams.get("word") || "";
   const [word, setWord] = useState(initialWord);
-  const { data: words, mutate } = useSearchWord();
+
+  const { mutate: saveLikes } = useSaveLikes();
+  const { data: words } = useSearchWord(initialWord);
 
   const handleSearch = () => {
     if (word.trim()) {
@@ -22,7 +25,7 @@ export default function WordSearchResult() {
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.nativeEvent.isComposing) return;
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       handleSearch();
     }
   };
@@ -30,9 +33,8 @@ export default function WordSearchResult() {
   useEffect(() => {
     if (initialWord) {
       setWord(initialWord);
-      mutate(initialWord);
     }
-  }, [initialWord, mutate]);
+  }, [initialWord]);
 
   return (
     <div className="flex flex-col justify-center items-center w-full h-screen px-40">
@@ -54,11 +56,18 @@ export default function WordSearchResult() {
         <p className="text-200 font-semibold">검색 결과 {words?.length}</p>
         <div className="flex flex-col gap-2 w-full ">
           {words?.map((word) => (
-            <article key={word.num} className='flex flex-col gap-2 py-4 border-b border-b-black/20 last:border-b-0'>
-              <div className='flex items-baseline gap-3'>
-                <p className="text-2xl text-left text-black line-clamp-1">{word.word}</p>
-                <p className="text-base text-left text-black/40 line-clamp-1">{word.subject}</p>
-                <Star />
+            <article
+              key={word.num}
+              className="flex flex-col gap-2 py-4 border-b border-b-black/20 last:border-b-0"
+            >
+              <div className="flex items-baseline gap-3">
+                <p className="text-2xl text-left text-black line-clamp-1">
+                  {word.word}
+                </p>
+                <p className="text-base text-left text-black/40 line-clamp-1">
+                  {word.subject}
+                </p>
+                <Star color={word.liked === true ? "#FFD63A" : "none"} className="cursor-pointer" onClick={() => { saveLikes({ targetId: word.num, type: "WORD" }) }} />
               </div>
               <p className="text-xl font-light text-left text-black line-clamp-3">
                 {word.description}
@@ -68,5 +77,5 @@ export default function WordSearchResult() {
         </div>
       </div>
     </div>
-  )
+  );
 }
