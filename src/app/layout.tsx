@@ -13,10 +13,9 @@ export default function RootLayout({
 }: {
 	children: React.ReactNode;
 }) {
-
 	return (
 		<html lang="ko">
-			<body >
+			<body>
 				<TanstackProvider>
 					<main className="min-h-screen bg-brand-bg">
 						{children}
