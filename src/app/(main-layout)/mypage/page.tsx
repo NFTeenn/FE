@@ -7,6 +7,7 @@ import medal from "src/shared/assets/medal.svg";
 import dondon from "src/shared/assets/mypage_dondon.svg";
 import shop from "src/shared/assets/shop.svg";
 import storage from "src/shared/assets/storage.svg";
+import { useGetMyInfo } from "@/widgets/grow/model/useGetMyInfo";
 import MyPageSidebar from "@/widgets/sidebar/ui/myPageSidebar";
 
 export type MyPageSidebarOperation = "STORAGE" | "ACHIEVEMENT" | "SHOP";
@@ -44,18 +45,35 @@ const cardList: Card[] = [
 ];
 
 export default function MyPage() {
-  const [sidebarOperation, setSidebarOperation] = useState<MyPageSidebarOperation | null>(null);
+  const { data: myInfo } = useGetMyInfo();
+  const [sidebarOperation, setSidebarOperation] =
+    useState<MyPageSidebarOperation | null>(null);
 
   return (
     <div className="w-full h-screen flex flex-col">
       <div className="flex w-full bg-brand-b4 h-[70vh]">
         <div className="w-full flex justify-between m-12">
-
-          <div className="flex w-240">
-            <div className="flex-1 h-20  bg-white border border-gray-300 rounded-l-2xl" />
-            <div className="flex-1 h-20  bg-white border border-gray-300" />
-            <div className="flex-1 h-20  bg-white border border-gray-300 rounded-r-2xl flex items-center justify-center">
-              즐겨찾기목록
+          <div className="flex">
+            <div className="flex flex-col items-start justify-center px-8 py-4 h-20  bg-white border border-gray-300 rounded-l-2xl" >
+              <p className="text-2xl font-semibold">{myInfo?.myInfo.username}님</p>
+              <p>{myInfo?.myInfo.days}일차 도전중!</p>
+            </div>
+            <div className="flex justify-center items-center gap-8 px-8 py-4  h-20 bg-white border border-gray-300" >
+              <div>
+                <p>맞춘 퀴즈</p>
+                <p className="text-2xl font-semibold">{myInfo?.myInfo.quizStack}개</p>
+              </div>
+              <div>
+                <p>돈돈</p>
+                <p className="text-2xl font-semibold">{myInfo?.latestDondon.gen}세대</p>
+              </div>
+              <div>
+                <p>읽은 뉴스</p>
+                <p className="text-2xl font-semibold">{myInfo?.myInfo.newsStack}개</p>
+              </div>
+            </div>
+            <div className="px-8 py-4 h-20 bg-white border border-gray-300 rounded-r-2xl flex items-center justify-center cursor-pointer">
+              즐겨찾기 목록
             </div>
           </div>
 
@@ -83,35 +101,25 @@ export default function MyPage() {
             ))}
           </div>
         </div>
-
       </div>
 
       <div className="flex flex-col justify-end bg-white flex-1 pb-[3rem] px-[6rem]">
         <section className="relative flex flex-1 h-full">
           <div className="absolute -top-5 left-30">
-            <Image
-              src={bowl}
-              alt="bowl"
-              className="w-[19vw]"
-            />
+            <Image src={bowl} alt="bowl" className="w-[19vw]" />
           </div>
 
           <div className="absolute -top-60 right-30">
-            <Image
-              src={dondon}
-              alt="dondon"
-              className="w-[25vw]"
-            />
+            <Image src={dondon} alt="dondon" className="w-[25vw]" />
           </div>
-
         </section>
         <section className="flex flex-1 items-end ">
           <article className="flex flex-1 items-start gap-6">
-
             <div className="flex flex-col min-w-40">
               <span className="text-gray-500 mb-2">누적된 코인:</span>
-              <div className="h-10 border border-gray-300 rounded-3xl px-4 flex items-center">
+              <div className="flex gap-2 h-10 border border-gray-300 rounded-3xl px-4 items-center">
                 <div className="w-5 h-5 bg-brand-main rounded-full" />
+                <p>{myInfo?.myInfo.coin}</p>
               </div>
             </div>
 
@@ -123,16 +131,15 @@ export default function MyPage() {
             </div>
           </article>
 
-          <article className="flex flex-col">
-            <div className="w-[6rem] h-[1.5rem] bg-brand-main rounded-t-md flex items-center justify-center">
+          <article className="flex flex-col items-end">
+            <div className="w-[6rem] h-[1.5rem] bg-brand-main mr-2 rounded-t-md flex items-center justify-center">
               돈돈의 이름
             </div>
-            <div className="w-[10rem] h-[3.5rem] bg-white border border-gray-300 rounded-xl flex items-center justify-center">
-              이름
+            <div className="text-6xl font-bold py-6 px-8 bg-white border border-gray-300 rounded-xl flex items-center justify-center">
+              {myInfo?.latestDondon.nickname}
             </div>
           </article>
         </section>
-
       </div>
       {sidebarOperation && (
         <MyPageSidebar
