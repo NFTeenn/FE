@@ -18,7 +18,7 @@ export default function NavigationSidebar() {
             </div>
 
             {/* Menu */}
-            <div className="w-4/5 mt-10">
+            <div className="flex-1 mt-10">
                 <ul className="flex flex-col gap-4 w-full items-center">
                     {menuItems.map((item) => (
                         <Link
@@ -33,7 +33,7 @@ export default function NavigationSidebar() {
             </div>
 
             {/* Logout */}
-            <div className=" w-full flex justify-center absolute bottom-10">
+            <div className="w-full flex justify-center mb-10">
                 <button className="w-4/5 h-9 rounded-lg border border-gray-300 text-black font-medium hover:bg-gray-100 transition-colors cursor-pointer">로그아웃</button>
             </div>
         </div>

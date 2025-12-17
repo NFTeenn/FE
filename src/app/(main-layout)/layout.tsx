@@ -8,7 +8,7 @@ export default function MainLayout({
   return (
     <>
       <NavigationSidebar />
-      <div className="flex-1">{children}</div>
+      <div className="flex-1 ml-64">{children}</div>
     </>
 
   );
