@@ -7,7 +7,6 @@ export const instance = axios.create({
 	withCredentials: true,
 });
 
-<<<<<<< HEAD
 // 쿠키에서 값을 읽는 헬퍼 함수
 function getCookie(name: string): string | null {
 	if (typeof window === 'undefined') return null;
@@ -21,19 +20,6 @@ function getCookie(name: string): string | null {
 	
 	return null;
 }
-=======
-instance.interceptors.request.use(
-	async (config) => {
-		try {
-			let idToken = null;
-			if (typeof window === "undefined") {
-				const { cookies } = await import("next/headers");
-				const cookieStore = cookies();
-				idToken = cookieStore.get("idToken")?.value;
-			} else {
-				idToken = document.cookie.split("idToken=")[1].split(";")[0];
-			}
->>>>>>> develop
 
 instance.interceptors.request.use(
 	(config) => {
