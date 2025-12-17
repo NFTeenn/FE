@@ -16,9 +16,7 @@ export default function RootLayout({
 		<html lang="ko">
 			<body>
 				<TanstackProvider>
-					<main className="flex min-h-screen bg-brand-bg">
-						{children}
-					</main>
+					<main className="min-h-screen bg-brand-bg">{children}</main>
 				</TanstackProvider>
 			</body>
 		</html>
