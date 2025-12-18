@@ -44,13 +44,25 @@ const cardList: Card[] = [
   },
 ];
 
+const Modal = () => {
+  return (
+    <div className="fixed inset-0 bg-black/20 flex items-center justify-center z-50">
+      <div className="bg-white p-6 rounded-lg shadow-lg">
+        <p>즐겨찾기 목록</p>
+      </div>
+    </div>
+  );
+};
+
 export default function MyPage() {
   const { data: myInfo } = useGetMyInfo();
   const [sidebarOperation, setSidebarOperation] =
     useState<MyPageSidebarOperation | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
     <div className="w-full h-screen flex flex-col">
+      {isModalOpen && <Modal />}
       <div className="flex w-full bg-brand-b4 h-[70vh]">
         <div className="w-full flex justify-between m-12">
           <div className="flex">
@@ -72,9 +84,9 @@ export default function MyPage() {
                 <p className="text-2xl font-semibold">{myInfo?.myInfo.newsStack}개</p>
               </div>
             </div>
-            <div className="px-8 py-4 h-20 bg-white border border-gray-300 rounded-r-2xl flex items-center justify-center cursor-pointer">
+            <button className="px-8 py-4 h-20 bg-white border border-gray-300 rounded-r-2xl flex items-center justify-center cursor-pointer" onClick={() => setIsModalOpen(true)}>
               즐겨찾기 목록
-            </div>
+            </button>
           </div>
 
           <div className="flex flex-col gap-4">
