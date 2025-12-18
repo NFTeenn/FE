@@ -21,6 +21,6 @@ interface MyInfo {
 }
 
 export const getMyInfo = async (): Promise<MyInfo> => {
-	const response = await instance.get("/grow/");
+	const response = await instance.get("/grow");
 	return response.data;
 };
