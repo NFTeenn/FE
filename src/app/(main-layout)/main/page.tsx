@@ -4,7 +4,7 @@ import MissionListComponent from "@/widgets/home/mission";
 import ProcessComponent from "@/widgets/home/process";
 import MiniDictionaryList from "@/widgets/home/dictionary";
 import QuizComponent from "@/widgets/home/quiz";
-import type { HomeData } from "@/types/home";
+import type { HomeData } from "@/types/home/";
 
 export default function Main() {
   // API 호출 제거: 스펙 예시를 그대로 사용
