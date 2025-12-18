@@ -23,60 +23,49 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
                 const accessTokenExpires = account.expires_at
                     ? account.expires_at * 1000
-                    : Date.now() + 3600 * 1000; // 기본 1시간
+                    : Date.now() + 3600 * 1000;
 
-                const tokenData = {
+                return {
                     ...token,
                     idToken: account.id_token,
                     accessToken: account.access_token,
                     refreshToken: account.refresh_token,
-                    accessTokenExpires: accessTokenExpires,
-                    userId: user.id,
+                    accessTokenExpires,
+                    userId: user.id as string,
                 };
-
-                console.log({
-                    userId: user.id,
-                    accessTokenExpires: new Date(accessTokenExpires).toISOString(),
-                    hasRefreshToken: !!account.refresh_token,
-                });
-
-                return tokenData;
             }
 
-            const accessTokenExpires = token.accessTokenExpires;
-
-            if (Date.now() < accessTokenExpires) {
-                const minutesLeft = Math.floor((accessTokenExpires - Date.now()) / 1000 / 60);
+            if (token.accessTokenExpires && Date.now() < token.accessTokenExpires) {
+                const minutesLeft = Math.floor((token.accessTokenExpires - Date.now()) / 1000 / 60);
                 console.log(`✅ Token still valid (${minutesLeft} minutes left)`);
                 return token;
             }
 
-            console.log("⚠️ Token expired, refreshing...");
+            console.log("⚠️ Token expired or missing expiration, refreshing...");
             return refreshAccessToken(token);
         },
 
         async session({ session, token }) {
             if (token.error) {
                 console.error("❌ Token error:", token.error);
-                return {
-                    ...session,
-                    error: token.error,
-                } as any;
+                session.error = token.error;
+                return session;
             }
 
             if (session.user) {
-                session.user.id = token.userId;
+                session.user.id = token.userId as string;
             }
 
-            const expiresAt = token.accessTokenExpires;
-            const timeUntilExpiry = expiresAt - Date.now();
-            const minutesUntilExpiry = Math.floor(timeUntilExpiry / 1000 / 60);
+            if (token.accessTokenExpires) {
+                const expiresAt = token.accessTokenExpires;
+                const timeUntilExpiry = expiresAt - Date.now();
+                const minutesUntilExpiry = Math.floor(timeUntilExpiry / 1000 / 60);
+                session.expiresIn = minutesUntilExpiry;
 
-            (session as any).expiresIn = minutesUntilExpiry;
-
-            console.log(
-                `⏰ Token expires in ${minutesUntilExpiry} minutes (at ${new Date(expiresAt).toISOString()})`
-            );
+                console.log(
+                    `⏰ Token expires in ${minutesUntilExpiry} minutes (at ${new Date(expiresAt).toISOString()})`
+                );
+            }
 
             return session;
         },

@@ -1,15 +1,26 @@
 import axios from "axios";
+import type { JWT } from "next-auth/jwt";
 
-export async function refreshAccessToken(token: any) {
+interface GoogleTokenResponse {
+	access_token: string;
+	expires_in: number;
+	id_token: string;
+	refresh_token?: string;
+	token_type: string;
+}
+
+export async function refreshAccessToken(token: JWT): Promise<JWT> {
 	try {
 		const params = new URLSearchParams({
 			client_id: process.env.AUTH_GOOGLE_ID || "",
 			client_secret: process.env.AUTH_GOOGLE_SECRET || "",
 			grant_type: "refresh_token",
-			refresh_token: token.refreshToken,
+			refresh_token: token.refreshToken || "",
 		});
 
-		const response = await axios.post("https://oauth2.googleapis.com/token", params.toString(),
+		const response = await axios.post<GoogleTokenResponse>(
+			"https://oauth2.googleapis.com/token",
+			params.toString(),
 			{
 				headers: {
 					"Content-Type": "application/x-www-form-urlencoded",
@@ -26,12 +37,11 @@ export async function refreshAccessToken(token: any) {
 			accessTokenExpires: Date.now() + refreshedTokens.expires_in * 1000,
 			refreshToken: refreshedTokens.refresh_token ?? token.refreshToken,
 		};
-
 	} catch (error: unknown) {
 		if (axios.isAxiosError(error)) {
-			console.error("Error refreshing access token:", error.message);
+			console.error("❌ Error refreshing access token:", error.response?.data || error.message);
 		}
-		
+
 		return {
 			...token,
 			error: "RefreshAccessTokenError",
