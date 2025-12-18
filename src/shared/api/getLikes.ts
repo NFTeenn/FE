@@ -8,11 +8,11 @@ type ChangeType<T> = {
 export type GetLikesParams = ChangeType<LikesParams>;
 
 export const getLikes = async ({
-	type,
 	targetId,
 }: GetLikesParams): Promise<Likes[]> => {
 	const response = await instance.get("/grow/likes", {
-		params: { type, targetId },
+		params: { targetId },
 	});
 	return response.data;
 };
+

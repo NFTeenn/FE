@@ -12,7 +12,7 @@ export default function useSearchWord(search: string) {
 	const likeQueries = useQueries({
 		queries: (words || []).map((word) => ({
 			queryKey: ["likes", "word", word.num],
-			queryFn: () => getLikes({ targetId: word.num, type: "WORD" }),
+			queryFn: () => getLikes({ targetId: word.num }),
 		})),
 	});
 

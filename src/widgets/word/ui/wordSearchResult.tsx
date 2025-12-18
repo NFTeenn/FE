@@ -67,7 +67,7 @@ export default function WordSearchResult() {
                 <p className="text-base text-left text-black/40 line-clamp-1">
                   {word.subject}
                 </p>
-                <Star color={word.liked === true ? "#FFD63A" : "none"} className="cursor-pointer" onClick={() => { saveLikes({ targetId: word.num, type: "WORD" }) }} />
+                <Star color={word.liked === true ? "#FFD63A" : "none"} className="cursor-pointer" onClick={() => { saveLikes({ targetId: word.num }) }} />
               </div>
               <p className="text-xl font-light text-left text-black line-clamp-3">
                 {word.description}
