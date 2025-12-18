@@ -16,7 +16,6 @@ export async function GET() {
             "/home",
             {
                 token: token,
-                email: "s24026@gsm.hs.kr", // 스펙에 맞춰 이메일 전달
                 solve: false,
             },
             {
