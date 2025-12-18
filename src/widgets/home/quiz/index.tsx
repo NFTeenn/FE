@@ -1,12 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 
 interface QuizComponentProps {
   quiz: string;
-  a: string[] | null; // null = OX, array = 4지선다
-  result: number;     // 정답 인덱스 (OX: 0=O, 1=X)
+  a: string[] | null;
+  result: number;
   count: number;
 }
 
@@ -16,119 +15,137 @@ export default function QuizComponent({
   result,
   count,
 }: QuizComponentProps) {
-  const router = useRouter();
-
   const [selected, setSelected] = useState<number | null>(null);
   const [submitted, setSubmitted] = useState(false);
 
-  // 보기 선택 처리
-  const handleSelect = async (index: number) => {
+  const handleSelect = (index: number) => {
     if (submitted) return;
-
     setSelected(index);
+  };
+
+  const handleSubmit = async () => {
+    if (selected === null || submitted) return;
+
     setSubmitted(true);
 
-    const isCorrect = index === result;
-
-    if (isCorrect) {
+    try {
+      // 문제를 풀기만 하면 무조건 true
       await sendSolveResult(true);
 
-      // ✅ 깜빡임 거의 없는 새로고침
       setTimeout(() => {
-        router.refresh();
-      }, 200);
+        window.location.reload();
+      }, 1000);
+    } catch (error) {
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
     }
   };
 
-  // 퀴즈 해결 결과 전송
+
   const sendSolveResult = async (solve: boolean) => {
     try {
-      const res = await fetch("/api/quiz/solve", {
+      const res = await fetch("/home", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          token: "google_id_token",
-          email: "s24026@gsm.hs.kr",
           solve: solve,
         }),
       });
 
       if (!res.ok) {
-        throw new Error("퀴즈 결과 전송 실패");
+        const errorData = await res.json();
+        throw new Error(errorData.error || "퀴즈 결과 전송 실패");
       }
+
+      return await res.json();
     } catch (error) {
       console.error("퀴즈 결과 전송 오류:", error);
+      throw error;
     }
   };
 
   return (
-    <>
+    <div>
       <h3 className="text-lg font-semibold mb-4">오늘의 경제 퀴즈</h3>
 
-      {/* 질문 */}
       <span className="font-[pretendard] font-semibold text-xl">
         {quiz}
       </span>
 
-      {/* 보기 렌더링 */}
       {Array.isArray(a) ? (
-        // 4지선다형
         <div className="mt-3 flex flex-col gap-2">
-          {a.map((option, index) => (
-            <button
-              key={index}
-              disabled={submitted}
-              onClick={() => handleSelect(index)}
-              className={`w-full h-[2.875rem] pl-4 text-left rounded-[27px] border transition-colors
-                ${
-                  submitted
-                    ? index === result
-                      ? "bg-green-100 border-green-500"
-                      : index === selected
-                      ? "bg-red-100 border-red-500"
-                      : "bg-brand-bg border-black/20"
-                    : "bg-brand-bg border-black/20 hover:bg-brand-b2"
-                }
-              `}
-            >
-              {index + 1}. {option}
-            </button>
-          ))}
+          {a.map((option, index) => {
+            const getMultipleChoiceClassName = () => {
+              if (submitted) {
+                if (index === result) return "bg-green-100 border-green-500";
+                if (index === selected) return "bg-red-100 border-red-500";
+                return "bg-brand-bg border-black/20";
+              }
+              if (selected === index) return "bg-brand-b2 border-black/40";
+              return "bg-brand-bg border-black/20 hover:bg-brand-b2";
+            };
+            
+            return (
+              <button
+                key={index}
+                disabled={submitted}
+                onClick={() => handleSelect(index)}
+                className={`w-full h-[2.875rem] pl-4 text-left rounded-[27px] border transition-colors ${getMultipleChoiceClassName()}`}
+              >
+                {index + 1}. {option}
+              </button>
+            );
+          })}
         </div>
       ) : (
-        // OX 퀴즈
         <div className="mt-3 flex gap-4">
-          {["O", "X"].map((label, index) => (
-            <button
-              key={label}
-              disabled={submitted}
-              onClick={() => handleSelect(index)}
-              className={`w-full h-[2.875rem] rounded-[27px] border transition-colors
-                ${
-                  submitted
-                    ? index === result
-                      ? "bg-green-100 border-green-500"
-                      : index === selected
-                      ? "bg-red-100 border-red-500"
-                      : "bg-brand-bg border-black/20"
-                    : "bg-brand-bg border-black/20 hover:bg-brand-b2"
-                }
-              `}
-            >
-              {label}
-            </button>
-          ))}
+          {["O", "X"].map((label, index) => {
+            const getOXClassName = () => {
+              if (submitted) {
+                if (index === result) return "bg-green-100 border-green-500";
+                if (index === selected) return "bg-red-100 border-red-500";
+                return "bg-brand-bg border-black/20";
+              }
+              if (selected === index) return "bg-brand-b2 border-black/40";
+              return "bg-brand-bg border-black/20 hover:bg-brand-b2";
+            };
+            
+            return (
+              <button
+                key={label}
+                disabled={submitted}
+                onClick={() => handleSelect(index)}
+                className={`w-full h-[2.875rem] rounded-[27px] border transition-colors font-semibold ${getOXClassName()}`}
+              >
+                {label}
+              </button>
+            );
+          })}
         </div>
       )}
 
-      {/* 오늘 퀴즈 푼 횟수 */}
+      <button
+        onClick={handleSubmit}
+        disabled={selected === null}
+        className={
+          selected === null
+            ? "w-full h-[2.875rem] mt-4 rounded-[27px] font-semibold transition-colors bg-gray-300 text-gray-500 cursor-not-allowed"
+            : submitted && selected !== result
+            ? "w-full h-[2.875rem] mt-4 rounded-[27px] font-semibold transition-colors bg-red-500 text-white hover:bg-red-600"
+            : "w-full h-[2.875rem] mt-4 rounded-[27px] font-semibold transition-colors bg-blue-500 text-white hover:bg-blue-600"
+        }
+      >
+        {submitted && selected !== result ? "다시 풀기" : submitted ? "제출 완료" : "제출하기"}
+      </button>
+
       <div className="w-full flex justify-center mt-4">
         <span className="text-[15px] font-semibold font-[pretendard]">
           {count + 1}/5
         </span>
       </div>
-    </>
+    </div>
   );
 }
