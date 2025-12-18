@@ -1,12 +1,18 @@
 "use client";
 
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import bowl from "src/shared/assets/bowl.svg";
 import medal from "src/shared/assets/medal.svg";
 import dondon from "src/shared/assets/mypage_dondon.svg";
 import shop from "src/shared/assets/shop.svg";
 import storage from "src/shared/assets/storage.svg";
+import Arrow from "@/shared/assets/arrow";
+import Star from "@/shared/assets/star";
+import X from "@/shared/assets/x";
+import { useGetLikes } from "@/shared/model/useGetLikes";
+import { useSaveLikes } from "@/shared/model/useSaveLikes";
 import { useGetMyInfo } from "@/widgets/grow/model/useGetMyInfo";
 import MyPageSidebar from "@/widgets/sidebar/ui/myPageSidebar";
 
@@ -44,11 +50,71 @@ const cardList: Card[] = [
   },
 ];
 
-const Modal = () => {
+const Modal = ({
+  setIsModalOpen,
+}: {
+  setIsModalOpen: (value: boolean) => void;
+}) => {
+  const { data: likes } = useGetLikes({});
+  const { mutate: saveLikes } = useSaveLikes();
+  const router = useRouter();
+
   return (
-    <div className="fixed inset-0 bg-black/20 flex items-center justify-center z-50">
-      <div className="bg-white p-6 rounded-lg shadow-lg">
-        <p>즐겨찾기 목록</p>
+    <div
+      role="listbox"
+      className="fixed inset-0 bg-black/20 flex items-center justify-center z-50"
+      onClick={() => setIsModalOpen(false)}
+    >
+      <div
+        className="bg-white p-6 rounded-lg shadow-lg flex flex-col w-1/2 h-1/2 overflow-hidden"
+        onClick={(e) => e.stopPropagation()}
+        role="dialog"
+      >
+        <div className="flex justify-between">
+          <p className="font-bold">즐겨찾기 목록</p>
+          <X
+            className="w-4 h-4 cursor-pointer"
+            onClick={() => setIsModalOpen(false)}
+          />
+        </div>
+        <div className="flex flex-col flex-1 overflow-hidden">
+          <div className="flex items-center justify-center border border-b-0 border-black/20 w-1/2 p-2 rounded-tl-xl bg-brand-bg overflow-hidden">
+            <p>단어</p>
+          </div>
+          <ul className="flex flex-col flex-1 gap-2 border border-black/20 p-4 rounded-xl rounded-tl-none overflow-y-auto">
+            {likes?.map((like) => (
+              <article
+                key={like.targetId}
+                className="flex gap-4 p-4 rounded-xl border border-black/20"
+              >
+                <div className="flex-1 flex flex-col">
+                  <p className="font-bold text-xl line-clamp-1">{like.word}</p>
+                  <p className="line-clamp-2">{like.description}</p>
+                </div>
+                <div className="flex flex-col justify-between items-end">
+                  <Star
+                    color={like.liked === true ? "#FFD63A" : "none"}
+                    className="cursor-pointer"
+                    onClick={() => {
+                      saveLikes({ targetId: like.targetId });
+                    }}
+                  />
+                  <div className="flex items-center cursor-pointer">
+                    <p
+                      className="text-[#fb923c]"
+                      onClick={() =>
+                        router.push(`/dictionary?word=${like.word}`)
+                      }
+                    >
+                      보러가기
+                    </p>
+                    <Arrow />
+                  </div>
+                </div>
+              </article>
+            ))}
+          </ul>
+        </div>
       </div>
     </div>
   );
@@ -62,29 +128,40 @@ export default function MyPage() {
 
   return (
     <div className="w-full h-screen flex flex-col">
-      {isModalOpen && <Modal />}
+      {isModalOpen && <Modal setIsModalOpen={setIsModalOpen} />}
       <div className="flex w-full bg-brand-b4 h-[70vh]">
         <div className="w-full flex justify-between m-12">
           <div className="flex">
-            <div className="flex flex-col items-start justify-center px-8 py-4 h-20  bg-white border border-gray-300 rounded-l-2xl" >
-              <p className="text-2xl font-semibold">{myInfo?.myInfo.username}님</p>
+            <div className="flex flex-col items-start justify-center px-8 py-4 h-20  bg-white border border-gray-300 rounded-l-2xl">
+              <p className="text-2xl font-semibold">
+                {myInfo?.myInfo.username}님
+              </p>
               <p>{myInfo?.myInfo.days}일차 도전중!</p>
             </div>
-            <div className="flex justify-center items-center gap-8 px-8 py-4  h-20 bg-white border border-gray-300" >
+            <div className="flex justify-center items-center gap-8 px-8 py-4  h-20 bg-white border border-gray-300">
               <div>
                 <p>맞춘 퀴즈</p>
-                <p className="text-2xl font-semibold">{myInfo?.myInfo.quizStack}개</p>
+                <p className="text-2xl font-semibold">
+                  {myInfo?.myInfo.quizStack}개
+                </p>
               </div>
               <div>
                 <p>돈돈</p>
-                <p className="text-2xl font-semibold">{myInfo?.latestDondon.gen}세대</p>
+                <p className="text-2xl font-semibold">
+                  {myInfo?.latestDondon.gen}세대
+                </p>
               </div>
               <div>
                 <p>읽은 뉴스</p>
-                <p className="text-2xl font-semibold">{myInfo?.myInfo.newsStack}개</p>
+                <p className="text-2xl font-semibold">
+                  {myInfo?.myInfo.newsStack}개
+                </p>
               </div>
             </div>
-            <button className="px-8 py-4 h-20 bg-white border border-gray-300 rounded-r-2xl flex items-center justify-center cursor-pointer" onClick={() => setIsModalOpen(true)}>
+            <button
+              className="px-8 py-4 h-20 bg-white border border-gray-300 rounded-r-2xl flex items-center justify-center cursor-pointer"
+              onClick={() => setIsModalOpen(true)}
+            >
               즐겨찾기 목록
             </button>
           </div>
