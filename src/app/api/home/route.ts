@@ -1,17 +1,14 @@
-import { NextResponse } from 'next/server';
-import { instance } from "@/shared/api/instance";
 import { cookies } from "next/headers";
+import { NextResponse } from "next/server";
+import { instance } from "@/shared/api/instance";
 
 export async function GET() {
     try {
         const cookieStore = await cookies();
-        const token = cookieStore.get('idToken')?.value;
+        const token = cookieStore.get("idToken")?.value;
 
         if (!token) {
-            return NextResponse.json(
-                { error: 'token이 없습니다.' },
-                { status: 401 }
-            );
+            return NextResponse.json({ error: "token이 없습니다." }, { status: 401 });
         }
 
         // 백엔드 API 호출
@@ -24,24 +21,28 @@ export async function GET() {
             },
             {
                 headers: {
-                    'Content-Type': 'application/json',
-                }
-            }
+                    "Content-Type": "application/json",
+                },
+            },
         );
-        
+
         // 응답 데이터 확인
         if (!response.data) {
             return NextResponse.json(
-                { error: '서버에서 데이터를 받지 못했습니다.' },
-                { status: 500 }
+                { error: "서버에서 데이터를 받지 못했습니다." },
+                { status: 500 },
             );
         }
 
         // 에러 속성이 있는 경우
-        if (response.data && typeof response.data === 'object' && 'error' in response.data) {
+        if (
+            response.data &&
+            typeof response.data === "object" &&
+            "error" in response.data
+        ) {
             return NextResponse.json(
                 { error: response.data.error },
-                { status: response.status >= 400 ? response.status : 500 }
+                { status: response.status >= 400 ? response.status : 500 },
             );
         }
 
@@ -49,12 +50,12 @@ export async function GET() {
         return NextResponse.json(response.data);
     } catch (err: any) {
         console.error("Home API fetch error:", err);
-        
+
         // 에러 메시지 추출
-        let errorMessage = '데이터를 불러오는데 실패했습니다.';
-        
+        let errorMessage = "데이터를 불러오는데 실패했습니다.";
+
         if (err.response?.data) {
-            if (typeof err.response.data === 'string') {
+            if (typeof err.response.data === "string") {
                 errorMessage = err.response.data;
             } else if (err.response.data.error) {
                 errorMessage = err.response.data.error;
@@ -64,10 +65,10 @@ export async function GET() {
         } else if (err.message) {
             errorMessage = err.message;
         }
-        
+
         return NextResponse.json(
             { error: errorMessage },
-            { status: err.response?.status || 500 }
+            { status: err.response?.status || 500 },
         );
     }
 }
