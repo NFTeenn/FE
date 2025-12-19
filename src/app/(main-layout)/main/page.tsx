@@ -66,13 +66,11 @@ export default function Main() {
           </div>
 
           {/* 뉴스 */}
-          <div className="w-full h-[620px] rounded-2xl border border-black/20 bg-white p-6">
+          <div className="w-full h-auto pb-4 rounded-2xl border border-black/20 bg-white p-6">
             <h2 className="text-xl font-semibold mb-4">경제 뉴스</h2>
-            {homeData.content && (
               <div className="text-sm text-gray-700 whitespace-pre-wrap">
                 <MainNewsList />
               </div>
-            )}
           </div>
         </div>
 
