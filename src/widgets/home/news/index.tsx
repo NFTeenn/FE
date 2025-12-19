@@ -124,6 +124,8 @@ export default function MainNewsList() {
           </time>
         </a>
       ))}
+      <div></div>
+      <div className="w-full flex justify-center cursor-pointer"><a href="/news">더보기</a></div>
     </div>
   );
 }
