@@ -5,6 +5,7 @@ import axios from "axios";
 import MissionListComponent from "@/widgets/home/mission";
 import ProcessComponent from "@/widgets/home/process";
 import MiniDictionaryList from "@/widgets/home/dictionary";
+import MainNewsList from "@/widgets/home/news";
 import QuizComponent from "@/widgets/home/quiz";
 import type { HomeData } from "@/types/home/";
 
@@ -69,6 +70,7 @@ export default function Main() {
             <h2 className="text-xl font-semibold mb-4">경제 뉴스</h2>
             {homeData.content && (
               <div className="text-sm text-gray-700 whitespace-pre-wrap">
+                <MainNewsList />
               </div>
             )}
           </div>
