@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import bowl from "src/shared/assets/bowl.svg";
 import medal from "src/shared/assets/medal.svg";
 import dondon from "src/shared/assets/mypage_dondon.svg";
@@ -123,15 +123,22 @@ const Modal = ({
 
 export default function MyPage() {
   const { data: myInfo } = useGetMyInfo();
-  const [sidebarOperation, setSidebarOperation] =
-    useState<MyPageSidebarOperation | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [nickName, setNickName] = useState(myInfo?.latestDondon.nickname || '');
   const { mutate: editNickname } = useEditDonDonNickName();
+  const [sidebarOperation, setSidebarOperation] = useState<MyPageSidebarOperation | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [nickname, setNickname] = useState(myInfo?.latestDondon.nickname || "");
+  const [isInitialized, setIsInitialized] = useState(false);
+
+  useEffect(() => {
+    if (myInfo && !isInitialized) {
+      setNickname(myInfo.latestDondon.nickname);
+      setIsInitialized(true);
+    }
+  }, [myInfo, isInitialized]);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter" && !e.nativeEvent.isComposing && nickName.length >= 1) {
-      editNickname({ nickName: String(nickName) });
+    if (e.key === "Enter" && !e.nativeEvent.isComposing && nickname.length >= 1) {
+      editNickname({ nickname: String(nickname) });
     }
   };
 
@@ -243,10 +250,10 @@ export default function MyPage() {
             <div className="text-6xl font-bold py-6 px-8 bg-white border border-gray-300 rounded-xl inline-flex items-center justify-center">
               <input
                 className="outline-none text-center"
-                size={nickName?.length || 1}
-                value={nickName}
+                size={nickname?.length || 1}
+                value={nickname}
                 maxLength={10}
-                onChange={(e) => { setNickName(e.target.value) }}
+                onChange={(e) => { setNickname(e.target.value) }}
                 onKeyDown={(e) => handleKeyDown(e)}
               />
             </div>
