@@ -1,22 +1,50 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import Image from "next/image";
+import finishQuiz from "@/shared/assets/finishQuiz.svg"
 
-interface QuizComponentProps {
-  quiz: string;
+
+interface QuizData {
+  quiz: string | null;
   a: string[] | null;
   result: number;
-  count: number;
+  quizCount: number;
 }
 
-export default function QuizComponent({
-  quiz,
-  a,
-  result,
-  count,
-}: QuizComponentProps) {
+export default function QuizComponent() {
+  const [quizData, setQuizData] = useState<QuizData | null>(null);
+  const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState<number | null>(null);
   const [submitted, setSubmitted] = useState(false);
+
+  // 퀴즈 데이터 가져오기
+  const fetchQuizData = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch("/api/home");
+      if (!res.ok) throw new Error("퀴즈 데이터 가져오기 실패");
+      
+      const data = await res.json();
+      setQuizData(data);
+    } catch (error) {
+      console.error("퀴즈 데이터 로딩 오류:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // 컴포넌트 마운트 시 데이터 가져오기
+  useEffect(() => {
+    fetchQuizData();
+  }, []);
+
+  // 퀴즈 다시 풀기 (컴포넌트만 새로고침)
+  const resetQuiz = () => {
+    setSelected(null);
+    setSubmitted(false);
+    fetchQuizData();
+  };
 
   const handleSelect = (index: number) => {
     if (submitted) return;
@@ -32,20 +60,20 @@ export default function QuizComponent({
       // 문제를 풀기만 하면 무조건 true
       await sendSolveResult(true);
 
+      // 1초 후 새로운 퀴즈 데이터 가져오기 (페이지 새로고침 대신)
       setTimeout(() => {
-        window.location.reload();
+        resetQuiz();
       }, 1000);
     } catch (error) {
       setTimeout(() => {
-        window.location.reload();
+        resetQuiz();
       }, 1000);
     }
   };
 
-
   const sendSolveResult = async (solve: boolean) => {
     try {
-      const res = await fetch("/home", {
+      const res = await fetch("/api/home", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -67,20 +95,46 @@ export default function QuizComponent({
     }
   };
 
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center p-8">
+        <div className="text-gray-500">퀴즈 로딩 중...</div>
+      </div>
+    );
+  }
+
+  if (!quizData) {
+    return (
+      <div className="flex justify-center items-center p-8">
+        <div className="text-red-500">퀴즈를 불러올 수 없습니다.</div>
+      </div>
+    );
+  }
+
+  // 퀴즈를 모두 완료한 경우
+  if (quizData.quiz === null || quizData.quizCount >= 5) {
+    return (
+      <div className="flex flex-col items-center justify-center p-8 space-y-4">
+        <Image src={finishQuiz}  alt="퀴즈 완료" height={32} width={32} className="w-32 h-32"/>
+        <h3 className="text-xl font-bold text-center">오늘의 퀴즈를 모두 풀었습니다!</h3>
+      </div>
+    );
+  }
+
   return (
     <div>
       <h3 className="text-lg font-semibold mb-4">오늘의 경제 퀴즈</h3>
 
       <span className="font-[pretendard] font-semibold text-xl">
-        {quiz}
+        {quizData.quiz}
       </span>
 
-      {Array.isArray(a) ? (
+      {Array.isArray(quizData.a) ? (
         <div className="mt-3 flex flex-col gap-2">
-          {a.map((option, index) => {
+          {quizData.a.map((option, index) => {
             const getMultipleChoiceClassName = () => {
               if (submitted) {
-                if (index === result) return "bg-green-100 border-green-500";
+                if (index === quizData.result) return "bg-green-100 border-green-500";
                 if (index === selected) return "bg-red-100 border-red-500";
                 return "bg-brand-bg border-black/20";
               }
@@ -105,7 +159,7 @@ export default function QuizComponent({
           {["O", "X"].map((label, index) => {
             const getOXClassName = () => {
               if (submitted) {
-                if (index === result) return "bg-green-100 border-green-500";
+                if (index === quizData.result) return "bg-green-100 border-green-500";
                 if (index === selected) return "bg-red-100 border-red-500";
                 return "bg-brand-bg border-black/20";
               }
@@ -133,17 +187,17 @@ export default function QuizComponent({
         className={
           selected === null
             ? "w-full h-[2.875rem] mt-4 rounded-[27px] font-semibold transition-colors bg-gray-300 text-gray-500 cursor-not-allowed"
-            : submitted && selected !== result
+            : submitted && selected !== quizData.result
             ? "w-full h-[2.875rem] mt-4 rounded-[27px] font-semibold transition-colors bg-red-500 text-white hover:bg-red-600"
             : "w-full h-[2.875rem] mt-4 rounded-[27px] font-semibold transition-colors bg-blue-500 text-white hover:bg-blue-600"
         }
       >
-        {submitted && selected !== result ? "다시 풀기" : submitted ? "제출 완료" : "제출하기"}
+        {submitted && selected !== quizData.result ? "다시 풀기" : submitted ? "제출 완료" : "제출하기"}
       </button>
 
       <div className="w-full flex justify-center mt-4">
         <span className="text-[15px] font-semibold font-[pretendard]">
-          {count + 1}/5
+          {quizData.quizCount + 1}/5
         </span>
       </div>
     </div>
