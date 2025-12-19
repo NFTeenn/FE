@@ -8,7 +8,8 @@ import MiniDictionaryList from "@/widgets/home/dictionary";
 import QuizComponent from "@/widgets/home/quiz";
 import type { HomeData } from "@/types/home/";
 
-const titles = ["경제 뉴스 읽기", "경제 사전 학습", "일일 퀴즈 풀기"];
+
+const titles = ["경제 뉴스 읽기", "오늘의 단어 퀴즈 풀기", "돈돈 경제 뉴스 보기", "돈돈 경제 단어 검색하기"];
 
 export default function Main() {
   const [homeData, setHomeData] = useState<HomeData | null>(null);
@@ -93,12 +94,7 @@ export default function Main() {
 
           {/* 일일 경제 퀴즈 */}
           <div className="w-full h-auto bg-white rounded-[1.125rem] border border-black/20 flex flex-col p-6">
-            <QuizComponent
-              quiz={homeData.quiz ?? ""}
-              a={homeData.a ?? null}
-              result={homeData.result ?? 0}
-              count={homeData.quizCount ?? 0}
-            />
+            <QuizComponent />
           </div>
         </div>
       </div>
