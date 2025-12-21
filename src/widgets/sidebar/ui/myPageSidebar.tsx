@@ -5,6 +5,9 @@ import X from "@/shared/assets/x";
 import { useGetAchievement } from "@/widgets/grow/model/useGetAchievement";
 import { useGetCustomItem } from "@/widgets/grow/model/useGetCustomItem";
 import { useGetHallOfFame } from "@/widgets/grow/model/useGetHallOfFame";
+import Image from "next/image";
+import dondon_logo from "src/shared/assets/mypage_dondon.svg";
+import achievement_logo from "src/shared/assets/achievement_logo.svg";
 
 const Storage = () => {
   const { data: dondons } = useGetHallOfFame();
@@ -16,7 +19,9 @@ const Storage = () => {
     <>
       {dondons?.map((dondon) => (
         <article key={dondon.gen} className="flex flex-col w-fit">
-          <div className="bg-gray-500 min-w-max aspect-[16/10] rounded-2xl"></div>
+          <div className="bg-brand-b1 min-w-max aspect-[16/10] rounded-2xl">
+            <Image src={dondon_logo} alt="dondon" />
+          </div>
           <p>{dondon.gen}대 돈돈</p>
           <b>{dondon.nickname}</b>
           <small>
@@ -41,6 +46,7 @@ const Achievement = () => {
           key={achievement.code}
           className="flex flex-col items-center w-fit"
         >
+          <Image src={achievement_logo} alt="achievement" />
           <p>{achievement.code}</p>
           <b>{achievement.title}</b>
           <small>{achievement.description}</small>
