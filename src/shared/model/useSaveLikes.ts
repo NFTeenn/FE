@@ -7,15 +7,11 @@ export const useSaveLikes = () => {
 
 	return useMutation({
 		mutationFn: (data: LikesParams) => saveLikes(data),
-		onSuccess: () => {
-			queryClient.invalidateQueries({
-				queryKey: ["likes"],
+		onMutate: async (data: LikesParams) => {
+			await queryClient.cancelQueries({
+				queryKey: ["likes", "word", data.targetId],
 			});
-			queryClient.invalidateQueries({
-				queryKey: ["search", "word"],
-			});
-		},
-		onMutate: (data: LikesParams) => {
+
 			const previousData: Likes[] | undefined = queryClient.getQueryData([
 				"likes",
 				"word",
@@ -32,6 +28,25 @@ export const useSaveLikes = () => {
 			queryClient.setQueryData(["likes", "word", data.targetId], newData);
 
 			return { previousData };
+		},
+		onError: (err, data, context) => {
+			if (context?.previousData) {
+				queryClient.setQueryData(
+					["likes", "word", data.targetId],
+					context.previousData,
+				);
+			}
+		},
+		onSettled: (data, error, variables) => {
+			queryClient.invalidateQueries({
+				queryKey: ["likes", "word", variables.targetId],
+			});
+			queryClient.invalidateQueries({
+				queryKey: ["likes"],
+			});
+			queryClient.invalidateQueries({
+				queryKey: ["search", "word"],
+			});
 		},
 	});
 };

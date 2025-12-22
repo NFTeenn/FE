@@ -1,10 +1,16 @@
 "use client";
 
+import Image from "next/image";
+import achievement_logo from "src/shared/assets/achievement_logo.svg";
+import dondon_logo from "src/shared/assets/mypage_dondon.svg";
+import santas_hat from "src/shared/assets/santas_hat.svg";
 import type { MyPageSidebarOperation } from "@/app/(main-layout)/mypage/page";
 import X from "@/shared/assets/x";
+import type { CustomItem } from "@/widgets/grow/api/getCustomItem";
 import { useGetAchievement } from "@/widgets/grow/model/useGetAchievement";
 import { useGetCustomItem } from "@/widgets/grow/model/useGetCustomItem";
 import { useGetHallOfFame } from "@/widgets/grow/model/useGetHallOfFame";
+import { usePurchaseCustomItem } from "@/widgets/grow/model/usePurchaseCustomItem";
 
 const Storage = () => {
   const { data: dondons } = useGetHallOfFame();
@@ -16,7 +22,9 @@ const Storage = () => {
     <>
       {dondons?.map((dondon) => (
         <article key={dondon.gen} className="flex flex-col w-fit">
-          <div className="bg-gray-500 min-w-max aspect-[16/10] rounded-2xl"></div>
+          <div className="bg-brand-b3 aspect-[16/10] py-6 px-16 rounded-2xl">
+            <Image src={dondon_logo} alt="dondon" className="object-cover" />
+          </div>
           <p>{dondon.gen}대 돈돈</p>
           <b>{dondon.nickname}</b>
           <small>
@@ -41,12 +49,39 @@ const Achievement = () => {
           key={achievement.code}
           className="flex flex-col items-center w-fit"
         >
-          <p>{achievement.code}</p>
+          <Image src={achievement_logo} alt="achievement" />
           <b>{achievement.title}</b>
-          <small>{achievement.description}</small>
+          <small className="text-black/40">{achievement.description}</small>
         </article>
       ))}
     </>
+  );
+};
+
+const ShopItem = ({ customItem }: { customItem: CustomItem }) => {
+  const { mutate: buyCustomItem, isPending: isBuyingCustomItem } = usePurchaseCustomItem();
+
+  return (
+    <article className="flex flex-col items-center w-fit border border-black/20 rounded-2xl">
+      <div className="w-full px-8 py-4 flex flex-col items-center">
+        <div className="bg-gray-500 min-w-max aspect-[16/10] rounded-2xl"></div>
+        <Image src={santas_hat} alt="santa" />
+        <b>{customItem.name}</b>
+        <small className="text-black/40">{customItem.description}</small>
+        <b className="text-[#fb923c]">{customItem.price}C</b>
+      </div>
+      <button
+        className="w-full text-center cursor-pointer border-t border-black/20 p-2"
+        onClick={() => {
+          buyCustomItem({
+            accId: customItem.id,
+          });
+        }}
+        disabled={isBuyingCustomItem}
+      >
+        {isBuyingCustomItem ? "구매중..." : "구매하기"}
+      </button>
+    </article>
   );
 };
 
@@ -59,17 +94,7 @@ const Shop = () => {
   return (
     <>
       {customItems?.map((customItem) => (
-        <article
-          key={customItem.id}
-          className="flex flex-col items-center w-fit border border-black/20 rounded-2xl p-4"
-        >
-          <div className="bg-gray-500 min-w-max aspect-[16/10] rounded-2xl"></div>
-          <p>{customItem.id}</p>
-          <b>{customItem.name}</b>
-          <b>{customItem.price}C</b>
-          <small>{customItem.description}</small>
-          <p className="cursor-pointer">구매하기</p>
-        </article>
+        <ShopItem key={customItem.id} customItem={customItem} />
       ))}
     </>
   );
@@ -99,7 +124,7 @@ export default function MyPageSidebar({
           }}
         />
       </section>
-      <section className="grid grid-cols-2 gap-8">
+      <section className="grid grid-cols-2 gap-8 min-w-sm max-w-xl">
         {(() => {
           switch (operation) {
             case "STORAGE":

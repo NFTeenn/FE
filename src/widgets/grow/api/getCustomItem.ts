@@ -1,6 +1,6 @@
 import { instance } from "@/shared/api/instance";
 
-interface CustomItem {
+export interface CustomItem {
 	id: number;
 	name: string;
 	description: string;

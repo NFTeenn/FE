@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import bowl from "src/shared/assets/bowl.svg";
 import medal from "src/shared/assets/medal.svg";
 import dondon from "src/shared/assets/mypage_dondon.svg";
@@ -15,6 +15,7 @@ import { useGetLikes } from "@/shared/model/useGetLikes";
 import { useSaveLikes } from "@/shared/model/useSaveLikes";
 import { useGetMyInfo } from "@/widgets/grow/model/useGetMyInfo";
 import MyPageSidebar from "@/widgets/sidebar/ui/myPageSidebar";
+import { useEditDonDonNickName } from "@/widgets/grow/model/useEditDonDonNickName";
 
 export type MyPageSidebarOperation = "STORAGE" | "ACHIEVEMENT" | "SHOP";
 
@@ -122,9 +123,24 @@ const Modal = ({
 
 export default function MyPage() {
   const { data: myInfo } = useGetMyInfo();
-  const [sidebarOperation, setSidebarOperation] =
-    useState<MyPageSidebarOperation | null>(null);
+  const { mutate: editNickname } = useEditDonDonNickName();
+  const [sidebarOperation, setSidebarOperation] = useState<MyPageSidebarOperation | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [nickname, setNickname] = useState(myInfo?.latestDondon.nickname || "");
+  const [isInitialized, setIsInitialized] = useState(false);
+
+  useEffect(() => {
+    if (myInfo && !isInitialized) {
+      setNickname(myInfo.latestDondon.nickname);
+      setIsInitialized(true);
+    }
+  }, [myInfo, isInitialized]);
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" && !e.nativeEvent.isComposing && nickname.length >= 1) {
+      editNickname({ nickname: String(nickname) });
+    }
+  };
 
   return (
     <div className="w-full h-screen flex flex-col">
@@ -215,7 +231,14 @@ export default function MyPage() {
             <div className="flex flex-col min-w-120">
               <span className="text-gray-500 mb-2">성장도:</span>
               <div className="h-10 border border-gray-300 rounded-3xl px-4 flex items-center">
-                <div className="w-5 h-5 bg-brand-main rounded-full" />
+                <div
+                  className="h-5 flex items-center justify-center bg-brand-main rounded-full transition-all duration-300"
+                  style={{ width: `${myInfo?.latestDondon.level ?? 0}%` }}
+                >
+                  <div className="bg-brand text-xs font-medium text-white text-center p-0.5 leading-none rounded-full h-4 flex items-center justify-center">
+                    {myInfo?.latestDondon.level ?? 0}%
+                  </div>
+                </div>
               </div>
             </div>
           </article>
@@ -224,8 +247,15 @@ export default function MyPage() {
             <div className="w-[6rem] h-[1.5rem] bg-brand-main mr-2 rounded-t-md flex items-center justify-center">
               돈돈의 이름
             </div>
-            <div className="text-6xl font-bold py-6 px-8 bg-white border border-gray-300 rounded-xl flex items-center justify-center">
-              {myInfo?.latestDondon.nickname}
+            <div className="text-6xl font-bold py-6 px-8 bg-white border border-gray-300 rounded-xl inline-flex items-center justify-center">
+              <input
+                className="outline-none text-center"
+                size={nickname?.length || 1}
+                value={nickname}
+                maxLength={10}
+                onChange={(e) => { setNickname(e.target.value) }}
+                onKeyDown={(e) => handleKeyDown(e)}
+              />
             </div>
           </article>
         </section>
