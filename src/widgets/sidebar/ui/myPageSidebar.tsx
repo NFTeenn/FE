@@ -6,9 +6,11 @@ import dondon_logo from "src/shared/assets/mypage_dondon.svg";
 import santas_hat from "src/shared/assets/santas_hat.svg";
 import type { MyPageSidebarOperation } from "@/app/(main-layout)/mypage/page";
 import X from "@/shared/assets/x";
+import type { CustomItem } from "@/widgets/grow/api/getCustomItem";
 import { useGetAchievement } from "@/widgets/grow/model/useGetAchievement";
 import { useGetCustomItem } from "@/widgets/grow/model/useGetCustomItem";
 import { useGetHallOfFame } from "@/widgets/grow/model/useGetHallOfFame";
+import { usePurchaseCustomItem } from "@/widgets/grow/model/usePurchaseCustomItem";
 
 const Storage = () => {
   const { data: dondons } = useGetHallOfFame();
@@ -56,6 +58,33 @@ const Achievement = () => {
   );
 };
 
+const ShopItem = ({ customItem }: { customItem: CustomItem }) => {
+  const { mutate: buyCustomItem, isPending: isBuyingCustomItem } = usePurchaseCustomItem();
+
+  return (
+    <article className="flex flex-col items-center w-fit border border-black/20 rounded-2xl">
+      <div className="w-full px-8 py-4 flex flex-col items-center">
+        <div className="bg-gray-500 min-w-max aspect-[16/10] rounded-2xl"></div>
+        <Image src={santas_hat} alt="santa" />
+        <b>{customItem.name}</b>
+        <small className="text-black/40">{customItem.description}</small>
+        <b className="text-[#fb923c]">{customItem.price}C</b>
+      </div>
+      <button
+        className="w-full text-center cursor-pointer border-t border-black/20 p-2"
+        onClick={() => {
+          buyCustomItem({
+            accId: customItem.id,
+          });
+        }}
+        disabled={isBuyingCustomItem}
+      >
+        {isBuyingCustomItem ? "구매중..." : "구매하기"}
+      </button>
+    </article>
+  );
+};
+
 const Shop = () => {
   const { data: customItems } = useGetCustomItem();
 
@@ -65,21 +94,7 @@ const Shop = () => {
   return (
     <>
       {customItems?.map((customItem) => (
-        <article
-          key={customItem.id}
-          className="flex flex-col items-center w-fit border border-black/20 rounded-2xl"
-        >
-          <div className="w-full px-8 py-4 flex flex-col items-center">
-            <div className="bg-gray-500 min-w-max aspect-[16/10] rounded-2xl"></div>
-            <Image src={santas_hat} alt="santa" />
-            <b>{customItem.name}</b>
-            <small className="text-black/40">{customItem.description}</small>
-            <b className="text-[#fb923c]">{customItem.price}C</b>
-          </div>
-          <span className="w-full text-center cursor-pointer border-t border-black/20 p-2">
-            구매하기
-          </span>
-        </article>
+        <ShopItem key={customItem.id} customItem={customItem} />
       ))}
     </>
   );
