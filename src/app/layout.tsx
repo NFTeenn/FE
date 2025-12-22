@@ -1,26 +1,24 @@
-import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
-import './globals.css';
-
-const inter = Inter({ subsets: ['latin'] });
+import type { Metadata } from "next";
+import "./globals.css";
+import TanstackProvider from "./_provider/tanstackProvider";
 
 export const metadata: Metadata = {
-  title: 'NFTeen',
-  description: 'NFT Platform for Teens',
+	title: "NFTeen",
+	description: "NFT Platform for Teens",
 };
 
 export default function RootLayout({
-  children,
+	children,
 }: {
-  children: React.ReactNode;
+	children: React.ReactNode;
 }) {
-  return (
-    <html lang="ko">
-      <body className={inter.className}>
-        <main className="min-h-screen bg-gray-50">
-          {children}
-        </main>
-      </body>
-    </html>
-  );
+	return (
+		<html lang="ko">
+			<body>
+				<TanstackProvider>
+					<main className="min-h-screen bg-brand-bg">{children}</main>
+				</TanstackProvider>
+			</body>
+		</html>
+	);
 }

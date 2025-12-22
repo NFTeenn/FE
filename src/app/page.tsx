@@ -1,5 +1,5 @@
-import React from "react";
+import Signin from "@/widgets/signin/ui";
 
 export default function Home() {
-  return <div>Home</div>;
+	return <Signin />;
 }

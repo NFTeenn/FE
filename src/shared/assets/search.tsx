@@ -1,0 +1,25 @@
+export default function Search({
+  className = "",
+  onClick
+}: {
+  className?: string;
+  onClick?: () => void;
+}) {
+  return (
+    <svg
+      width="21"
+      height="21"
+      viewBox="0 0 21 21"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      onClick={onClick}
+    >
+      <title>Search</title>
+      <path d="M19.5 19.5L15.15 15.15M17.5 9.5C17.5 13.9183 13.9183 17.5 9.5 17.5C5.08172 17.5 1.5 13.9183 1.5 9.5C1.5 5.08172 5.08172 1.5 9.5 1.5C13.9183 1.5 17.5 5.08172 17.5 9.5Z" stroke="#94A3B8" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  )
+}
+
+
+
