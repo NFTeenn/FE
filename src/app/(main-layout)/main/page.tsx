@@ -10,7 +10,7 @@ import QuizComponent from "@/widgets/home/quiz";
 import type { HomeData } from "@/types/home/";
 
 
-const titles = ["경제 뉴스 읽기", "오늘의 단어 퀴즈 풀기", "돈돈 경제 뉴스 보기", "돈돈 경제 단어 검색하기"];
+const titles = ["돈돈 출석체크 하기", "오늘의 단어 퀴즈 풀기", "돈돈 경제 뉴스 보기", "돈돈 경제 단어 검색하기"];
 
 export default function Main() {
   const [homeData, setHomeData] = useState<HomeData | null>(null);
