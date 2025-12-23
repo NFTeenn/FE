@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 interface NewsItem {
   title: string;
@@ -10,6 +11,7 @@ interface NewsItem {
 }
 
 export default function MainNewsList() {
+  const router = useRouter();
   const [news, setNews] = useState<NewsItem[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -24,25 +26,7 @@ export default function MainNewsList() {
       .replace(/&gt;/g, ">");
   };
 
-  // 날짜 포맷 함수
-  const formatDate = (dateString: string): string => {
-    const date = new Date(dateString);
-    const now = new Date();
-    const diffMs = now.getTime() - date.getTime();
-    const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
-    const diffMinutes = Math.floor(diffMs / (1000 * 60));
 
-    if (diffMinutes < 60) {
-      return `${diffMinutes}분 전`;
-    } else if (diffHours < 24) {
-      return `${diffHours}시간 전`;
-    } else {
-      return date.toLocaleDateString("ko-KR", {
-        month: "long",
-        day: "numeric",
-      });
-    }
-  };
 
   // 뉴스 데이터 가져오기
   const fetchNews = async (): Promise<void> => {
@@ -80,6 +64,29 @@ export default function MainNewsList() {
     fetchNews();
   }, []);
 
+  const handleNewsClick = async (newsUrl: string) => {
+    try {
+      // /api/news/redirect로 POST 요청
+      const response = await fetch('/news', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          url: newsUrl
+        }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        // 응답에서 받은 URL로 이동 (또는 /news 페이지로)
+        router.push(`/news?articleUrl=${encodeURIComponent(newsUrl)}`);
+      }
+    } catch (error) {
+      console.error('뉴스 리다이렉트 오류:', error);
+    }
+  };
+
   if (loading) {
     return (
       <div className="grid grid-cols-3 gap-4 mt-4">
@@ -104,28 +111,23 @@ export default function MainNewsList() {
   return (
     <div className="grid grid-cols-3 gap-4 mt-4">
       {news.map((item, index) => (
-        <a
+        <div
           key={index}
-          href={item.link}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="h-[140px] border border-black/10 rounded-lg p-4 hover:border-black/30 hover:shadow-md transition-all cursor-pointer flex flex-col justify-between"
+          onClick={() => handleNewsClick(item.link)}
+          className="h-[140px] border border-black/10 rounded-lg p-4 hover:border-black/30 hover:shadow-md transition-all cursor-pointer"
         >
-          <div>
-            <h3 className="font-semibold text-sm line-clamp-2 mb-2">
-              {item.title}
-            </h3>
-            <p className="text-xs text-gray-600 line-clamp-2">
-              {item.description}
-            </p>
-          </div>
-          <time className="text-xs text-gray-400 mt-2">
-            {formatDate(item.pubDate)}
-          </time>
-        </a>
+          <h3 className="font-semibold text-sm line-clamp-2 mb-2">
+            {item.title}
+          </h3>
+          <p className="text-xs text-gray-600 line-clamp-3">
+            {item.description}
+          </p>
+        </div>
       ))}
       <div></div>
-      <div className="w-full flex justify-center cursor-pointer"><a href="/news">더보기</a></div>
+      <div className="w-full flex justify-center cursor-pointer">
+        <a href="/news">더보기</a>
+      </div>
     </div>
   );
 }
