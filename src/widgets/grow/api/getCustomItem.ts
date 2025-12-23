@@ -5,6 +5,7 @@ export interface CustomItem {
 	name: string;
 	description: string;
 	price: number;
+	owned: boolean;
 }
 
 export const getCustomItem = async (): Promise<CustomItem[]> => {

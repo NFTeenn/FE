@@ -71,15 +71,15 @@ const ShopItem = ({ customItem }: { customItem: CustomItem }) => {
         <b className="text-[#fb923c]">{customItem.price}C</b>
       </div>
       <button
-        className="w-full text-center cursor-pointer border-t border-black/20 p-2"
+        className={`w-full text-center border-t border-black/20 p-2 ${customItem.owned ? "text-black/40 cursor-not-allowed" : "text-black cursor-pointer"}`}
         onClick={() => {
           buyCustomItem({
             accId: customItem.id,
           });
         }}
-        disabled={isBuyingCustomItem}
+        disabled={customItem.owned || isBuyingCustomItem}
       >
-        {isBuyingCustomItem ? "구매중..." : "구매하기"}
+        {customItem.owned ? "보유 중" : isBuyingCustomItem ? "구매중..." : "구매하기"}
       </button>
     </article>
   );
