@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useRef } from "react";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 import MissionListComponent from "@/widgets/home/mission";
 import ProcessComponent from "@/widgets/home/process";
 import MiniDictionaryList from "@/widgets/home/dictionary";
@@ -10,18 +11,35 @@ import QuizComponent from "@/widgets/home/quiz";
 import { FiMessageSquare, FiX } from "react-icons/fi";
 import type { HomeData } from "@/types/home";
 
-const titles = ["돈돈 출석체크 하기", "오늘의 단어 퀴즈 풀기", "돈돈 경제 뉴스 보기", "돈돈 경제 단어 검색하기"];
+const titles = ["돈돈 출석체크 하기", "오늘의 단어 퀴즈 풀기", "돈돈 경제 단어 검색하기", "돈돈 경제 뉴스 보기"];
 
 export default function Main() {
+  const router = useRouter()
+
   const [homeData, setHomeData] = useState<HomeData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [searchWord, setSearchWord] = useState('')
 
   const [chatOpen, setChatOpen] = useState(false);
   const [messages, setMessages] = useState<{ role: string; content: string }[]>([]);
   const [input, setInput] = useState("");
   const [chatLoading, setChatLoading] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  // 검색 기능 함수들
+  const handleSearch = () => {
+    if (searchWord.trim()) {
+      router.push(`/dictionary?word=${encodeURIComponent(searchWord)}`)
+    }
+  }
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.nativeEvent.isComposing) return;
+    if (e.key === "Enter") {
+      handleSearch()
+    }
+  }
 
   useEffect(() => {
     const fetchHomeData = async () => {
@@ -96,6 +114,9 @@ export default function Main() {
             <input
               className="w-full h-[3rem] rounded-[18px] border border-black/20 pl-4 mt-4"
               placeholder="경제 단어 검색하기"
+              value={searchWord}
+              onChange={(e) => setSearchWord(e.target.value)}
+              onKeyDown={handleKeyDown}
             />
             <MiniDictionaryList words={homeData.words ?? []} />
           </div>
