@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 
 interface NewsItem {
   title: string;
@@ -11,11 +10,9 @@ interface NewsItem {
 }
 
 export default function MainNewsList() {
-  const router = useRouter();
   const [news, setNews] = useState<NewsItem[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // HTML 태그 및 엔티티 제거 함수
   const cleanText = (text: string): string => {
     return text
       .replace(/<[^>]*>/g, "")
@@ -26,22 +23,13 @@ export default function MainNewsList() {
       .replace(/&gt;/g, ">");
   };
 
-
-
-  // 뉴스 데이터 가져오기
   const fetchNews = async (): Promise<void> => {
     setLoading(true);
-
     try {
       const response = await fetch(`/api/news?query=경제`);
-
-      if (!response.ok) {
-        throw new Error("뉴스를 불러오는데 실패했습니다");
-      }
-
+      if (!response.ok) throw new Error("뉴스를 불러오는데 실패했습니다");
+      
       const data = await response.json();
-
-      // 데이터 정제 및 6개만 가져오기
       const cleanedNews: NewsItem[] = (data.items || [])
         .slice(0, 6)
         .map((item: any) => ({
@@ -49,11 +37,9 @@ export default function MainNewsList() {
           title: cleanText(item.title),
           description: cleanText(item.description),
         }));
-
       setNews(cleanedNews);
     } catch (err) {
       console.error("뉴스 로딩 오류:", err);
-      // 에러 발생 시 빈 배열
       setNews([]);
     } finally {
       setLoading(false);
@@ -66,35 +52,48 @@ export default function MainNewsList() {
 
   const handleNewsClick = async (newsUrl: string) => {
     try {
-      // /api/news/redirect로 POST 요청
-      const response = await fetch('/news', {
+      console.log('=== 뉴스 클릭 ===');
+      console.log('뉴스 URL:', newsUrl);
+      
+      // 저장된 토큰 가져오기
+      const token = localStorage.getItem('idToken') || sessionStorage.getItem('idToken');
+      
+      if (!token) {
+        console.warn('토큰이 없습니다 - 뉴스만 열기');
+        window.open(newsUrl, '_blank');
+        return;
+      }
+      
+      // 백엔드 API 호출
+      const response = await fetch('/api/news', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
         },
-        body: JSON.stringify({
-          url: newsUrl
-        }),
+        body: JSON.stringify({}),
+        credentials: 'include',
       });
 
-      if (response.ok) {
-        const data = await response.json();
-        // 응답에서 받은 URL로 이동 (또는 /news 페이지로)
-        router.push(`/news?articleUrl=${encodeURIComponent(newsUrl)}`);
-      }
+      console.log('Response Status:', response.status);
+      const data = await response.json();
+      console.log('Response Data:', data);
+
+      // 성공 여부와 관계없이 뉴스 열기
+      window.open(newsUrl, '_blank');
+      
     } catch (error) {
-      console.error('뉴스 리다이렉트 오류:', error);
+      console.error('뉴스 처리 오류:', error);
+      // 에러 발생해도 뉴스는 열기
+      window.open(newsUrl, '_blank');
     }
   };
 
   if (loading) {
     return (
       <div className="grid grid-cols-3 gap-4 mt-4">
-        {[...Array(6)].map((_, index) => (
-          <div
-            key={index}
-            className="h-[140px] bg-gray-100 rounded-lg animate-pulse"
-          />
+        {[...Array(6)].map((_, i) => (
+          <div key={i} className="h-[140px] bg-gray-100 rounded-lg animate-pulse" />
         ))}
       </div>
     );
@@ -110,9 +109,9 @@ export default function MainNewsList() {
 
   return (
     <div className="grid grid-cols-3 gap-4 mt-4">
-      {news.map((item, index) => (
+      {news.map((item, i) => (
         <div
-          key={index}
+          key={i}
           onClick={() => handleNewsClick(item.link)}
           className="h-[140px] border border-black/10 rounded-lg p-4 hover:border-black/30 hover:shadow-md transition-all cursor-pointer"
         >
