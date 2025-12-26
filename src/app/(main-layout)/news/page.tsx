@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 
-import { MOCK_NEWS_DATA } from "@/data/mocks/news";
+import { MOCK_NEWS_DATA } from "@/entities/news/mock/news";
 
 interface NewsItem {
 	title: string;

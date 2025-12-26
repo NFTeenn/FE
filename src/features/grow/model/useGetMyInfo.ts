@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { MOCK_USER_DATA } from "@/data/mocks/user";
+import { MOCK_USER_DATA } from "@/entities/user/mock/user";
 import { getMyInfo } from "../api/getMyInfo";
 
 export const useGetMyInfo = () => {

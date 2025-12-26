@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { useSaveLikes } from "@/features/likes/model/useSaveLikes";
 import Search from "@/shared/assets/search";
 import Star from "@/shared/assets/star";
-import useSearchWord from "../model/useSearchWord";
+import useSearchWord from "../../../entities/word/model/useSearchWord";
 
 export default function WordSearchResult() {
 	const router = useRouter();

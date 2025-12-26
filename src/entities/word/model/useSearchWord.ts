@@ -1,6 +1,6 @@
 import { useQueries, useQuery } from "@tanstack/react-query";
-import { MOCK_DICTIONARY_DATA } from "@/data/mocks/dictionary";
-import { MOCK_LIKES_DATA } from "@/data/mocks/user";
+import { MOCK_DICTIONARY_DATA } from "@/entities/mocks/model/dictionary";
+import { MOCK_LIKES_DATA } from "@/entities/user/mock/user";
 import { getLikes } from "@/features/likes/api/getLikes";
 import { searchWord } from "../api/searchWord";
 

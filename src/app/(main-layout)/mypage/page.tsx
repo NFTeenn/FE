@@ -8,13 +8,13 @@ import medal from "src/shared/assets/medal.svg";
 import dondon from "src/shared/assets/mypage_dondon.svg";
 import shop from "src/shared/assets/shop.svg";
 import storage from "src/shared/assets/storage.svg";
+import { useEditDonDonNickName } from "@/entities/dondon/model/useEditDonDonNickName";
+import { useGetMyInfo } from "@/features/grow/model/useGetMyInfo";
 import { useGetLikes } from "@/features/likes/model/useGetLikes";
 import { useSaveLikes } from "@/features/likes/model/useSaveLikes";
 import Arrow from "@/shared/assets/arrow";
 import Star from "@/shared/assets/star";
 import X from "@/shared/assets/x";
-import { useEditDonDonNickName } from "@/widgets/grow/model/useEditDonDonNickName";
-import { useGetMyInfo } from "@/widgets/grow/model/useGetMyInfo";
 import MyPageSidebar from "@/widgets/sidebar/ui/myPageSidebar";
 
 export type MyPageSidebarOperation = "STORAGE" | "ACHIEVEMENT" | "SHOP";

@@ -5,14 +5,14 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { FiMessageSquare } from "react-icons/fi";
-import { MOCK_HOME_DATA } from "@/data/mocks/home";
-import type { HomeData } from "@/types/home";
-import ChatBotModal from "@/widgets/chatbot/";
-import MiniDictionaryList from "@/widgets/home/dictionary";
-import MissionListComponent from "@/widgets/home/mission";
-import MainNewsList from "@/widgets/home/news";
-import ProcessComponent from "@/widgets/home/process";
-import QuizComponent from "@/widgets/home/quiz";
+import type { HomeData } from "@/entities/mocks/model";
+import { MOCK_HOME_DATA } from "@/entities/mocks/model/home";
+import ChatBotModal from "@/widgets/chatbot/ui";
+import MiniDictionaryList from "@/widgets/dictionary/ui";
+import MissionListComponent from "@/widgets/mission/ui";
+import MainNewsList from "@/widgets/news/ui";
+import ProcessComponent from "@/widgets/process/ui";
+import QuizComponent from "@/widgets/quiz/ui";
 
 const titles = [
 	"돈돈 출석체크 하기",
@@ -125,7 +125,7 @@ export default function Main() {
 						<QuizComponent />
 					</div>
 
-					<div className="flex justify-end mt-4">
+					<div className="fixed bottom-4 right-4 flex justify-end cursor-pointer">
 						<button
 							className="w-12 h-12 rounded-full bg-blue-500 text-white flex items-center justify-center shadow-lg hover:bg-blue-600 transition"
 							onClick={() => setChatOpen(true)}

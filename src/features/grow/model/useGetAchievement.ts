@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getAchievement } from "../api/getAchievement";
+import { getAchievement } from "../../../features/grow/api/getAchievement";
 
 export const useGetAchievement = () => {
 	return useQuery({

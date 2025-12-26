@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { MOCK_LIKES_DATA } from "@/data/mocks/user";
+import { MOCK_LIKES_DATA } from "@/entities/user/mock/user";
 import { type GetLikesParams, getLikes } from "../api/getLikes";
 
 export const useGetLikes = ({ targetId }: GetLikesParams) => {

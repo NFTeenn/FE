@@ -2,8 +2,8 @@
 
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
-import TodayWord from "@/widgets/word/ui/todayWord";
-import WordSearchResult from "@/widgets/word/ui/wordSearchResult";
+import TodayWord from "@/widgets/dictionary/ui/todayWord";
+import WordSearchResult from "@/widgets/dictionary/ui/wordSearchResult";
 
 function DictionaryContent() {
 	const searchParams = useSearchParams();
