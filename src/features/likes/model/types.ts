@@ -1,4 +1,3 @@
-
 export interface LikesParams {
 	targetId: number;
 }
@@ -9,4 +8,3 @@ export interface Likes {
 	description: string;
 	liked: boolean;
 }
-

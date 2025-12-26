@@ -1,5 +1,5 @@
-import type { Likes, LikesParams } from "../model/likes";
-import { instance } from "./instance";
+import { instance } from "@/shared/api/instance";
+import type { Likes, LikesParams } from "../model/types";
 
 type ChangeType<T> = {
 	[K in keyof T]?: T[K];
@@ -15,4 +15,3 @@ export const getLikes = async ({
 	});
 	return response.data;
 };
-

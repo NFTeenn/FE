@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { saveLikes } from "../api/saveLikes";
-import type { Likes, LikesParams } from "./likes";
+import type { Likes, LikesParams } from "./types";
 
 export const useSaveLikes = () => {
 	const queryClient = useQueryClient();
@@ -29,15 +29,15 @@ export const useSaveLikes = () => {
 
 			return { previousData };
 		},
-		onError: (err, data, context) => {
+		onError: (_err, variables, context) => {
 			if (context?.previousData) {
 				queryClient.setQueryData(
-					["likes", "word", data.targetId],
+					["likes", "word", variables.targetId],
 					context.previousData,
 				);
 			}
 		},
-		onSettled: (data, error, variables) => {
+		onSettled: (_data, _error, variables) => {
 			queryClient.invalidateQueries({
 				queryKey: ["likes", "word", variables.targetId],
 			});
