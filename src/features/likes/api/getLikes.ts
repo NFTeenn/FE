@@ -1,5 +1,5 @@
 import { instance } from "@/shared/api/instance";
-import type { Likes, LikesParams } from "../model/types";
+import type { Likes, LikesParams } from "../model/like";
 
 type ChangeType<T> = {
 	[K in keyof T]?: T[K];

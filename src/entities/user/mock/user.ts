@@ -1,19 +1,27 @@
-export const MOCK_USER_DATA = {
+import type { Word } from "@/entities/word/model/word";
+import type { MyInfo } from "../model/user";
+
+export const MOCK_USER_DATA: MyInfo = {
 	myInfo: {
 		username: "김돈돈",
 		days: 42,
 		quizStack: 15,
 		newsStack: 28,
 		coin: 3500,
+		recentGen: 3,
 	},
 	latestDondon: {
 		nickname: "부자되고싶돈",
 		gen: 3,
 		level: 75,
+		accId: 1,
+		enterDate: "2025-12-27",
+		graduationDate: "2025-12-27",
+		style: 1,
 	},
 };
 
-export const MOCK_LIKES_DATA = [
+export const MOCK_LIKES_DATA: Word[] = [
 	{
 		targetId: 101,
 		word: "GDP",

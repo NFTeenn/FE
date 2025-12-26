@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { saveLikes } from "../api/saveLikes";
-import type { Likes, LikesParams } from "./types";
+import type { Likes, LikesParams } from "./like";
 
 export const useSaveLikes = () => {
 	const queryClient = useQueryClient();

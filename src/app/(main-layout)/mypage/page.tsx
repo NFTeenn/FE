@@ -9,7 +9,7 @@ import dondon from "src/shared/assets/mypage_dondon.svg";
 import shop from "src/shared/assets/shop.svg";
 import storage from "src/shared/assets/storage.svg";
 import { useEditDonDonNickName } from "@/entities/dondon/model/useEditDonDonNickName";
-import { useGetMyInfo } from "@/features/grow/model/useGetMyInfo";
+import { useGetMyInfo } from "@/entities/user/model/useGetMyInfo";
 import { useGetLikes } from "@/features/likes/model/useGetLikes";
 import { useSaveLikes } from "@/features/likes/model/useSaveLikes";
 import Arrow from "@/shared/assets/arrow";

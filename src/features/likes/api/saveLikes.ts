@@ -1,5 +1,5 @@
 import { instance } from "@/shared/api/instance";
-import type { LikesParams } from "../model/types";
+import type { LikesParams } from "../model/like";
 
 interface SaveLikesResponse {
 	liked: boolean;

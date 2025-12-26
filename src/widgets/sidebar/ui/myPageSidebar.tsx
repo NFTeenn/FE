@@ -5,11 +5,11 @@ import achievement_logo from "src/shared/assets/achievement_logo.svg";
 import dondon_logo from "src/shared/assets/mypage_dondon.svg";
 import santas_hat from "src/shared/assets/santas_hat.svg";
 import type { MyPageSidebarOperation } from "@/app/(main-layout)/mypage/page";
-import { useGetAchievement } from "@/features/grow/model/useGetAchievement";
-import { useGetHallOfFame } from "@/features/grow/model/useGetHallOfFame";
-import type { CustomItem } from "@/features/shop/api/getCustomItem";
-import { useGetCustomItem } from "@/features/shop/model/useGetCustomItem";
-import { usePurchaseCustomItem } from "@/features/shop/model/usePurchaseCustomItem";
+import { useGetHallOfFame } from "@/entities/dondon/model/useGetHallOfFame";
+import { useGetAchievement } from "@/entities/user/model/useGetAchievement";
+import type { CustomItem } from "@/features/shop/api/getAccessories";
+import { usePurchaseCustomItem } from "@/features/shop/model/useBuyAccessory";
+import { useGetCustomItem } from "@/features/shop/model/useGetAccessories";
 import X from "@/shared/assets/x";
 
 const Storage = () => {
