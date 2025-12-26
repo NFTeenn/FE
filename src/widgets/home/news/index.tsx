@@ -40,12 +40,16 @@ export default function MainNewsList() {
 
 	const handleNewsClick = async (newsUrl: string) => {
 		try {
-			console.log("=== 뉴스 클릭 ===");
-			console.log("뉴스 URL:", newsUrl);
+			// 쿠키에서 토큰 가져오기
+			const getTokenFromCookie = () => {
+				const cookies = document.cookie.split(";");
+				const tokenCookie = cookies.find((c) =>
+					c.trim().startsWith("idToken="),
+				);
+				return tokenCookie ? tokenCookie.split("=")[1] : null;
+			};
 
-			// 저장된 토큰 가져오기
-			const token =
-				localStorage.getItem("idToken") || sessionStorage.getItem("idToken");
+			const token = getTokenFromCookie();
 
 			if (!token) {
 				console.warn("토큰이 없습니다 - 뉴스만 열기");
@@ -53,26 +57,28 @@ export default function MainNewsList() {
 				return;
 			}
 
-			// 백엔드 API 호출
-			const response = await axios.post(
-				"/api/news",
-				{},
-				{
-					headers: {
-						Authorization: `Bearer ${token}`,
-					},
-					withCredentials: true,
+			// 백엔드 API 호출 (body 없이 header만)
+			const response = await fetch("/api/news", {
+				method: "POST",
+				headers: {
+					Authorization: `Bearer ${token}`,
 				},
-			);
+				credentials: "include",
+			});
 
 			console.log("Response Status:", response.status);
-			console.log("Response Data:", response.data);
 
-			// 성공 여부와 관계없이 뉴스 열기
+			// text/plain으로 응답이 오므로 text()로 파싱
+			const data = await response.text();
+			console.log("Response Body:", data);
+
+			if (response.ok && data === "1") {
+				console.log("미션 완료 - 뉴스 열기");
+			}
+
 			window.open(newsUrl, "_blank");
 		} catch (error) {
 			console.error("뉴스 처리 오류:", error);
-			// 에러 발생해도 뉴스는 열기
 			window.open(newsUrl, "_blank");
 		}
 	};
