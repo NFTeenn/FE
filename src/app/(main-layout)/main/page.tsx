@@ -5,6 +5,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { FiMessageSquare } from "react-icons/fi";
+import { MOCK_HOME_DATA } from "@/data/mocks/home";
 import type { HomeData } from "@/types/home";
 import ChatBotModal from "@/widgets/chatbot/";
 import MiniDictionaryList from "@/widgets/home/dictionary";
@@ -32,8 +33,16 @@ export default function Main() {
 	} = useQuery<HomeData>({
 		queryKey: ["homeData"],
 		queryFn: async () => {
-			const response = await axios.get("/api/home");
-			return response.data;
+			try {
+				const response = await axios.get("/api/home");
+				return response.data;
+			} catch (error) {
+				console.error(
+					"Home API fetch failed, falling back to mock data:",
+					error,
+				);
+				return MOCK_HOME_DATA as unknown as HomeData;
+			}
 		},
 	});
 
