@@ -1,13 +1,22 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 import TodayWord from "@/widgets/word/ui/todayWord";
 import WordSearchResult from "@/widgets/word/ui/wordSearchResult";
 
-export default function Dictionary() {
-    const searchParams = useSearchParams();
-    const word = searchParams.get("word");
-    const isWord = word !== null && word.length > 0;
+function DictionaryContent() {
+	const searchParams = useSearchParams();
+	const word = searchParams.get("word");
+	const isWord = word !== null && word.length > 0;
 
-    return isWord ? <WordSearchResult /> : <TodayWord />;
+	return isWord ? <WordSearchResult /> : <TodayWord />;
+}
+
+export default function Dictionary() {
+	return (
+		<Suspense fallback={<div>Loading...</div>}>
+			<DictionaryContent />
+		</Suspense>
+	);
 }

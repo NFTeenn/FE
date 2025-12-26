@@ -1,5 +1,5 @@
 import { useQueries, useQuery } from "@tanstack/react-query";
-import { getLikes } from "@/shared/api/getLikes";
+import { getLikes } from "@/features/likes/api/getLikes";
 import { searchWord } from "../api/searchWord";
 
 export default function useSearchWord(search: string) {

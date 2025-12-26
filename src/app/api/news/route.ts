@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 
 // 뉴스 목록 조회 (GET)
 export async function GET(request: NextRequest) {
