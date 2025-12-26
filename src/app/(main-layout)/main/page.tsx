@@ -20,8 +20,6 @@ const titles = [
 	"돈돈 경제 뉴스 보기",
 ];
 
-/* ... inside Main component ... */
-
 export default function Main() {
 	const router = useRouter();
 
@@ -29,7 +27,7 @@ export default function Main() {
 	const [chatOpen, setChatOpen] = useState(false);
 	const {
 		data: homeData,
-		isLoading: loading,
+		isLoading,
 		isError,
 	} = useQuery<HomeData>({
 		queryKey: ["homeData"],
@@ -39,7 +37,6 @@ export default function Main() {
 		},
 	});
 
-	// 검색 기능 함수들
 	const handleSearch = () => {
 		if (searchWord.trim()) {
 			router.push(`/dictionary?word=${encodeURIComponent(searchWord)}`);
@@ -53,9 +50,9 @@ export default function Main() {
 		}
 	};
 
-	if (loading) {
+	if (isLoading) {
 		return (
-			<div className="w-screen min-h-screen bg-gray-50 flex items-center justify-center">
+			<div className="min-h-screen bg-gray-50 flex items-center justify-center">
 				<div className="text-lg">로딩 중...</div>
 			</div>
 		);
@@ -63,7 +60,7 @@ export default function Main() {
 
 	if (isError || !homeData) {
 		return (
-			<div className="w-screen min-h-screen bg-gray-50 flex items-center justify-center">
+			<div className="min-h-screen bg-gray-50 flex items-center justify-center">
 				<div className="text-lg text-red-500">데이터를 불러올 수 없습니다.</div>
 			</div>
 		);
@@ -71,8 +68,8 @@ export default function Main() {
 
 	return (
 		<>
-			<div className="w-screen min-h-screen bg-gray-50 flex flex-row gap-[5vw] py-[4vh]">
-				<div className="w-[920px] h-auto flex flex-col ml-20 gap-4">
+			<div className="min-h-screen bg-gray-50 grid grid-cols-6  gap-[5vw] py-[4vh] px-20">
+				<div className="h-auto flex flex-col gap-4 col-span-4">
 					<div className="w-full h-[250px] rounded-2xl border border-black/20 bg-brand-b3">
 						<ProcessComponent
 							sequenceDays={homeData.day}
@@ -100,11 +97,11 @@ export default function Main() {
 					</div>
 				</div>
 
-				<div className="w-[360px] h-auto gap-10 flex flex-col">
-					<div className="w-full h-[20rem] bg-white rounded-[1.125rem] border border-black/20 flex flex-col pt-[1.75rem] pl-[2rem]">
+				<div className="w-auto h-auto gap-10 flex flex-col col-span-2">
+					<div className="w-full min-h-[20rem] bg-white rounded-[1.125rem] border border-black/20 flex flex-col py-7 px-8">
 						<span className="text-[1rem] font-semibold">Daily 미션</span>
-						<hr className="w-[calc(100%+2rem)] border-t border-black/20 ml-[-2rem] mt-4" />
-						<div className="flex flex-col w-[80%] items-center mt-4">
+						<hr className="border-t border-black/20 mt-4" />
+						<div className="flex flex-col items-center mt-4">
 							{titles.map((title, index) => (
 								<MissionListComponent
 									key={title}
