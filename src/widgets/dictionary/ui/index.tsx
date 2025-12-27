@@ -12,14 +12,14 @@ export default function MiniDictionaryList({ words }: { words: string[] }) {
     return (
         <div className="w-full mt-4">
             <div className="grid grid-cols-2 gap-4">
-                {words.map((word, index) => (
-                    <div 
-                        key={index}
+                {words.map((word) => (
+                    <button
+                        key={word}
                         onClick={() => handleWordClick(word)}
                         className="bg-gray-50 rounded-lg p-4 border border-gray-200 hover:bg-gray-100 transition-colors cursor-pointer"
                     >
                         <p className="text-center font-medium">{word}</p>
-                    </div>
+                    </button>
                 ))}
             </div>
         </div>
