@@ -1,4 +1,4 @@
-import type { Word } from "@/entities/word/model/word";
+import type { Likes } from "@/features/likes/model/like";
 import type { MyInfo } from "../model/user";
 
 export const MOCK_USER_DATA: MyInfo = {
@@ -21,9 +21,9 @@ export const MOCK_USER_DATA: MyInfo = {
 	},
 };
 
-export const MOCK_LIKES_DATA: Word[] = [
+export const MOCK_LIKES_DATA: Likes[] = [
 	{
-		targetId: 101,
+		targetId: 1,
 		word: "GDP",
 		description:
 			"국내총생산. 일정 기간 동안 한 국가 내에서 생산된 모든 재화와 서비스의 시장 가치 합계입니다.",
