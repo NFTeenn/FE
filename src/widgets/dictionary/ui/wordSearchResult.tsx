@@ -37,7 +37,7 @@ export default function WordSearchResult() {
 	}, [initialWord]);
 
 	return (
-		<div className="flex flex-col justify-center items-center w-full h-screen px-40">
+		<div className="flex flex-col justify-center items-center w-full h-full p-6 mx-auto">
 			<header className="w-full flex items-center gap-6">
 				<h1 className="text-[2rem] font-semibold">돈돈 경제사전</h1>
 				<div className="flex justify-center items-center relative overflow-hidden flex-1 px-5 py-4 rounded-2xl bg-white border border-black/20">
@@ -52,9 +52,9 @@ export default function WordSearchResult() {
 					<Search className="cursor-pointer" onClick={handleSearch} />
 				</div>
 			</header>
-			<div className="flex flex-col justify-center items-start w-full mt-4 bg-white py-18 px-9 rounded-lg">
+			<div className="flex flex-col justify-center items-start w-full h-full mt-4 bg-white py-9 px-9 rounded-lg">
 				<p className="text-200 font-semibold">검색 결과 {words?.length}</p>
-				<div className="flex flex-col gap-2 w-full ">
+				<div className="flex flex-col gap-2 w-full h-full overflow-y-scroll">
 					{words?.map((word) => (
 						<article
 							key={word.num}
