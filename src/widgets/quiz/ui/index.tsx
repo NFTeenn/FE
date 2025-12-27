@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useGetQuizs } from "@/entities/quiz/model/useGetQuizs";
 import { useSolveQuiz } from "@/entities/quiz/model/useSolveQuiz";
 import finishQuiz from "@/shared/assets/finishQuiz.svg";
+import Loading from "@/shared/ui/loading";
 
 export default function QuizComponent() {
 	const [selected, setSelected] = useState<number | null>(null);
@@ -33,11 +34,7 @@ export default function QuizComponent() {
 	};
 
 	if (isLoading) {
-		return (
-			<div className="flex justify-center items-center p-8">
-				<div className="text-gray-500">퀴즈 로딩 중...</div>
-			</div>
-		);
+		return <Loading />;
 	}
 
 	if (isError || !isSuccess) {

@@ -5,6 +5,7 @@ import { useState } from "react";
 import { FiMessageSquare } from "react-icons/fi";
 import { useGetHomeData } from "@/entities/home/model/useGetHomeData";
 import Search from "@/shared/assets/search";
+import Loading from "@/shared/ui/loading";
 import ChatBotModal from "@/widgets/chatbot/ui";
 import MiniDictionaryList from "@/widgets/dictionary/ui";
 import MissionListComponent from "@/widgets/mission/ui";
@@ -40,11 +41,7 @@ export default function Main() {
 	};
 
 	if (isLoading) {
-		return (
-			<div className="min-h-screen bg-gray-50 flex items-center justify-center">
-				<div className="text-lg">로딩 중...</div>
-			</div>
-		);
+		return <Loading />;
 	}
 
 	if (isError || !isSuccess) {
