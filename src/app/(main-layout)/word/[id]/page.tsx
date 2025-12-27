@@ -1,8 +1,8 @@
 "use client";
 
+import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import axios from "axios";
 import { useGetWordWithLike } from "@/entities/word/model/useGetWordWithLike";
 import { useSaveLikes } from "@/features/likes/model/useSaveLikes";
 import Search from "@/shared/assets/search";
@@ -59,9 +59,14 @@ export default function WordPage({ params }: { params: { id: string } }) {
 	if (!word) return <div>데이터를 찾을 수 없습니다.</div>;
 
 	return (
-		<div className="flex flex-col gap-4 px-24 py-16">
+		<div className="flex flex-col gap-4 px-4 py-6 sm:px-6 lg:px-25 lg:py-[4vh]">
 			<header className="w-full flex items-center gap-6">
-				<h1 className="text-[2rem] font-semibold">돈돈 경제사전</h1>
+				<h1
+					className="text-[2rem] font-semibold cursor-pointer"
+					onClick={() => router.push("/dictionary")}
+				>
+					돈돈 경제사전
+				</h1>
 				<div className="flex justify-center items-center relative overflow-hidden flex-1 px-5 py-4 rounded-2xl bg-white border border-black/20">
 					<input
 						type="text"
@@ -78,15 +83,13 @@ export default function WordPage({ params }: { params: { id: string } }) {
 				key={word.num}
 				className="flex flex-col gap-8 bg-white rounded-xl p-12 border border-black/20"
 			>
-				<div className="flex justify-between items-center gap-8">
+				<div className="flex flex-wrap justify-between items-center gap-8">
 					<div className="flex-1 flex flex-col gap-3">
-						<div className="flex items-baseline gap-3">
-							<p className="text-5xl text-left text-black line-clamp-1">
+						<div className="flex items-baseline gap-10">
+							<p className="flex-1 text-5xl text-left text-black">
 								{word.word}
 							</p>
-							<p className="text-2xl text-left text-black/40 line-clamp-1">
-								{word.subject}
-							</p>
+							<p className="text-2xl text-left text-black/40">{word.subject}</p>
 							<Star
 								color={word.liked === true ? "#FFD63A" : "none"}
 								className="cursor-pointer w-8 h-8"
@@ -95,7 +98,7 @@ export default function WordPage({ params }: { params: { id: string } }) {
 								}}
 							/>
 						</div>
-						<p className="text-xl font-light text-left text-black line-clamp-3">
+						<p className="text-xl font-light text-left text-black ">
 							{word.description}
 						</p>
 					</div>
@@ -116,19 +119,23 @@ export default function WordPage({ params }: { params: { id: string } }) {
 			</article>
 
 			<article
-				key={word.num + "-synonyms"}
-				className="flex flex-col gap-8 bg-white rounded-xl p-12 border border-black/20"
+				key={`${word.num}-synonyms`}
+				className="flex flex-col gap-4 bg-white rounded-xl py-8 px-12 border border-black/20"
 			>
-				<p>유의어</p>
+				<div>
+					<p className="font-bold">유의어</p>
+					<p className="text-sm text-black/40">
+						*유의어에 대한 설명은 챗봇에게 질문해주세요.
+					</p>
+				</div>
 				<div className="grid grid-cols-4 gap-4">
 					{aiData ? (
-						aiData.synonyms.map((synonym, index) => (
+						aiData.synonyms.map((synonym) => (
 							<article
-								key={index}
-								className="flex items-center justify-center gap-8 bg-white rounded-md px-5 py-4 border border-black/20 cursor-pointer hover:bg-black/5 transition-colors"
-								onClick={() => router.push(`/dictionary?word=${synonym}`)}
+								key={synonym}
+								className="flex items-center justify-start gap-8 bg-white rounded-md px-5 py-4 border border-black/20"
 							>
-								<p className="text-lg font-medium">{synonym}</p>
+								<p className="text-lg font-semibold">{synonym}</p>
 							</article>
 						))
 					) : (

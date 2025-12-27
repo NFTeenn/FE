@@ -9,12 +9,10 @@ export default function ProcessComponent(props: {
 
 	return (
 		<section className="w-full h-full px-10 py-6 overflow-hidden">
-			<div className="flex items-start justify-between gap-8">
-				<div className="flex flex-col gap-4 w-full">
-					<p className=" text-black  text-lg font-bold">
-						{formattedDate}
-					</p>
-					<h2 className="text-black font-normal text-8xl">
+			<div className="flex flex-wrap items-start justify-between gap-8 h-full">
+				<div className="flex flex-col gap-4 flex-1">
+					<p className="text-black text-lg font-bold">{formattedDate}</p>
+					<h2 className="text-black font-normal text-8xl whitespace-nowrap">
 						{props.sequenceDays}
 						<span className="text-6xl font-medium">일차</span>
 					</h2>
@@ -30,8 +28,8 @@ export default function ProcessComponent(props: {
 						</div>
 					</div>
 				</div>
-				<div className="w-1/2 flex justify-end">
-					<MyPageDondon className="h-full" />
+				<div className="flex items-end justify-end h-full">
+					<MyPageDondon className="h-full w-auto translate-y-[25%]" />
 				</div>
 			</div>
 		</section>

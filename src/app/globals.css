@@ -1,6 +1,6 @@
-@import "tailwindcss";
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css");
 @import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&family=Pixelify+Sans:wght@400..700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
+@import "tailwindcss";
 
 :root {
 	--font-sans:
@@ -33,9 +33,9 @@ a {
 	--color-brand-b3: #fcd34d;
 	--color-brand-b4: #fde68a;
 	--color-brand-bg: #f1f5f9;
-	--color-brand-main: #ffd63a;	
+	--color-brand-main: #ffd63a;
 
-	--border-color-100: #334155;	
+	--border-color-100: #334155;
 	--border-color-200: #404040;
 	--border-color-300: #94a3b8;
 

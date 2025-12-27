@@ -26,7 +26,7 @@ export default function TodayWord() {
 	};
 
 	return (
-		<div className="flex flex-col justify-center items-center w-full h-screen px-6">
+		<div className="flex flex-col justify-center items-center w-full h-screen px-4 py-6 sm:px-6 lg:px-25 lg:py-[4vh]">
 			<h1 className="text-[4rem] font-semibold">돈돈 경제사전</h1>
 			<div className="flex justify-center items-center relative overflow-hidden w-full px-5 py-4 rounded-2xl bg-white border border-black/20">
 				<input
@@ -37,10 +37,7 @@ export default function TodayWord() {
 					onChange={(e) => setWord(e.target.value)}
 					onKeyDown={handleKeyDown}
 				/>
-				<Search
-					className="cursor-pointer"
-					onClick={handleSearch}
-				/>
+				<Search className="cursor-pointer" onClick={handleSearch} />
 			</div>
 			<div className="flex flex-col justify-center items-start w-full mt-4">
 				<p className="text-200 font-semibold indent-1">오늘의 경제 단어</p>
@@ -49,7 +46,7 @@ export default function TodayWord() {
 						<Link
 							key={word.num}
 							href={`/dictionary?word=${word.word}`}
-							className="flex justify-start items-center relative gap-2.5 px-5 py-[13px] rounded-[9px] bg-white border-[0.95px] border-black/20"
+							className="flex justify-start items-center relative gap-2.5 px-5 py-[13px] rounded-[9px] bg-white border-[0.95px] border-black/20 hover:bg-gray-100 transition-colors"
 						>
 							<p className="font-medium text-left text-black">{word.word}</p>
 						</Link>

@@ -36,7 +36,7 @@
 		"@types/react": "^18",
 		"@types/react-dom": "^18",
 		"baseline-browser-mapping": "^2.8.29",
-		"typescript": "^5",
+		"typescript": "5.9.3",
 		"webpack": "^5.100.0"
 	}
 }
