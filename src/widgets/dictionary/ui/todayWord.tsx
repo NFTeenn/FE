@@ -8,11 +8,25 @@ import Search from "@/shared/assets/search";
 
 export default function TodayWord() {
 	const router = useRouter();
-	const { data: words } = useGetWords();
 	const [word, setWord] = useState("");
 
+	const { data: words } = useGetWords();
+
+	const handleSearch = () => {
+		if (word.trim()) {
+			router.push(`/dictionary?word=${word}`);
+		}
+	};
+
+	const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+		if (e.nativeEvent.isComposing) return;
+		if (e.key === "Enter") {
+			handleSearch();
+		}
+	};
+
 	return (
-		<div className="flex flex-col justify-center items-center w-full h-screen px-40">
+		<div className="flex flex-col justify-center items-center w-full h-screen px-6">
 			<h1 className="text-[4rem] font-semibold">돈돈 경제사전</h1>
 			<div className="flex justify-center items-center relative overflow-hidden w-full px-5 py-4 rounded-2xl bg-white border border-black/20">
 				<input
@@ -21,10 +35,11 @@ export default function TodayWord() {
 					className="flex-1 border-0 outline-0"
 					value={word}
 					onChange={(e) => setWord(e.target.value)}
+					onKeyDown={handleKeyDown}
 				/>
 				<Search
 					className="cursor-pointer"
-					onClick={() => router.push(`/dictionary?word=${word}`)}
+					onClick={handleSearch}
 				/>
 			</div>
 			<div className="flex flex-col justify-center items-start w-full mt-4">
