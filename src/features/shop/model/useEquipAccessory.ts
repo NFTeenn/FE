@@ -1,12 +1,14 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { editDonDonNickName } from "../api/editDonDonNickName";
+import { equipAccessory } from "../api/equipAccessory";
 
-export const useEditDonDonNickName = () => {
+export const useEquipAccessory = () => {
 	const queryClient = useQueryClient();
-
 	return useMutation({
-		mutationFn: editDonDonNickName,
+		mutationFn: equipAccessory,
 		onSuccess: () => {
+			queryClient.invalidateQueries({
+				queryKey: ["accessories"],
+			});
 			queryClient.invalidateQueries({
 				queryKey: ["myInfo"],
 			});

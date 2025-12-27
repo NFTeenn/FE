@@ -1,5 +1,4 @@
 import { useQueries } from "@tanstack/react-query";
-import { MOCK_LIKES_DATA } from "@/entities/user/mock/user";
 import { getLikes } from "@/features/likes/api/getLikes";
 import { getWord } from "../api/getWord";
 
@@ -12,17 +11,7 @@ export const useGetWordWithLike = ({ num }: { num: number }) => {
 			},
 			{
 				queryKey: ["likes", num],
-				queryFn: async () => {
-					try {
-						return await getLikes({ targetId: num });
-					} catch (error) {
-						console.error(
-							"Likes API fetch failed, falling back to mock data:",
-							error,
-						);
-						return MOCK_LIKES_DATA;
-					}
-				},
+				queryFn: () => getLikes({ targetId: num }),
 			},
 		],
 	});

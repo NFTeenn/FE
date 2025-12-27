@@ -4,4 +4,5 @@ export interface Accessory {
 	description: string;
 	price: number;
 	owned: boolean;
+	equipped: boolean;
 }

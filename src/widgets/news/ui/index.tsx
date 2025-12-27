@@ -5,12 +5,28 @@ import { useSuccessNewsMission } from "@/entities/news/model/useSuccessNewsMissi
 import Loading from "@/shared/ui/loading";
 
 export default function MainNewsList() {
-	const { data: news, isLoading, isError, isSuccess } = useGetNewsList({ query: "경제", display: 6 });
+	const {
+		data: news,
+		isLoading,
+		isError,
+		isSuccess,
+	} = useGetNewsList({ query: "경제", display: 6 });
 	const { mutate } = useSuccessNewsMission();
 
 	const handleNewsClick = async (newsUrl: string) => {
 		mutate();
 		window.open(newsUrl, "_blank");
+	};
+
+	const formatDate = (dateString: string): string => {
+		const date = new Date(dateString);
+		return date.toLocaleString("ko-KR", {
+			year: "numeric",
+			month: "2-digit",
+			day: "2-digit",
+			hour: "2-digit",
+			minute: "2-digit",
+		});
 	};
 
 	if (isLoading) {
@@ -22,20 +38,21 @@ export default function MainNewsList() {
 			<div className="flex items-center justify-center h-40 text-gray-500">
 				뉴스를 불러올 수 없습니다.
 			</div>
-		)
+		);
 	}
 
 	return (
-		<div className="grid grid-cols-3 gap-4 mt-4">
+		<div className="grid grid-cols-1 gap-4 mt-4">
 			{news.map((item) => (
 				<button
 					key={item.link}
 					onClick={() => handleNewsClick(item.link)}
-					className="h-[140px] border border-black/10 rounded-lg p-4 hover:border-black/30 hover:shadow-md transition-all cursor-pointer"
+					className="text-start h-[140px] border border-black/10 rounded-lg p-4 hover:border-black/30 hover:shadow-md transition-all cursor-pointer"
 				>
-					<h3 className="font-semibold text-sm line-clamp-2 mb-2">
-						{item.title}
-					</h3>
+					<div className="flex justify-between line-clamp-1 ">
+						<h3 className="font-semibold text-sm mb-2">{item.title}</h3>
+						<p className="text-xs text-gray-600">{formatDate(item.pubDate)}</p>
+					</div>
 					<p className="text-xs text-gray-600 line-clamp-3">
 						{item.description}
 					</p>
