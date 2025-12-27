@@ -5,10 +5,16 @@ import { useGetNewsList } from "@/entities/news/model/useGetNewsList";
 import Search from "@/shared/assets/search";
 import Loading from "@/shared/ui/loading";
 
-const EconomicNews = () => {
+export default function EconomicNews() {
 	const [query, setQuery] = useState("경제");
 
-	const { data: news, refetch, isLoading, isSuccess, isError } = useGetNewsList({ query: query, display: 20 });
+	const {
+		data: news,
+		refetch,
+		isLoading,
+		isSuccess,
+		isError,
+	} = useGetNewsList({ query: query, display: 20 });
 
 	const formatDate = (dateString: string): string => {
 		const date = new Date(dateString);
@@ -39,7 +45,7 @@ const EconomicNews = () => {
 			<div className="text-center py-12">
 				<p className="mt-4 text-gray-600">뉴스를 불러올 수 없습니다.</p>
 			</div>
-		)
+		);
 	}
 
 	return (
@@ -74,7 +80,9 @@ const EconomicNews = () => {
 				))}
 			</div>
 
-			{isLoading ? <Loading /> :
+			{isLoading ? (
+				<Loading />
+			) : (
 				<div className="space-y-4">
 					{news.length === 0 ? (
 						<p className="text-center text-gray-500 py-8">
@@ -105,13 +113,12 @@ const EconomicNews = () => {
 							</article>
 						))
 					)}
-				</div>}
+				</div>
+			)}
 
 			<p className="text-center text-gray-500 mt-6 text-sm">
 				총 {news.length}개의 뉴스
 			</p>
 		</div>
 	);
-};
-
-export default EconomicNews;
+}

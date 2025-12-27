@@ -61,7 +61,10 @@ export default function WordSearchResult() {
 							className="flex flex-col gap-2 py-4 border-b border-b-black/20 last:border-b-0"
 						>
 							<div className="flex items-baseline gap-3">
-								<p className="text-2xl text-left text-black line-clamp-1">
+								<p
+									onClick={() => router.push(`/word/${word.num}`)}
+									className="text-2xl text-left text-black line-clamp-1 cursor-pointer"
+								>
 									{word.word}
 								</p>
 								<p className="text-base text-left text-black/40 line-clamp-1">
