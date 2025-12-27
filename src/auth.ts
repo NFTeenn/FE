@@ -20,6 +20,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         async jwt({ token, account, user }) {
             if (account && user) {
                 console.log("=== 초기 로그인 ===");
+                console.log("ID Token 존재 여부:", !!account.id_token);
+                if (account.id_token) {
+                    console.log("ID Token 크기:", account.id_token.length);
+                }
 
                 const accessTokenExpires = account.expires_at
                     ? account.expires_at * 1000
@@ -57,6 +61,12 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             }
 
             session.idToken = token.idToken as string | undefined;
+            
+            if (!session.idToken) {
+                console.warn("⚠️ [Auth.js] idToken is missing in session callback", {
+                    hasTokenInJWT: !!token.idToken
+                });
+            }
 
             if (token.accessTokenExpires) {
                 const expiresAt = token.accessTokenExpires;
