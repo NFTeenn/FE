@@ -6,6 +6,7 @@ export async function GET(request: NextRequest) {
 	try {
 		const searchParams = request.nextUrl.searchParams;
 		const query = searchParams.get("query") || "경제";
+		const display = searchParams.get("display") || "6";
 
 		const clientId = process.env.NEXT_PUBLIC_NAVER_CLIENT_ID;
 		const clientSecret = process.env.NEXT_PUBLIC_NAVER_CLIENT_SECRET;
@@ -18,7 +19,7 @@ export async function GET(request: NextRequest) {
 		}
 
 		const encodedQuery = encodeURIComponent(query);
-		const url = `https://openapi.naver.com/v1/search/news.json?query=${encodedQuery}&display=20&sort=date`;
+		const url = `https://openapi.naver.com/v1/search/news.json?query=${encodedQuery}&display=${display}&sort=date`;
 
 		const response = await axios.get(url, {
 			headers: {
@@ -70,7 +71,6 @@ export async function POST(request: NextRequest) {
 
 		console.log("=== 백엔드 요청 시작 ===");
 		console.log("URL:", `${backendUrl}/home/news`);
-		console.log("Token:", token.substring(0, 20) + "...");
 
 		// 백엔드 서버로 요청 전달
 		const backendResponse = await fetch(`${backendUrl}/home/news`, {
