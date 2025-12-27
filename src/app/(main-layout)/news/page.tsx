@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useGetNewsList } from "@/entities/news/model/useGetNewsList";
+import { useSuccessNewsMission } from "@/entities/news/model/useSuccessNewsMission";
 import Search from "@/shared/assets/search";
 import Loading from "@/shared/ui/loading";
 
@@ -14,6 +15,13 @@ export default function EconomicNews() {
 		isError,
 		isFetching,
 	} = useGetNewsList({ query: searchQuery, display: 20 });
+
+	const { mutate } = useSuccessNewsMission();
+
+	const handleNewsClick = async (newsUrl: string) => {
+		mutate();
+		window.open(newsUrl, "_blank");
+	};
 
 	const formatDate = (dateString: string): string => {
 		const date = new Date(dateString);
@@ -101,6 +109,7 @@ export default function EconomicNews() {
 						news.map((item, index) => (
 							<article
 								key={`${item.link}-${index}`}
+								onClick={() => handleNewsClick(item.link)}
 								className="bg-white border border-gray-200 rounded-lg p-5 hover:shadow-md transition-shadow"
 							>
 								<a
