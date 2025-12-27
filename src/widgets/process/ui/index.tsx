@@ -1,4 +1,4 @@
-import React from "react";
+import { MyPageDondon } from "@/shared/assets/mypage_dondon";
 
 export default function ProcessComponent(props: {
 	sequenceDays: number;
@@ -36,7 +36,9 @@ export default function ProcessComponent(props: {
 					</div>
 				</div>
 				{/* Right Section - 캐릭터 이미지 */}
-				<div className="relative w-1/2 flex justify-end"></div>
+				<div className="relative w-1/2 flex justify-end">
+					<MyPageDondon />
+				</div>
 			</div>
 		</section>
 	);

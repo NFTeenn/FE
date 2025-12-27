@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import achievement_logo from "src/shared/assets/achievement_logo.svg";
-import dondon_logo from "src/shared/assets/mypage_dondon.svg";
 import santas_hat from "src/shared/assets/santas_hat.svg";
 import type { MyPageSidebarOperation } from "@/app/(main-layout)/mypage/page";
 import { useGetHallOfFame } from "@/entities/dondon/model/useGetHallOfFame";
@@ -10,6 +9,7 @@ import { useGetAchievement } from "@/entities/user/model/useGetAchievement";
 import type { Accessory } from "@/features/shop/model/accessory";
 import { usePurchaseCustomItem } from "@/features/shop/model/useBuyAccessory";
 import { useGetCustomItem } from "@/features/shop/model/useGetAccessories";
+import { MyPageDondon } from "@/shared/assets/mypage_dondon";
 import X from "@/shared/assets/x";
 
 const Storage = () => {
@@ -23,7 +23,7 @@ const Storage = () => {
 			{dondons?.map((dondon) => (
 				<article key={dondon.gen} className="flex flex-col w-fit">
 					<div className="bg-brand-b3 aspect-[16/10] py-6 px-16 rounded-2xl">
-						<Image src={dondon_logo} alt="dondon" className="object-cover" />
+						<MyPageDondon className="object-cover" />
 					</div>
 					<p>{dondon.gen}대 돈돈</p>
 					<b>{dondon.nickname}</b>

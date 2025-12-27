@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import bowl from "src/shared/assets/bowl.svg";
 import medal from "src/shared/assets/medal.svg";
-import dondon from "src/shared/assets/mypage_dondon.svg";
 import shop from "src/shared/assets/shop.svg";
 import storage from "src/shared/assets/storage.svg";
 import { useEditDonDonNickName } from "@/entities/dondon/model/useEditDonDonNickName";
@@ -13,6 +12,7 @@ import { useGetMyInfo } from "@/entities/user/model/useGetMyInfo";
 import { useGetLikes } from "@/features/likes/model/useGetLikes";
 import { useSaveLikes } from "@/features/likes/model/useSaveLikes";
 import Arrow from "@/shared/assets/arrow";
+import { MyPageDondon } from "@/shared/assets/mypage_dondon";
 import Star from "@/shared/assets/star";
 import X from "@/shared/assets/x";
 import MyPageSidebar from "@/widgets/sidebar/ui/myPageSidebar";
@@ -220,7 +220,7 @@ export default function MyPage() {
 					</div>
 
 					<div className="absolute -top-60 right-30">
-						<Image src={dondon} alt="dondon" className="w-[25vw]" />
+						<MyPageDondon className="w-[25vw]" />
 					</div>
 				</section>
 				<section className="flex flex-1 items-end ">
