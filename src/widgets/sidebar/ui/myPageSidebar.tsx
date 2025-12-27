@@ -7,7 +7,7 @@ import santas_hat from "src/shared/assets/santas_hat.svg";
 import type { MyPageSidebarOperation } from "@/app/(main-layout)/mypage/page";
 import { useGetHallOfFame } from "@/entities/dondon/model/useGetHallOfFame";
 import { useGetAchievement } from "@/entities/user/model/useGetAchievement";
-import type { CustomItem } from "@/features/shop/api/getAccessories";
+import type { Accessory } from "@/features/shop/model/accessory";
 import { usePurchaseCustomItem } from "@/features/shop/model/useBuyAccessory";
 import { useGetCustomItem } from "@/features/shop/model/useGetAccessories";
 import X from "@/shared/assets/x";
@@ -58,7 +58,7 @@ const Achievement = () => {
 	);
 };
 
-const ShopItem = ({ customItem }: { customItem: CustomItem }) => {
+const ShopItem = ({ customItem }: { customItem: Accessory }) => {
 	const { mutate: buyCustomItem, isPending: isBuyingCustomItem } =
 		usePurchaseCustomItem();
 
