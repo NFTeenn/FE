@@ -1,20 +1,19 @@
 "use client";
-
 import { useState } from "react";
 import { useGetNewsList } from "@/entities/news/model/useGetNewsList";
 import Search from "@/shared/assets/search";
 import Loading from "@/shared/ui/loading";
 
 export default function EconomicNews() {
-	const [query, setQuery] = useState("경제");
+	const [inputValue, setInputValue] = useState("경제");
+	const [searchQuery, setSearchQuery] = useState("경제");
 
 	const {
 		data: news,
-		refetch,
 		isLoading,
-		isSuccess,
 		isError,
-	} = useGetNewsList({ query: query, display: 20 });
+		isFetching,
+	} = useGetNewsList({ query: searchQuery, display: 20 });
 
 	const formatDate = (dateString: string): string => {
 		const date = new Date(dateString);
@@ -28,8 +27,8 @@ export default function EconomicNews() {
 	};
 
 	const handleSearch = () => {
-		if (query.trim()) {
-			refetch();
+		if (inputValue.trim()) {
+			setSearchQuery(inputValue.trim());
 		}
 	};
 
@@ -40,7 +39,16 @@ export default function EconomicNews() {
 		}
 	};
 
-	if (isError || !isSuccess) {
+	const handleKeywordClick = (keyword: string) => {
+		setInputValue(keyword);
+		setSearchQuery(keyword);
+	};
+
+	if (isLoading) {
+		return <Loading />;
+	}
+
+	if (isError) {
 		return (
 			<div className="text-center py-12">
 				<p className="mt-4 text-gray-600">뉴스를 불러올 수 없습니다.</p>
@@ -49,7 +57,7 @@ export default function EconomicNews() {
 	}
 
 	return (
-		<div className="max-w-4xl mx-auto p-6">
+		<div className="px-4 py-6 sm:px-6 lg:px-25 lg:py-[4vh]">
 			<h1 className="text-3xl font-bold mb-6 text-gray-800">경제 뉴스</h1>
 
 			<div className="mb-6">
@@ -57,8 +65,8 @@ export default function EconomicNews() {
 					<input
 						className="flex-1 border-0 outline-0"
 						placeholder="경제 단어 검색하기"
-						value={query}
-						onChange={(e) => setQuery(e.target.value)}
+						value={inputValue}
+						onChange={(e) => setInputValue(e.target.value)}
 						onKeyDown={handleKeyDown}
 					/>
 					<Search className="cursor-pointer" onClick={handleSearch} />
@@ -69,10 +77,7 @@ export default function EconomicNews() {
 				{["경제", "증시", "금융", "부동산", "금리"].map((keyword) => (
 					<button
 						key={keyword}
-						onClick={() => {
-							setQuery(keyword);
-							refetch();
-						}}
+						onClick={() => handleKeywordClick(keyword)}
 						className="px-4 py-1 cursor-pointer bg-gray-200 rounded-full hover:bg-gray-300 transition-colors text-sm"
 					>
 						{keyword}
@@ -80,18 +85,22 @@ export default function EconomicNews() {
 				))}
 			</div>
 
-			{isLoading ? (
-				<Loading />
-			) : (
+			<div className="relative">
+				{isFetching && (
+					<div className="absolute inset-0 bg-white/50 flex items-center justify-center z-10">
+						<Loading />
+					</div>
+				)}
+
 				<div className="space-y-4">
-					{news.length === 0 ? (
+					{!news || news.length === 0 ? (
 						<p className="text-center text-gray-500 py-8">
 							검색 결과가 없습니다.
 						</p>
 					) : (
-						news.map((item) => (
+						news.map((item, index) => (
 							<article
-								key={item.title}
+								key={`${item.link}-${index}`}
 								className="bg-white border border-gray-200 rounded-lg p-5 hover:shadow-md transition-shadow"
 							>
 								<a
@@ -100,7 +109,7 @@ export default function EconomicNews() {
 									rel="noopener noreferrer"
 									className="block"
 								>
-									<h2 className="text-xl font-semibold text-gray-800 mb-2 hover:text-200 transition-colors">
+									<h2 className="text-xl font-semibold text-gray-800 mb-2 hover:text-blue-600 transition-colors">
 										{item.title}
 									</h2>
 									<p className="text-gray-600 mb-3 line-clamp-2">
@@ -114,10 +123,10 @@ export default function EconomicNews() {
 						))
 					)}
 				</div>
-			)}
+			</div>
 
 			<p className="text-center text-gray-500 mt-6 text-sm">
-				총 {news.length}개의 뉴스
+				총 {news?.length || 0}개의 뉴스
 			</p>
 		</div>
 	);
