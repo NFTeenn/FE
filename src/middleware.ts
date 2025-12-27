@@ -11,22 +11,30 @@ export default auth(async (req: NextRequest & { auth?: any }) => {
 	if (
 		pathname.startsWith("/api/auth") ||
 		pathname.startsWith("/_next") ||
-		pathname.includes("favicon.ico")
+		pathname.includes("favicon.ico") ||
+		pathname.includes("icon") ||
+		pathname.includes("manifest") ||
+		pathname.endsWith(".js") ||
+		pathname.endsWith(".css") ||
+		pathname.endsWith(".png") ||
+		pathname.endsWith(".json") ||
+		pathname.endsWith(".txt")
 	) {
 		return NextResponse.next();
 	}
 
 	// 2. Token Retrieval from session (req.auth)
 	const session = req.auth;
-	let idToken = session?.idToken;
+	let idToken = (session as any)?.idToken;
 
 	if (session && !idToken) {
-		console.warn("⚠️ [Middleware] Session exists but idToken is missing");
+		console.warn("⚠️ [Middleware] Session found but idToken is missing. Session keys:", Object.keys(session));
 	}
 
-	// Fallback to cookie if JWT retrieval failed (last resort)
+	// Fallback to cookie if session retrieval failed
 	if (!idToken) {
 		idToken = req.cookies.get("idToken")?.value;
+        if (idToken) console.log("✅ [Middleware] idToken retrieved from cookie fallback");
 	}
 
 	// 3. Routing Logic Definition
@@ -45,7 +53,7 @@ export default auth(async (req: NextRequest & { auth?: any }) => {
 
 	// Case B: Authenticated but trying to access guest-only root page
 	if (isAuthenticated && pathname === "/") {
-		console.log(`🔄 [Middleware] Redirecting authenticated: / → /main`);
+		console.log(`🔄 [Middleware] Authenticated user on root, redirecting to /main. idToken length: ${idToken?.length}`);
 		const response = NextResponse.redirect(new URL("/main", req.url));
 		// Ensure cookie is set on redirect
 		setTokenCookie(response, idToken!);
@@ -75,5 +83,5 @@ function setTokenCookie(response: NextResponse, idToken: string) {
 }
 
 export const config = {
-	matcher: ["/((?!api/auth|_next/static|_next/image|favicon.ico).*)"],
+	matcher: ["/((?!api/auth|_next/static|_next/image|favicon.ico|.*\\.js$|.*\\.css$|.*\\.png$).*)"],
 };

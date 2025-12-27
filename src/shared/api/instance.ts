@@ -11,18 +11,26 @@ instance.interceptors.request.use(
 		try {
 			let idToken = null;
 			if (typeof window === "undefined") {
-				const { cookies } = await import("next/headers");
-				const cookieStore = cookies();
-				idToken = cookieStore.get("idToken")?.value;
+				try {
+					const { cookies } = await import("next/headers");
+					idToken = cookies().get("idToken")?.value;
+				} catch (e) {
+					// Likely outside of request context
+				}
 			} else {
-				const match = document.cookie.match(/(^|;)\s*idToken\s*=\s*([^;]+)/);
-				idToken = match ? match[2] : null;
+				try {
+                    // Accessing document.cookie can throw DOMException in some restricted environments
+					if (typeof document !== "undefined") {
+                        const match = document.cookie.match(/(^|;)\s*idToken\s*=\s*([^;]+)/);
+                        idToken = match ? match[2] : null;
+                    }
+				} catch (e) {
+					console.warn("⚠️ [Axios] Browser blocked direct cookie access (Insecure context or privacy settings)");
+				}
 			}
 
 			if (idToken) {
 				config.headers.Authorization = `Bearer ${idToken}`;
-			} else {
-				console.warn("No idToken in cookies");
 			}
 
 			return config;
