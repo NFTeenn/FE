@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import bowl from "src/shared/assets/bowl.svg";
 import medal from "src/shared/assets/medal.svg";
@@ -9,12 +8,8 @@ import shop from "src/shared/assets/shop.svg";
 import storage from "src/shared/assets/storage.svg";
 import { useEditDonDonNickName } from "@/entities/dondon/model/useEditDonDonNickName";
 import { useGetMyInfo } from "@/entities/user/model/useGetMyInfo";
-import { useGetLikes } from "@/features/likes/model/useGetLikes";
-import { useSaveLikes } from "@/features/likes/model/useSaveLikes";
-import Arrow from "@/shared/assets/arrow";
 import { MyPageDondon } from "@/shared/assets/mypage_dondon";
-import Star from "@/shared/assets/star";
-import X from "@/shared/assets/x";
+import { Modal } from "@/widgets/modal/ui";
 import MyPageSidebar from "@/widgets/sidebar/ui/myPageSidebar";
 
 export type MyPageSidebarOperation = "STORAGE" | "ACHIEVEMENT" | "SHOP";
@@ -51,81 +46,10 @@ const cardList: Card[] = [
 	},
 ];
 
-const Modal = ({
-	setIsModalOpen,
-}: {
-	setIsModalOpen: (value: boolean) => void;
-}) => {
-	const { data: likes } = useGetLikes({});
-	const { mutate: saveLikes } = useSaveLikes();
-	const router = useRouter();
-
-	return (
-		<div
-			role="listbox"
-			className="fixed inset-0 bg-black/20 flex items-center justify-center z-50"
-			onClick={() => setIsModalOpen(false)}
-		>
-			<div
-				className="bg-white p-6 rounded-lg shadow-lg flex flex-col w-1/2 h-1/2 overflow-hidden"
-				onClick={(e) => e.stopPropagation()}
-				role="dialog"
-			>
-				<div className="flex justify-between">
-					<p className="font-bold">즐겨찾기 목록</p>
-					<X
-						className="w-4 h-4 cursor-pointer"
-						onClick={() => setIsModalOpen(false)}
-					/>
-				</div>
-				<div className="flex flex-col flex-1 overflow-hidden">
-					<div className="flex items-center justify-center border border-b-0 border-black/20 w-1/2 p-2 rounded-tl-xl bg-brand-bg overflow-hidden">
-						<p>단어</p>
-					</div>
-					<ul className="flex flex-col flex-1 gap-2 border border-black/20 p-4 rounded-xl rounded-tl-none overflow-y-auto">
-						{likes?.map((like) => (
-							<article
-								key={like.targetId}
-								className="flex gap-4 p-4 rounded-xl border border-black/20"
-							>
-								<div className="flex-1 flex flex-col">
-									<p className="font-bold text-xl line-clamp-1">{like.word}</p>
-									<p className="line-clamp-2">{like.description}</p>
-								</div>
-								<div className="flex flex-col justify-between items-end">
-									<Star
-										color={like.liked === true ? "#FFD63A" : "none"}
-										className="cursor-pointer"
-										onClick={() => {
-											saveLikes({ targetId: like.targetId });
-										}}
-									/>
-									<div className="flex items-center cursor-pointer">
-										<p
-											className="text-[#fb923c]"
-											onClick={() =>
-												router.push(`/dictionary?word=${like.word}`)
-											}
-										>
-											보러가기
-										</p>
-										<Arrow />
-									</div>
-								</div>
-							</article>
-						))}
-					</ul>
-				</div>
-			</div>
-		</div>
-	);
-};
-
 export default function MyPage() {
 	const { data: myInfo } = useGetMyInfo();
 	const { mutate: editNickname } = useEditDonDonNickName();
-	const [sidebarOperation, setSidebarOperation] =
-		useState<MyPageSidebarOperation | null>(null);
+	const [sidebarOperation, setSidebarOperation] = useState<MyPageSidebarOperation | null>(null);
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [nickname, setNickname] = useState(myInfo?.latestDondon.nickname || "");
 	const [isInitialized, setIsInitialized] = useState(false);
