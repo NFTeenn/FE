@@ -1,42 +1,11 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
-
-interface NewsItem {
-	title: string;
-	description: string;
-	link: string;
-	pubDate: string;
-}
+import { useGetNewsList } from "@/entities/news/model/useGetNewsList";
 
 const SKELETON_ITEMS = Array.from({ length: 6 }, (_, i) => `skeleton-${i}`);
 
 export default function MainNewsList() {
-	const cleanText = (text: string): string => {
-		return text
-			.replace(/<[^>]*>/g, "")
-			.replace(/&quot;/g, '"')
-			.replace(/&apos;/g, "'")
-			.replace(/&amp;/g, "&")
-			.replace(/&lt;/g, "<")
-			.replace(/&gt;/g, ">");
-	};
-
-	const { data: news = [], isLoading: loading } = useQuery<NewsItem[]>({
-		queryKey: ["news", "economy"],
-		queryFn: async () => {
-			const response = await axios.get(`/api/news`, {
-				params: { query: "경제" },
-			});
-			const data = response.data;
-			return (data.items || []).slice(0, 6).map((item: any) => ({
-				...item,
-				title: cleanText(item.title),
-				description: cleanText(item.description),
-			}));
-		},
-	});
+	const { data: news = [], isLoading: loading } = useGetNewsList();
 
 	const handleNewsClick = async (newsUrl: string) => {
 		try {
