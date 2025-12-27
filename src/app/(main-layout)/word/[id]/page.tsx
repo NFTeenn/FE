@@ -95,7 +95,7 @@ export default function WordPage({ params }: { params: { id: string } }) {
 								}}
 							/>
 						</div>
-						<p className="text-xl font-light text-left text-black line-clamp-3">
+						<p className="text-xl font-light text-left text-black ">
 							{word.description}
 						</p>
 					</div>
