@@ -158,16 +158,12 @@ export default function MyPage() {
 						</div>
 
 						<div className="flex flex-col min-w-120">
-							<span className="text-gray-500 mb-2">성장도:</span>
+							<span className="text-gray-500 mb-2">성장도: {myInfo?.latestDondon.level ?? 0}%</span>
 							<div className="h-10 border border-gray-300 rounded-3xl px-4 flex items-center">
 								<div
 									className="h-5 flex items-center justify-center bg-brand-main rounded-full transition-all duration-300"
 									style={{ width: `${myInfo?.latestDondon.level ?? 0}%` }}
-								>
-									<div className="bg-brand text-xs font-medium text-white text-center p-0.5 leading-none rounded-full h-4 flex items-center justify-center">
-										{myInfo?.latestDondon.level ?? 0}%
-									</div>
-								</div>
+								/>
 							</div>
 						</div>
 					</article>
