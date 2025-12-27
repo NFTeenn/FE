@@ -32,7 +32,7 @@ export async function refreshAccessToken(token: JWT): Promise<JWT> {
 
 		return {
 			...token,
-			idToken: refreshedTokens.id_token,
+			idToken: refreshedTokens.id_token ?? token.idToken,
 			accessToken: refreshedTokens.access_token,
 			accessTokenExpires: Date.now() + refreshedTokens.expires_in * 1000,
 			refreshToken: refreshedTokens.refresh_token ?? token.refreshToken,
