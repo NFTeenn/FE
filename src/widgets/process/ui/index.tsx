@@ -8,23 +8,18 @@ export default function ProcessComponent(props: {
 	const formattedDate = `${today.getFullYear()}.${today.getMonth() + 1}.${today.getDate()}`;
 
 	return (
-		<section className="relative w-full h-full p-8 overflow-hidden">
-			{/* Flex Container */}
-			<div className="flex items-center w-[80%] justify-between">
-				{/* Left Section - 텍스트 콘텐츠 */}
-				<div className="flex flex-col gap-4 w-full z-10">
-					{/*오늘 날짜*/}
-					<p className=" text-black font-[pretendard] text-lg font-bold">
+		<section className="w-full h-full px-10 py-6 overflow-hidden">
+			<div className="flex items-start justify-between gap-8">
+				<div className="flex flex-col gap-4 w-full">
+					<p className=" text-black  text-lg font-bold">
 						{formattedDate}
 					</p>
-					{/*연속 일수*/}
-					<h2 className="text-balck font-normal font-[pretendard] text-8xl">
+					<h2 className="text-black font-normal text-8xl">
 						{props.sequenceDays}
-						<span className="text-6xl font-[pretendard] font-medium">일차</span>
+						<span className="text-6xl font-medium">일차</span>
 					</h2>
-					{/* 성장도 진행 */}
 					<div className="flex items-center gap-2">
-						<span className="bg-[#E67E22] text-black text-[1rem] font-[pretendard] font-semibold px-4 py-2 rounded-full">
+						<span className="bg-[#E67E22] text-black text-[1rem] font-semibold px-4 py-2 rounded-full">
 							성장도
 						</span>
 						<div className="flex-1 h-3 bg-white/40 rounded-full overflow-hidden">
@@ -35,9 +30,8 @@ export default function ProcessComponent(props: {
 						</div>
 					</div>
 				</div>
-				{/* Right Section - 캐릭터 이미지 */}
-				<div className="relative w-1/2 flex justify-end">
-					<MyPageDondon />
+				<div className="w-1/2 flex justify-end">
+					<MyPageDondon className="h-full" />
 				</div>
 			</div>
 		</section>
