@@ -1,62 +1,18 @@
 "use client";
 
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
 import Image from "next/image";
 import { useState } from "react";
+import { useGetQuizs } from "@/entities/quiz/model/useGetQuizs";
+import { useSolveQuiz } from "@/entities/quiz/model/useSolveQuiz";
 import finishQuiz from "@/shared/assets/finishQuiz.svg";
-
-interface QuizData {
-	quiz: string | null;
-	a: string[] | null;
-	result: number;
-	quizCount: number;
-}
 
 export default function QuizComponent() {
 	const [selected, setSelected] = useState<number | null>(null);
 	const [submitted, setSubmitted] = useState(false);
-	const queryClient = useQueryClient();
 
-	// 퀴즈 데이터 가져오기 (Tanstack Query)
-	const {
-		data: quizData,
-		isLoading: loading,
-		isError,
-	} = useQuery<QuizData>({
-		queryKey: ["quiz"],
-		queryFn: async () => {
-			const response = await axios.get("/api/home");
-			return response.data;
-		},
-		// 퀴즈는 매번 새로운 데이터를 가져와야 할 수도 있으므로 staleTime 조정 가능
-		staleTime: 0,
-	});
+	const { data: quizData, isLoading, isSuccess, isError } = useGetQuizs();
 
-	// 퀴즈 결과 전송 (Mutation)
-	const mutation = useMutation({
-		mutationFn: async (solve: boolean) => {
-			const response = await axios.post("/api/home", { solve });
-			return response.data;
-		},
-		onSuccess: () => {
-			// 1초 후 퀴즈 데이터 다시 불러오기 (invalidateQueries)
-			setTimeout(() => {
-				setSelected(null);
-				setSubmitted(false);
-				queryClient.invalidateQueries({ queryKey: ["quiz"] });
-			}, 1000);
-		},
-		onError: (error) => {
-			console.error("퀴즈 결과 전송 오류:", error);
-			// 에러가 나도 다음 문제로 넘어가는 로직 유지
-			setTimeout(() => {
-				setSelected(null);
-				setSubmitted(false);
-				queryClient.invalidateQueries({ queryKey: ["quiz"] });
-			}, 1000);
-		},
-	});
+	const { mutate } = useSolveQuiz();
 
 	const handleSelect = (index: number) => {
 		if (submitted) return;
@@ -65,13 +21,18 @@ export default function QuizComponent() {
 
 	const handleSubmit = () => {
 		if (selected === null || submitted) return;
-
 		setSubmitted(true);
-		// 문제를 풀기만 하면 무조건 true로 전송 (기존 로직 유지)
-		mutation.mutate(true);
+		mutate(true, {
+			onSettled: () => {
+				setTimeout(() => {
+					setSelected(null);
+					setSubmitted(false);
+				}, 1000);
+			}
+		});
 	};
 
-	if (loading) {
+	if (isLoading) {
 		return (
 			<div className="flex justify-center items-center p-8">
 				<div className="text-gray-500">퀴즈 로딩 중...</div>
@@ -79,7 +40,7 @@ export default function QuizComponent() {
 		);
 	}
 
-	if (isError || !quizData) {
+	if (isError || !isSuccess) {
 		return (
 			<div className="flex justify-center items-center p-8">
 				<div className="text-red-500">퀴즈를 불러올 수 없습니다.</div>
@@ -87,7 +48,6 @@ export default function QuizComponent() {
 		);
 	}
 
-	// 퀴즈를 모두 완료한 경우
 	if (quizData.quiz === null || quizData.quizCount >= 5) {
 		return (
 			<div className="flex flex-col items-center justify-center p-8 space-y-4">
@@ -113,13 +73,12 @@ export default function QuizComponent() {
 				{quizData.quiz}
 			</span>
 
-			{Array.isArray(quizData.a) ? (
+			{quizData.a ? (
 				<div className="mt-3 flex flex-col gap-2">
 					{quizData.a.map((option, index) => {
 						const getMultipleChoiceClassName = () => {
 							if (submitted) {
-								if (index === quizData.result)
-									return "bg-green-100 border-green-500";
+								if (index === quizData.result) return "bg-green-100 border-green-500";
 								if (index === selected) return "bg-red-100 border-red-500";
 								return "bg-brand-bg border-black/20";
 							}
@@ -132,7 +91,7 @@ export default function QuizComponent() {
 								key={option}
 								disabled={submitted}
 								onClick={() => handleSelect(index)}
-								className={`w-full h-[2.875rem] pl-4 text-left rounded-[27px] border transition-colors ${getMultipleChoiceClassName()}`}
+								className={`w-full min-h-[2.875rem] p-4 text-left rounded-[27px] border transition-colors cursor-pointer ${getMultipleChoiceClassName()}`}
 							>
 								{index + 1}. {option}
 							</button>
@@ -175,7 +134,7 @@ export default function QuizComponent() {
 						? "w-full h-[2.875rem] mt-4 rounded-[27px] font-semibold transition-colors bg-gray-300 text-gray-500 cursor-not-allowed"
 						: submitted && selected !== quizData.result
 							? "w-full h-[2.875rem] mt-4 rounded-[27px] font-semibold transition-colors bg-red-500 text-white hover:bg-red-600"
-							: "w-full h-[2.875rem] mt-4 rounded-[27px] font-semibold transition-colors bg-blue-500 text-white hover:bg-blue-600"
+							: "w-full h-[2.875rem] mt-4 rounded-[27px] font-semibold transition-colors bg-blue-500 text-white hover:bg-blue-600 cursor-pointer"
 				}
 			>
 				{submitted && selected !== quizData.result
