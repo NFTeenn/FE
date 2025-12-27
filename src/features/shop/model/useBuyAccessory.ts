@@ -1,8 +1,8 @@
 import { useMutation } from "@tanstack/react-query";
-import { purchaseCustomItem } from "../api/buyAccessory";
+import { buyAccessory } from "../api/buyAccessory";
 
-export const usePurchaseCustomItem = () => {
+export const useBuyAccessory = () => {
 	return useMutation({
-		mutationFn: purchaseCustomItem,
+		mutationFn: buyAccessory,
 	});
 };
