@@ -116,10 +116,15 @@ export default function WordPage({ params }: { params: { id: string } }) {
 			</article>
 
 			<article
-				key={word.num + "-synonyms"}
+				key={`${word.num}-synonyms`}
 				className="flex flex-col gap-8 bg-white rounded-xl p-12 border border-black/20"
 			>
-				<p>유의어</p>
+				<div>
+					<p className="font-semibold">유의어</p>
+					<p className="text-sm text-black/40">
+						*유의어에 대한 설명은 챗봇에게 질문해주세요.
+					</p>
+				</div>
 				<div className="grid grid-cols-4 gap-4">
 					{aiData ? (
 						aiData.synonyms.map((synonym) => (
