@@ -117,10 +117,10 @@ export default function WordPage({ params }: { params: { id: string } }) {
 
 			<article
 				key={`${word.num}-synonyms`}
-				className="flex flex-col gap-8 bg-white rounded-xl p-12 border border-black/20"
+				className="flex flex-col gap-4 bg-white rounded-xl py-8 px-12 border border-black/20"
 			>
 				<div>
-					<p className="font-semibold">유의어</p>
+					<p className="font-bold">유의어</p>
 					<p className="text-sm text-black/40">
 						*유의어에 대한 설명은 챗봇에게 질문해주세요.
 					</p>
@@ -130,10 +130,9 @@ export default function WordPage({ params }: { params: { id: string } }) {
 						aiData.synonyms.map((synonym) => (
 							<article
 								key={synonym}
-								className="flex items-center justify-center gap-8 bg-white rounded-md px-5 py-4 border border-black/20 cursor-pointer hover:bg-black/5 transition-colors"
-								onClick={() => router.push(`/dictionary?word=${synonym}`)}
+								className="flex items-center justify-start gap-8 bg-white rounded-md px-5 py-4 border border-black/20"
 							>
-								<p className="text-lg font-medium">{synonym}</p>
+								<p className="text-lg font-semibold">{synonym}</p>
 							</article>
 						))
 					) : (
