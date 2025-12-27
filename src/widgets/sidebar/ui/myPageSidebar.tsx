@@ -6,8 +6,9 @@ import { useGetHallOfFame } from "@/entities/dondon/model/useGetHallOfFame";
 import { useGetAchievement } from "@/entities/user/model/useGetAchievement";
 import type { Accessory } from "@/features/shop/model/accessory";
 import { useBuyAccessory } from "@/features/shop/model/useBuyAccessory";
+import { useEquipAccessory } from "@/features/shop/model/useEquipAccessory";
 import { useGetAccessories } from "@/features/shop/model/useGetAccessories";
-import achievement_logo from "@/shared/assets/achievement/first_dondon.svg";
+import { useUnEquipAccessory } from "@/features/shop/model/useUnEquipAccessory";
 import { MyPageDondon } from "@/shared/assets/mypage_dondon";
 import santas_hat from "@/shared/assets/santas_hat.svg";
 import X from "@/shared/assets/x";
@@ -58,7 +59,7 @@ const Achievement = () => {
 					className="flex flex-col items-center w-full"
 				>
 					<Image
-						src={achievement_logo}
+						src={achievement.image}
 						alt="achievement"
 						className="w-16 h-16 md:w-20 md:h-20"
 					/>
@@ -74,9 +75,13 @@ const Achievement = () => {
 	);
 };
 
-const ShopItem = ({ customItem }: { customItem: Accessory }) => {
-	const { mutate: buyCustomItem, isPending: isBuyingCustomItem } =
+const ShopItem = ({ accessory }: { accessory: Accessory }) => {
+	const { mutate: buyAccessory, isPending: isBuyingAccessory } =
 		useBuyAccessory();
+	const { mutate: equipAccessory, isPending: isEquippingAccessory } =
+		useEquipAccessory();
+	const { mutate: unEquipAccessory, isPending: isUnequippingAccessory } =
+		useUnEquipAccessory();
 
 	return (
 		<article className="flex flex-col items-center w-full border border-black/20 rounded-2xl">
@@ -87,30 +92,48 @@ const ShopItem = ({ customItem }: { customItem: Accessory }) => {
 					className="mt-2 w-16 h-16 md:w-20 md:h-20"
 				/>
 				<b className="mt-2 text-sm md:text-base text-center">
-					{customItem.name}
+					{accessory.name}
 				</b>
 				<small className="text-black/40 text-xs md:text-sm text-center">
-					{customItem.description}
+					{accessory.description}
 				</small>
 				<b className="text-[#fb923c] text-sm md:text-base mt-1">
-					{customItem.price}C
+					{accessory.price}C
 				</b>
 			</div>
-			<button
-				className={`w-full text-center border-t border-black/20 p-2 text-sm md:text-base ${customItem.owned ? "text-black/40 cursor-not-allowed" : "text-black cursor-pointer"}`}
-				onClick={() => {
-					buyCustomItem({
-						accId: customItem.id,
-					});
-				}}
-				disabled={customItem.owned || isBuyingCustomItem}
-			>
-				{customItem.owned
-					? "보유 중"
-					: isBuyingCustomItem
-						? "구매중..."
-						: "구매하기"}
-			</button>
+			{accessory.owned ? (
+				accessory.equipped ? (
+					<button
+						className="w-full text-center border-t border-black/20 p-2 text-sm md:text-base cursor-pointer"
+						onClick={() => {
+							unEquipAccessory({ accId: accessory.id });
+						}}
+						disabled={isUnequippingAccessory}
+					>
+						장착 해제
+					</button>
+				) : (
+					<button
+						className={`w-full text-center border-t border-black/20 p-2 text-sm md:text-base cursor-pointer`}
+						onClick={() => {
+							equipAccessory({ accId: accessory.id });
+						}}
+						disabled={isEquippingAccessory}
+					>
+						장착
+					</button>
+				)
+			) : (
+				<button
+					className={`w-full text-center border-t border-black/20 p-2 text-sm md:text-base cursor-pointer`}
+					onClick={() => {
+						buyAccessory({ accId: accessory.id });
+					}}
+					disabled={isBuyingAccessory}
+				>
+					{isBuyingAccessory ? "구매중..." : "구매하기"}
+				</button>
+			)}
 		</article>
 	);
 };
@@ -128,7 +151,7 @@ const Shop = () => {
 	return (
 		<>
 			{accessories?.map((accessory) => (
-				<ShopItem key={accessory.id} customItem={accessory} />
+				<ShopItem key={accessory.id} accessory={accessory} />
 			))}
 		</>
 	);

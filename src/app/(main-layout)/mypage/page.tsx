@@ -151,6 +151,13 @@ export default function MyPage() {
 					</div>
 					<div className="absolute bottom-0 right-4 md:right-10">
 						<MyPageDondon className="w-[35vw] h-fit md:w-[25vw]" />
+						{myInfo?.latestDondon.accId ? (
+							<Image
+								src={myInfo?.latestDondon.accessory}
+								alt="accessory"
+								className="w-[25vw] h-fit md:w-[15vw] absolute -top-[15%] left-[33%] -translate-x-1/2 z-10"
+							/>
+						) : null}
 					</div>
 				</section>
 
