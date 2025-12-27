@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
-import { getCustomItem } from "../api/getAccessories";
+import { getAccessories } from "../api/getAccessories";
 
-export const useGetCustomItem = () => {
+export const useGetAccessories = () => {
 	return useQuery({
-		queryKey: ["custom-item"],
-		queryFn: () => getCustomItem(),
+		queryKey: ["accessories"],
+		queryFn: () => getAccessories(),
 	});
 };
