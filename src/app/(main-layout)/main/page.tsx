@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { FiMessageSquare } from "react-icons/fi";
 import { useGetHomeData } from "@/entities/home/model/useGetHomeData";
+import Search from "@/shared/assets/search";
 import ChatBotModal from "@/widgets/chatbot/ui";
 import MiniDictionaryList from "@/widgets/dictionary/ui";
 import MissionListComponent from "@/widgets/mission/ui";
@@ -65,15 +66,19 @@ export default function Main() {
 						/>
 					</div>
 
-					<div className="w-full h-auto px-[3rem] pt-[1rem] rounded-2xl border border-black/20 bg-white pb-8">
+					<div className="w-full h-auto px-12 pt-4 rounded-2xl border border-black/20 bg-white pb-8">
 						<h2 className="text-xl font-semibold">경제 사전</h2>
-						<input
-							className="w-full h-[3rem] rounded-[18px] border border-black/20 pl-4 mt-4"
-							placeholder="경제 단어 검색하기"
-							value={searchWord}
-							onChange={(e) => setSearchWord(e.target.value)}
-							onKeyDown={handleKeyDown}
-						/>
+
+						<div className="flex justify-center items-center relative overflow-hidden flex-1 px-5 py-4 rounded-2xl bg-white border border-black/20">
+							<input
+								className="flex-1 border-0 outline-0"
+								placeholder="경제 단어 검색하기"
+								value={searchWord}
+								onChange={(e) => setSearchWord(e.target.value)}
+								onKeyDown={handleKeyDown}
+							/>
+							<Search className="cursor-pointer" onClick={handleSearch} />
+						</div>
 						<MiniDictionaryList words={homeData.words ?? []} />
 					</div>
 
