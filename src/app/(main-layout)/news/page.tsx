@@ -2,11 +2,13 @@
 
 import { useState } from "react";
 import { useGetNewsList } from "@/entities/news/model/useGetNewsList";
+import Search from "@/shared/assets/search";
+import Loading from "@/shared/ui/loading";
 
 const EconomicNews = () => {
 	const [query, setQuery] = useState("경제");
 
-	const { data: news, refetch, isLoading, isSuccess, isError } = useGetNewsList(query);
+	const { data: news, refetch, isLoading, isSuccess, isError } = useGetNewsList({ query: query, display: 20 });
 
 	const formatDate = (dateString: string): string => {
 		const date = new Date(dateString);
@@ -19,14 +21,18 @@ const EconomicNews = () => {
 		});
 	};
 
-	if (isLoading) {
-		return (
-			<div className="text-center py-12">
-				<div className="inline-block w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
-				<p className="mt-4 text-gray-600">뉴스를 불러오는 중...</p>
-			</div>
-		)
-	}
+	const handleSearch = () => {
+		if (query.trim()) {
+			refetch();
+		}
+	};
+
+	const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+		if (e.nativeEvent.isComposing) return;
+		if (e.key === "Enter") {
+			handleSearch();
+		}
+	};
 
 	if (isError || !isSuccess) {
 		return (
@@ -41,21 +47,15 @@ const EconomicNews = () => {
 			<h1 className="text-3xl font-bold mb-6 text-gray-800">경제 뉴스</h1>
 
 			<div className="mb-6">
-				<div className="flex gap-2">
+				<div className="flex justify-center items-center relative overflow-hidden flex-1 px-5 py-4 rounded-2xl bg-white border border-black/20">
 					<input
-						type="text"
+						className="flex-1 border-0 outline-0"
+						placeholder="경제 단어 검색하기"
 						value={query}
 						onChange={(e) => setQuery(e.target.value)}
-						onKeyPress={(e) => e.key === "Enter" && refetch()}
-						placeholder="검색어를 입력하세요 (예: 경제, 증시, 부동산)"
-						className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+						onKeyDown={handleKeyDown}
 					/>
-					<button
-						onClick={() => refetch()}
-						className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-					>
-						검색
-					</button>
+					<Search className="cursor-pointer" onClick={handleSearch} />
 				</div>
 			</div>
 
@@ -67,44 +67,45 @@ const EconomicNews = () => {
 							setQuery(keyword);
 							refetch();
 						}}
-						className="px-4 py-1 bg-gray-200 rounded-full hover:bg-gray-300 transition-colors text-sm"
+						className="px-4 py-1 cursor-pointer bg-gray-200 rounded-full hover:bg-gray-300 transition-colors text-sm"
 					>
 						{keyword}
 					</button>
 				))}
 			</div>
 
-			<div className="space-y-4">
-				{news.length === 0 ? (
-					<p className="text-center text-gray-500 py-8">
-						검색 결과가 없습니다.
-					</p>
-				) : (
-					news.map((item) => (
-						<article
-							key={item.title}
-							className="bg-white border border-gray-200 rounded-lg p-5 hover:shadow-md transition-shadow"
-						>
-							<a
-								href={item.link}
-								target="_blank"
-								rel="noopener noreferrer"
-								className="block"
+			{isLoading ? <Loading /> :
+				<div className="space-y-4">
+					{news.length === 0 ? (
+						<p className="text-center text-gray-500 py-8">
+							검색 결과가 없습니다.
+						</p>
+					) : (
+						news.map((item) => (
+							<article
+								key={item.title}
+								className="bg-white border border-gray-200 rounded-lg p-5 hover:shadow-md transition-shadow"
 							>
-								<h2 className="text-xl font-semibold text-gray-800 mb-2 hover:text-blue-600 transition-colors">
-									{item.title}
-								</h2>
-								<p className="text-gray-600 mb-3 line-clamp-2">
-									{item.description}
-								</p>
-								<time className="text-sm text-gray-400">
-									{formatDate(item.pubDate)}
-								</time>
-							</a>
-						</article>
-					))
-				)}
-			</div>
+								<a
+									href={item.link}
+									target="_blank"
+									rel="noopener noreferrer"
+									className="block"
+								>
+									<h2 className="text-xl font-semibold text-gray-800 mb-2 hover:text-200 transition-colors">
+										{item.title}
+									</h2>
+									<p className="text-gray-600 mb-3 line-clamp-2">
+										{item.description}
+									</p>
+									<time className="text-sm text-gray-400">
+										{formatDate(item.pubDate)}
+									</time>
+								</a>
+							</article>
+						))
+					)}
+				</div>}
 
 			<p className="text-center text-gray-500 mt-6 text-sm">
 				총 {news.length}개의 뉴스

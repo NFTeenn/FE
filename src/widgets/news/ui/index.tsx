@@ -1,76 +1,28 @@
 "use client";
 
 import { useGetNewsList } from "@/entities/news/model/useGetNewsList";
-
-const SKELETON_ITEMS = Array.from({ length: 6 }, (_, i) => `skeleton-${i}`);
+import { useSuccessNewsMission } from "@/entities/news/model/useSuccessNewsMission";
+import Loading from "@/shared/ui/loading";
 
 export default function MainNewsList() {
-	const { data: news = [], isLoading: loading } = useGetNewsList();
+	const { data: news, isLoading, isError, isSuccess } = useGetNewsList({ query: "경제", display: 6 });
+	const { mutate } = useSuccessNewsMission();
 
 	const handleNewsClick = async (newsUrl: string) => {
-		try {
-			// 쿠키에서 토큰 가져오기
-			const getTokenFromCookie = () => {
-				const cookies = document.cookie.split(";");
-				const tokenCookie = cookies.find((c) =>
-					c.trim().startsWith("idToken="),
-				);
-				return tokenCookie ? tokenCookie.split("=")[1] : null;
-			};
-
-			const token = getTokenFromCookie();
-
-			if (!token) {
-				console.warn("토큰이 없습니다 - 뉴스만 열기");
-				window.open(newsUrl, "_blank");
-				return;
-			}
-
-			// 백엔드 API 호출 (body 없이 header만)
-			const response = await fetch("/api/news", {
-				method: "POST",
-				headers: {
-					Authorization: `Bearer ${token}`,
-				},
-				credentials: "include",
-			});
-
-			console.log("Response Status:", response.status);
-
-			// text/plain으로 응답이 오므로 text()로 파싱
-			const data = await response.text();
-			console.log("Response Body:", data);
-
-			if (response.ok && data === "1") {
-				console.log("미션 완료 - 뉴스 열기");
-			}
-
-			window.open(newsUrl, "_blank");
-		} catch (error) {
-			console.error("뉴스 처리 오류:", error);
-			window.open(newsUrl, "_blank");
-		}
+		mutate();
+		window.open(newsUrl, "_blank");
 	};
 
-	if (loading) {
-		return (
-			<div className="grid grid-cols-3 gap-4 mt-4">
-				{SKELETON_ITEMS.map((key) => (
-					<div
-						key={key}
-						className="h-[140px] bg-gray-100 rounded-lg animate-pulse"
-					/>
-				))}
-			</div>
-		);
+	if (isLoading) {
+		return <Loading />;
 	}
 
-	if (news.length === 0) {
+	if (isError || !isSuccess) {
 		return (
 			<div className="flex items-center justify-center h-40 text-gray-500">
 				뉴스를 불러올 수 없습니다.
 			</div>
-		);
+		)
 	}
 
 	return (
