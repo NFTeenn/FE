@@ -56,6 +56,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                 session.user.id = token.userId as string;
             }
 
+            session.idToken = token.idToken as string | undefined;
+
             if (token.accessTokenExpires) {
                 const expiresAt = token.accessTokenExpires;
                 const timeUntilExpiry = expiresAt - Date.now();

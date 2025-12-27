@@ -16,27 +16,12 @@ export default auth(async (req: NextRequest & { auth?: any }) => {
 		return NextResponse.next();
 	}
 
-	// 2. Token Retrieval and Refresh Logic
-	let idToken: string | undefined;
-	const token = await getToken({
-		req,
-		secret: process.env.AUTH_SECRET,
-	});
+	// 2. Token Retrieval from session (req.auth)
+	const session = req.auth;
+	let idToken = session?.idToken;
 
-	if (token) {
-		if (token.accessTokenExpires && Date.now() >= token.accessTokenExpires) {
-			console.log("⚠️ [Middleware] Token expired, attempting refresh...");
-			const refreshedToken = await refreshAccessToken(token);
-
-			if (!refreshedToken.error) {
-				idToken = refreshedToken.idToken as string | undefined;
-				console.log("✅ [Middleware] Token refreshed successfully");
-			} else {
-				console.error("❌ [Middleware] Token refresh failed");
-			}
-		} else {
-			idToken = token.idToken as string | undefined;
-		}
+	if (session && !idToken) {
+		console.warn("⚠️ [Middleware] Session exists but idToken is missing");
 	}
 
 	// Fallback to cookie if JWT retrieval failed (last resort)

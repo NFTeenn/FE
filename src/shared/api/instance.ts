@@ -15,7 +15,8 @@ instance.interceptors.request.use(
 				const cookieStore = cookies();
 				idToken = cookieStore.get("idToken")?.value;
 			} else {
-				idToken = document.cookie.split("idToken=")[1].split(";")[0];
+				const match = document.cookie.match(/(^|;)\s*idToken\s*=\s*([^;]+)/);
+				idToken = match ? match[2] : null;
 			}
 
 			if (idToken) {
