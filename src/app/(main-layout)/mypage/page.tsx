@@ -2,13 +2,13 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import bowl from "src/shared/assets/bowl.svg";
-import medal from "src/shared/assets/medal.svg";
-import shop from "src/shared/assets/shop.svg";
-import storage from "src/shared/assets/storage.svg";
 import { useEditDonDonNickName } from "@/entities/dondon/model/useEditDonDonNickName";
 import { useGetMyInfo } from "@/entities/user/model/useGetMyInfo";
+import bowl from "@/shared/assets/bowl.svg";
+import medal from "@/shared/assets/medal.svg";
 import { MyPageDondon } from "@/shared/assets/mypage_dondon";
+import shop from "@/shared/assets/shop.svg";
+import storage from "@/shared/assets/storage.svg";
 import { Modal } from "@/widgets/modal/ui";
 import MyPageSidebar from "@/widgets/sidebar/ui/myPageSidebar";
 
@@ -49,7 +49,8 @@ const cardList: Card[] = [
 export default function MyPage() {
 	const { data: myInfo } = useGetMyInfo();
 	const { mutate: editNickname } = useEditDonDonNickName();
-	const [sidebarOperation, setSidebarOperation] = useState<MyPageSidebarOperation | null>(null);
+	const [sidebarOperation, setSidebarOperation] =
+		useState<MyPageSidebarOperation | null>(null);
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [nickname, setNickname] = useState(myInfo?.latestDondon.nickname || "");
 	const [isInitialized, setIsInitialized] = useState(false);
@@ -158,7 +159,9 @@ export default function MyPage() {
 						</div>
 
 						<div className="flex flex-col min-w-120">
-							<span className="text-gray-500 mb-2">성장도: {myInfo?.latestDondon.level ?? 0}%</span>
+							<span className="text-gray-500 mb-2">
+								성장도: {myInfo?.latestDondon.level ?? 0}%
+							</span>
 							<div className="h-10 border border-gray-300 rounded-3xl px-4 flex items-center">
 								<div
 									className="h-5 flex items-center justify-center bg-brand-main rounded-full transition-all duration-300"

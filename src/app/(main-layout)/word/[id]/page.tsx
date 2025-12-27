@@ -1,8 +1,8 @@
 "use client";
 
+import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import axios from "axios";
 import { useGetWordWithLike } from "@/entities/word/model/useGetWordWithLike";
 import { useSaveLikes } from "@/features/likes/model/useSaveLikes";
 import Search from "@/shared/assets/search";
@@ -122,9 +122,9 @@ export default function WordPage({ params }: { params: { id: string } }) {
 				<p>유의어</p>
 				<div className="grid grid-cols-4 gap-4">
 					{aiData ? (
-						aiData.synonyms.map((synonym, index) => (
+						aiData.synonyms.map((synonym) => (
 							<article
-								key={index}
+								key={synonym}
 								className="flex items-center justify-center gap-8 bg-white rounded-md px-5 py-4 border border-black/20 cursor-pointer hover:bg-black/5 transition-colors"
 								onClick={() => router.push(`/dictionary?word=${synonym}`)}
 							>

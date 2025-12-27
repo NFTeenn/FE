@@ -1,15 +1,15 @@
 "use client";
 
 import Image from "next/image";
-import achievement_logo from "src/shared/assets/achievement_logo.svg";
-import santas_hat from "src/shared/assets/santas_hat.svg";
 import type { MyPageSidebarOperation } from "@/app/(main-layout)/mypage/page";
 import { useGetHallOfFame } from "@/entities/dondon/model/useGetHallOfFame";
 import { useGetAchievement } from "@/entities/user/model/useGetAchievement";
 import type { Accessory } from "@/features/shop/model/accessory";
 import { usePurchaseCustomItem } from "@/features/shop/model/useBuyAccessory";
 import { useGetCustomItem } from "@/features/shop/model/useGetAccessories";
+import achievement_logo from "@/shared/assets/achievement_logo.svg";
 import { MyPageDondon } from "@/shared/assets/mypage_dondon";
+import santas_hat from "@/shared/assets/santas_hat.svg";
 import X from "@/shared/assets/x";
 
 const Storage = () => {
