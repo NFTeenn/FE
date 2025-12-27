@@ -103,8 +103,7 @@ export default function QuizComponent() {
 					{["O", "X"].map((label, index) => {
 						const getOXClassName = () => {
 							if (submitted) {
-								if (index === quizData.result)
-									return "bg-green-100 border-green-500";
+								if (index === quizData.result) return "bg-green-100 border-green-500";
 								if (index === selected) return "bg-red-100 border-red-500";
 								return "bg-brand-bg border-black/20";
 							}
@@ -117,7 +116,7 @@ export default function QuizComponent() {
 								key={label}
 								disabled={submitted}
 								onClick={() => handleSelect(index)}
-								className={`w-full h-[2.875rem] rounded-[27px] border transition-colors font-semibold ${getOXClassName()}`}
+								className={`w-full h-[2.875rem] rounded-[27px] border transition-colors font-semibold cursor-pointer ${getOXClassName()}`}
 							>
 								{label}
 							</button>
