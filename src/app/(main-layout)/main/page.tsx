@@ -1,12 +1,9 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { FiMessageSquare } from "react-icons/fi";
-import type { HomeData } from "@/entities/mocks/model";
-import { MOCK_HOME_DATA } from "@/entities/mocks/model/home";
+import { useGetHomeData } from "@/entities/home/model/useGetHomeData";
 import ChatBotModal from "@/widgets/chatbot/ui";
 import MiniDictionaryList from "@/widgets/dictionary/ui";
 import MissionListComponent from "@/widgets/mission/ui";
@@ -26,25 +23,7 @@ export default function Main() {
 
 	const [searchWord, setSearchWord] = useState("");
 	const [chatOpen, setChatOpen] = useState(false);
-	const {
-		data: homeData,
-		isLoading,
-		isError,
-	} = useQuery<HomeData>({
-		queryKey: ["homeData"],
-		queryFn: async () => {
-			try {
-				const response = await axios.get("/api/home");
-				return response.data;
-			} catch (error) {
-				console.error(
-					"Home API fetch failed, falling back to mock data:",
-					error,
-				);
-				return MOCK_HOME_DATA as unknown as HomeData;
-			}
-		},
-	});
+	const { data: homeData, isLoading, isSuccess, isError } = useGetHomeData();
 
 	const handleSearch = () => {
 		if (searchWord.trim()) {
@@ -67,7 +46,7 @@ export default function Main() {
 		);
 	}
 
-	if (isError || !homeData) {
+	if (isError || !isSuccess) {
 		return (
 			<div className="min-h-screen bg-gray-50 flex items-center justify-center">
 				<div className="text-lg text-red-500">데이터를 불러올 수 없습니다.</div>
