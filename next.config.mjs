@@ -16,6 +16,13 @@ const withPWA = withPWAInit({
 	disable: process.env.NODE_ENV === "development",
 	register: true,
 	skipWaiting: true,
+	buildExcludes: [/middleware-manifest\.json$/],
+	cacheOnFrontEndNav: true,
+	reloadOnOnline: true,
+	swcMinify: true,
+	workboxOptions: {
+		disableDevLogs: true,
+	},
 });
 
 export default withPWA(nextConfig);
