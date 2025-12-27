@@ -6,6 +6,23 @@
 .pnp.js
 .yarn/install-state.gz
 
+# PWA files
+/public/sw.js
+/public/sw.js.map
+/public/workbox-*.js
+/public/workbox-*.js.map
+/public/worker-*.js
+/public/worker-*.js.map
+/public/swe-worker-*.js
+/public/swe-worker-*.js.map
+/public/fallback-*.js
+
+# Service Worker 관련 모든 파일
+**/sw*.js
+**/sw*.js.map
+**/workbox*.js
+**/workbox*.js.map
+
 # testing
 /coverage
 
