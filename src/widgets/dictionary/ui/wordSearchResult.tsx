@@ -37,9 +37,14 @@ export default function WordSearchResult() {
 	}, [initialWord]);
 
 	return (
-		<div className="flex flex-col justify-center items-center w-full h-full p-6 mx-auto">
-			<header className="w-full flex items-center gap-6">
-				<h1 className="text-[2rem] font-semibold">돈돈 경제사전</h1>
+		<div className="flex flex-col justify-center items-center gap-4 w-full h-screen px-4 py-6 sm:px-6 lg:px-25 lg:py-[4vh]">
+			<header className="w-full flex flex-wrap items-center gap-6">
+				<h1
+					className="text-[2rem] font-semibold cursor-pointer"
+					onClick={() => router.push("/dictionary")}
+				>
+					돈돈 경제사전
+				</h1>
 				<div className="flex justify-center items-center relative overflow-hidden flex-1 px-5 py-4 rounded-2xl bg-white border border-black/20">
 					<input
 						type="text"
@@ -52,13 +57,13 @@ export default function WordSearchResult() {
 					<Search className="cursor-pointer" onClick={handleSearch} />
 				</div>
 			</header>
-			<div className="flex flex-col justify-center items-start w-full h-full mt-4 bg-white py-9 px-9 rounded-lg">
+			<div className="flex flex-col justify-center items-start gap-4 w-full h-full max-h-3/4 bg-white py-9 px-9 rounded-lg">
 				<p className="text-200 font-semibold">검색 결과 {words?.length}</p>
-				<div className="flex flex-col gap-2 w-full h-full overflow-y-scroll">
+				<div className="flex flex-col gap-2 w-full h-full overflow-y-auto">
 					{words?.map((word) => (
 						<article
 							key={word.num}
-							className="flex flex-col gap-2 py-4 border-b border-b-black/20 last:border-b-0"
+							className="flex flex-col gap-2 py-4 border-b border-b-black/20 last:border-b-0 hover:bg-gray-100 transition-colors "
 						>
 							<div className="flex items-baseline gap-3">
 								<p

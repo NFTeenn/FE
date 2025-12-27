@@ -58,7 +58,7 @@ export default function Main() {
 						{/* 메인 콘텐츠 영역 */}
 						<div className="lg:col-span-4 flex flex-col gap-4">
 							{/* 프로세스 컴포넌트 */}
-							<div className="w-full max-h-50 sm:max-h-62.5 rounded-2xl border border-black/20 bg-brand-b3">
+							<div className="w-full min-h-50 min-sm:h-62.5 rounded-2xl border border-black/20 bg-brand-b3">
 								<ProcessComponent
 									sequenceDays={homeData.day}
 									level={homeData.level}
@@ -66,9 +66,9 @@ export default function Main() {
 							</div>
 
 							{/* 경제 사전 */}
-							<div className="w-full h-auto px-6 sm:px-12 pt-4 rounded-2xl border border-black/20 bg-white pb-8">
+							<div className="w-full h-auto p-4 sm:p-8 rounded-2xl border border-black/20 bg-white ">
 								<h2 className="text-lg sm:text-xl font-semibold mb-3">
-									경제 사전
+									경제 단어 사전
 								</h2>
 								<div className="flex justify-center items-center relative overflow-hidden flex-1 px-4 sm:px-5 py-3 sm:py-4 rounded-2xl bg-white border border-black/20">
 									<input
@@ -84,9 +84,9 @@ export default function Main() {
 							</div>
 
 							{/* 경제 뉴스 */}
-							<div className="w-full h-auto pb-4 rounded-2xl border border-black/20 bg-white p-4 sm:p-6">
+							<div className="w-full h-auto p-4 sm:p-8 rounded-2xl border border-black/20 bg-white">
 								<h2 className="text-lg sm:text-xl font-semibold mb-4">
-									경제 뉴스
+									최신 경제 뉴스
 								</h2>
 								<div className="text-sm text-gray-700 whitespace-pre-wrap">
 									<MainNewsList />
@@ -97,7 +97,7 @@ export default function Main() {
 						{/* 사이드 콘텐츠 영역 */}
 						<div className="lg:col-span-2 flex flex-col gap-6 lg:gap-10">
 							{/* Daily 미션 */}
-							<div className="w-full min-h-[20rem] bg-white rounded-[1.125rem] border border-black/20 flex flex-col py-6 sm:py-7 px-6 sm:px-8">
+							<div className="w-full min-h-[20rem] bg-white rounded-[1.125rem] border border-black/20 flex flex-col p-4 sm:p-8">
 								<span className="text-base sm:text-[1rem] font-semibold">
 									Daily 미션
 								</span>
@@ -114,7 +114,7 @@ export default function Main() {
 							</div>
 
 							{/* 퀴즈 컴포넌트 */}
-							<div className="w-full h-auto bg-white rounded-[1.125rem] border border-black/20 flex flex-col p-4 sm:p-6">
+							<div className="w-full h-auto bg-white rounded-[1.125rem] border border-black/20 flex flex-col p-4 sm:p-8">
 								<QuizComponent />
 							</div>
 						</div>
@@ -124,7 +124,7 @@ export default function Main() {
 				{/* 챗봇 버튼 */}
 				<div className="fixed bottom-4 right-4 z-30">
 					<button
-						className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-blue-500 text-white flex items-center justify-center shadow-lg hover:bg-blue-600 transition"
+						className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-blue-500 text-white flex items-center justify-center shadow-lg hover:bg-blue-600 transition cursor-pointer"
 						onClick={() => setChatOpen(true)}
 					>
 						<FiMessageSquare size={24} />
