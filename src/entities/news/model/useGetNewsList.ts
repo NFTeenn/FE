@@ -2,11 +2,11 @@ import { useQuery } from "@tanstack/react-query";
 import { getNewsList } from "../api/getNewsList";
 import { cleanText } from "../lib/cleanText";
 
-export const useGetNewsList = () => {
+export const useGetNewsList = (query: string) => {
 	return useQuery({
-		queryKey: ["news", "economy"],
+		queryKey: ["news", query],
 		queryFn: async () => {
-			const data = await getNewsList();
+			const data = await getNewsList(query);
 			return (data || []).slice(0, 6).map((item) => ({
 				...item,
 				title: cleanText(item.title),
