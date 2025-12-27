@@ -1,5 +1,5 @@
-import { getGeminiModel } from "@/shared/lib/gemini";
 import { NextResponse } from "next/server";
+import { getGeminiModel } from "@/shared/lib/gemini";
 
 export async function POST(req: Request) {
 	try {
