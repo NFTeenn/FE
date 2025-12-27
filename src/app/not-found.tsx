@@ -6,29 +6,28 @@ import errorImage from "@/shared/assets/error.svg";
 import NavigationSidebar from "@/widgets/sidebar/ui/navigationSidebar";
 
 interface ErrorProps {
-  error: Error;
-  reset: () => void;
+	error: Error;
+	reset: () => void;
 }
 
 export default function Notfound({ error, reset }: ErrorProps) {
-  useEffect(() => {
-    console.error("An error occurred:", error);
-  }, [error]);
+	useEffect(() => {
+		console.error("An error occurred:", error);
+	}, [error]);
 
-  return (
-    <>
-      <NavigationSidebar />
-      <div className="flex justify-center items-center relative flex-row h-full">
-        {/* 에러 메시지 띄우는 곳*/}
-        <div>
-          <h2>404</h2>
-        </div>
+	// [TODO] 화면 불일치
+	return (
+		<>
+			<NavigationSidebar />
+			<div className="flex justify-center items-center relative flex-row h-full">
+				<div>
+					<h2>404</h2>
+				</div>
 
-        {/*돼지 뜨는곳 */}
-        <div className=" w-[31rem] h-[21rem]">
-          <Image src={errorImage} alt="에러 돼지" fill />
-        </div>
-      </div>
-    </>
-  );
+				<div className=" w-[31rem] h-[21rem]">
+					<Image src={errorImage} alt="에러 돼지" fill />
+				</div>
+			</div>
+		</>
+	);
 }

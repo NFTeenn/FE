@@ -1,9 +1,9 @@
-"use server"
+"use server";
 
-import { signOut } from "@/auth"
-import { cookies } from "next/headers"
+import { cookies } from "next/headers";
+import { signOut } from "@/auth";
 
 export const logout = async () => {
-  cookies().delete("idToken")
-  await signOut()
-}
+	cookies().delete("idToken");
+	await signOut();
+};
