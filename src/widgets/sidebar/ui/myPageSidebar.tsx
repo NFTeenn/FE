@@ -5,9 +5,9 @@ import type { MyPageSidebarOperation } from "@/app/(main-layout)/mypage/page";
 import { useGetHallOfFame } from "@/entities/dondon/model/useGetHallOfFame";
 import { useGetAchievement } from "@/entities/user/model/useGetAchievement";
 import type { Accessory } from "@/features/shop/model/accessory";
-import { usePurchaseCustomItem } from "@/features/shop/model/useBuyAccessory";
-import { useGetCustomItem } from "@/features/shop/model/useGetAccessories";
-import achievement_logo from "@/shared/assets/achievement_logo.svg";
+import { useBuyAccessory } from "@/features/shop/model/useBuyAccessory";
+import { useGetAccessories } from "@/features/shop/model/useGetAccessories";
+import achievement_logo from "@/shared/assets/achievement/first_dondon.svg";
 import { MyPageDondon } from "@/shared/assets/mypage_dondon";
 import santas_hat from "@/shared/assets/santas_hat.svg";
 import X from "@/shared/assets/x";
@@ -18,7 +18,7 @@ const Storage = () => {
 	if (!dondons?.length)
 		return (
 			<p className="text-lg md:text-xl text-black/40 col-span-full text-center py-8">
-				졸업한 돈돈이 없습니다.
+				독립한 돈돈이 없습니다.
 			</p>
 		);
 
@@ -76,7 +76,7 @@ const Achievement = () => {
 
 const ShopItem = ({ customItem }: { customItem: Accessory }) => {
 	const { mutate: buyCustomItem, isPending: isBuyingCustomItem } =
-		usePurchaseCustomItem();
+		useBuyAccessory();
 
 	return (
 		<article className="flex flex-col items-center w-full border border-black/20 rounded-2xl">
@@ -116,9 +116,9 @@ const ShopItem = ({ customItem }: { customItem: Accessory }) => {
 };
 
 const Shop = () => {
-	const { data: customItems } = useGetCustomItem();
+	const { data: accessories } = useGetAccessories();
 
-	if (!customItems?.length)
+	if (!accessories?.length)
 		return (
 			<p className="text-lg md:text-xl text-black/40 col-span-full text-center py-8">
 				상품이 없습니다.
@@ -127,15 +127,15 @@ const Shop = () => {
 
 	return (
 		<>
-			{customItems?.map((customItem) => (
-				<ShopItem key={customItem.id} customItem={customItem} />
+			{accessories?.map((accessory) => (
+				<ShopItem key={accessory.id} customItem={accessory} />
 			))}
 		</>
 	);
 };
 
 const titles = {
-	STORAGE: "졸업한 돈돈",
+	STORAGE: "독립한 돈돈",
 	ACHIEVEMENT: "업적",
 	SHOP: "상점",
 };
