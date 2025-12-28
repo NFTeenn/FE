@@ -84,7 +84,7 @@ const ShopItem = ({ accessory }: { accessory: Accessory }) => {
 		useUnEquipAccessory();
 
 	return (
-		<article className="flex flex-col items-center w-full border border-black/20 rounded-2xl">
+		<article className={`flex flex-col items-center w-full rounded-2xl ${accessory.equipped ? "border-3 border-brand-b1" : "border border-black/20 "}`}>
 			<div className="w-full px-4 md:px-8 py-3 md:py-4 flex flex-col items-center">
 				<Image
 					src={santas_hat}
