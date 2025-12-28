@@ -87,7 +87,7 @@ const ShopItem = ({ accessory }: { accessory: Accessory }) => {
 		<article className={`flex flex-col items-center w-full rounded-2xl ${accessory.equipped ? "border-3 border-brand-b1" : "border border-black/20 "}`}>
 			<div className="w-full px-4 md:px-8 py-3 md:py-4 flex flex-col items-center">
 				<Image
-					src={santas_hat}
+					src={accessory.image || santas_hat}
 					alt="santa"
 					className="mt-2 w-16 h-16 md:w-20 md:h-20"
 				/>

@@ -5,4 +5,5 @@ export interface Accessory {
 	price: number;
 	owned: boolean;
 	equipped: boolean;
+	image: string | null;
 }
