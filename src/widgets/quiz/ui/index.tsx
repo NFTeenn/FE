@@ -134,7 +134,7 @@ export default function QuizComponent() {
 				}
 			>
 				{submitted && selected !== quizData.result
-					? "다시 풀기"
+					? "다음"
 					: submitted
 						? "제출 완료"
 						: "제출하기"}
