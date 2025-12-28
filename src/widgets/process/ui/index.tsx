@@ -1,4 +1,4 @@
-import { MyPageDondon } from "@/shared/assets/mypage_dondon";
+import { MyPageDondon } from "@/shared/assets/shop/mypage_dondon";
 
 export default function ProcessComponent(props: {
 	sequenceDays: number;

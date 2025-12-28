@@ -10,7 +10,7 @@ import { useBuyAccessory } from "@/features/shop/model/useBuyAccessory";
 import { useEquipAccessory } from "@/features/shop/model/useEquipAccessory";
 import { useGetAccessories } from "@/features/shop/model/useGetAccessories";
 import { useUnEquipAccessory } from "@/features/shop/model/useUnEquipAccessory";
-import { MyPageDondon } from "@/shared/assets/mypage_dondon";
+import { MyPageDondon } from "@/shared/assets/shop/mypage_dondon";
 import santas_hat from "@/shared/assets/santas_hat.svg";
 import X from "@/shared/assets/x";
 
@@ -62,13 +62,13 @@ const Achievement = () => {
 					<Image
 						src={achievement.image}
 						alt="achievement"
-						className="w-16 h-16 md:w-20 md:h-20"
+						className={`w-16 h-16 md:w-20 md:h-20 ${!achievement.achieved ? "grayscale opacity-80" : ""}`}
 					/>
 					<b className="mt-2 text-sm md:text-base text-center">
 						{achievement.title}
 					</b>
 					<small className="text-black/40 text-xs md:text-sm text-center">
-						{achievement.description}
+						{achievement.achieved ? achievement.description : "업적을 아직 달성하지 못 했어요."}
 					</small>
 				</article>
 			))}
@@ -85,10 +85,10 @@ const ShopItem = ({ accessory }: { accessory: Accessory }) => {
 		useUnEquipAccessory();
 
 	return (
-		<article className="flex flex-col items-center w-full border border-black/20 rounded-2xl">
+		<article className={`flex flex-col items-center w-full rounded-2xl ${accessory.equipped ? "border-3 border-brand-b1" : "border border-black/20 "}`}>
 			<div className="w-full px-4 md:px-8 py-3 md:py-4 flex flex-col items-center">
 				<Image
-					src={santas_hat}
+					src={accessory.image || santas_hat}
 					alt="santa"
 					className="mt-2 w-16 h-16 md:w-20 md:h-20"
 				/>

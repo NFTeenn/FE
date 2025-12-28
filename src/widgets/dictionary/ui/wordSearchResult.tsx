@@ -63,12 +63,11 @@ export default function WordSearchResult() {
 					{words?.map((word) => (
 						<article
 							key={word.num}
-							className="flex flex-col gap-2 py-4 border-b border-b-black/20 last:border-b-0 hover:bg-gray-100 transition-colors "
+							className="flex flex-col gap-2 px-6 py-4 border-b rounded-2xl cursor-pointer border-b-black/20 last:border-b-0 hover:bg-gray-100 transition-colors" onClick={() => router.push(`/word/${word.num}`)}
 						>
 							<div className="flex items-baseline gap-3">
 								<p
-									onClick={() => router.push(`/word/${word.num}`)}
-									className="text-2xl text-left text-black line-clamp-1 cursor-pointer"
+									className="text-2xl text-left text-black line-clamp-1"
 								>
 									{word.word}
 								</p>

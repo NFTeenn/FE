@@ -5,7 +5,7 @@ import { useEditDonDonNickName } from "@/entities/dondon/model/useEditDonDonNick
 import { useGetMyInfo } from "@/entities/user/model/useGetMyInfo";
 import bowl from "@/shared/assets/bowl.svg";
 import medal from "@/shared/assets/medal.svg";
-import { MyPageDondon } from "@/shared/assets/mypage_dondon";
+import { MyPageDondon } from "@/shared/assets/shop/mypage_dondon";
 import shop from "@/shared/assets/shop.svg";
 import storage from "@/shared/assets/storage.svg";
 import { Modal } from "@/widgets/modal/ui";
@@ -72,12 +72,12 @@ export default function MyPage() {
 	};
 
 	return (
-		<div className="w-full h-screen flex flex-col overflow-hidden">
+		<div className="w-full min-h-screen flex flex-col overflow-y-auto">
 			{isModalOpen && <Modal setIsModalOpen={setIsModalOpen} />}
 
 			{/* 상단 정보 영역 */}
-			<div className="flex w-full bg-brand-b4 h-[50vh] md:h-[70vh]">
-				<div className="w-full flex flex-col md:justify-between m-4 md:m-12 overflow-x-hidden">
+			<div className="flex w-full bg-brand-b4 min-h-[50vh] md:min-h-[70vh] shrink-0">
+				<div className="w-full flex flex-col m-4 md:m-12 overflow-x-hidden">
 					{/* 사용자 정보 */}
 					<div className="flex flex-col md:flex-row gap-0">
 						<div className="flex flex-col items-start justify-center px-4 md:px-8 py-3 md:py-4 h-auto md:h-20 bg-white border border-gray-300 rounded-t-2xl md:rounded-l-2xl md:rounded-tr-none">
@@ -117,7 +117,7 @@ export default function MyPage() {
 					</div>
 
 					{/* 카드 목록 */}
-					<div className="hidden md:flex flex-col items-end gap-4 mt-auto">
+					<div className="hidden md:flex flex-col items-end gap-4">
 						{cardList.map((item) => (
 							<button
 								type="button"
@@ -144,27 +144,26 @@ export default function MyPage() {
 			</div>
 
 			{/* 하단 돈돈 영역 */}
-			<div className="flex flex-col justify-end bg-white flex-1 pb-8 md:pb-[3rem] px-4 md:px-[6rem]">
-				<section className="relative flex flex-1 gap-4 h-full">
+			<div className="flex flex-col justify-end bg-white flex-1 min-h-[50vh] pb-8 md:pb-[3rem] px-4 md:px-[6rem]">
+				<section className="relative flex flex-1 gap-4 h-full min-h-[200px] md:min-h-[300px]">
 					<div className="absolute bottom-0 left-4 md:left-10">
-						<Image src={bowl} alt="bowl" className="w-[30vw] md:w-[19vw]" />
+						<Image src={bowl} alt="bowl" className="w-[25vw] md:w-[19vw] max-w-[150px] md:max-w-none" />
 					</div>
 					<div className="absolute bottom-0 right-4 md:right-10">
-						<MyPageDondon className="w-[35vw] h-fit md:w-[25vw]" />
 						{myInfo?.latestDondon.accId ? (
 							<Image
 								src={myInfo?.latestDondon.accessory}
 								alt="accessory"
-								className="w-[25vw] h-fit md:w-[15vw] absolute -top-[15%] left-[33%] -translate-x-1/2 z-10"
+								className="w-[30vw] h-fit md:w-[25vw] max-w-[180px] md:max-w-none"
 							/>
-						) : null}
+						) : <MyPageDondon className="w-[30vw] h-fit md:w-[25vw] max-w-[180px] md:max-w-none" />}
 					</div>
 				</section>
 
-				<section className="flex flex-col md:flex-row gap-6 md:flex-1 items-end z-10">
+				<section className="flex flex-col lg:flex-row flex-wrap gap-6 lg:flex-1 items-end z-10">
 					{/* 코인 및 성장도 */}
-					<article className="flex flex-col md:flex-row w-full md:flex-1 items-start gap-4 md:gap-6">
-						<div className="flex flex-col w-full md:w-auto md:min-w-40">
+					<article className="flex flex-col md:flex-row w-full lg:flex-1 items-start gap-4 md:gap-6 min-w-0">
+						<div className="flex flex-col w-full md:w-auto md:min-w-40 shrink-0">
 							<span className="text-gray-500 mb-2 text-sm md:text-base">
 								누적된 코인:
 							</span>
@@ -173,7 +172,7 @@ export default function MyPage() {
 								<p className="text-sm md:text-base">{myInfo?.myInfo.coin}</p>
 							</div>
 						</div>
-						<div className="flex flex-col w-full md:flex-1 md:min-w-[300px]">
+						<div className="flex flex-col w-full md:flex-1 min-w-0">
 							<span className="text-gray-500 mb-2 text-sm md:text-base">
 								성장도: {myInfo?.latestDondon.level ?? 0}%
 							</span>
@@ -187,13 +186,13 @@ export default function MyPage() {
 					</article>
 
 					{/* 돈돈 이름 */}
-					<article className="flex flex-col items-center md:items-end w-full md:w-auto">
-						<div className="w-24 md:w-[6rem] h-6 md:h-[1.5rem] bg-brand-main md:mr-2 rounded-t-md flex items-center justify-center text-xs md:text-sm">
+					<article className="flex flex-col items-center lg:items-end w-full lg:w-auto lg:max-w-[50%]">
+						<div className="w-24 lg:w-[6rem] h-6 lg:h-[1.5rem] bg-brand-main lg:mr-2 rounded-t-md flex items-center justify-center text-xs md:text-sm">
 							돈돈의 이름
 						</div>
-						<div className="text-3xl md:text-6xl font-bold py-4 md:py-6 px-6 md:px-8 bg-white border border-gray-300 rounded-xl inline-flex items-center justify-center w-full md:w-auto">
+						<div className="text-3xl md:text-6xl font-bold py-4 md:py-6 px-6 md:px-8 bg-white border border-gray-300 rounded-xl inline-flex items-center justify-center w-full lg:w-auto max-w-full box-border">
 							<input
-								className="outline-none text-center w-full"
+								className="outline-none text-center w-full min-w-0"
 								size={nickname?.length || 1}
 								value={nickname}
 								maxLength={10}
