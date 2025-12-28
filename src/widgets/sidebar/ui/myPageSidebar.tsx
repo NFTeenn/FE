@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { useEffect, useState } from "react";
 import type { MyPageSidebarOperation } from "@/app/(main-layout)/mypage/page";
 import { useGetHallOfFame } from "@/entities/dondon/model/useGetHallOfFame";
 import { useGetAchievement } from "@/entities/user/model/useGetAchievement";
@@ -170,16 +171,37 @@ export default function MyPageSidebar({
 	operation: MyPageSidebarOperation;
 	setSidebarOpen: (operation: MyPageSidebarOperation | null) => void;
 }) {
+	const [isClosing, setIsClosing] = useState(false);
+	const [isOpening, setIsOpening] = useState(true);
+
+	useEffect(() => {
+		// 마운트 시 애니메이션 시작
+		setIsOpening(false);
+	}, []);
+
+	const handleClose = () => {
+		setIsClosing(true);
+		setTimeout(() => {
+			setSidebarOpen(null);
+		}, 300);
+	};
+
 	return (
 		<>
-			{/* 모바일: 오버레이 배경 */}
+			{/* 오버레이 배경 */}
 			<button
-				className="fixed inset-0 bg-black/20 z-40 md:hidden"
-				onClick={() => setSidebarOpen(null)}
+				className={`fixed inset-0 bg-black transition-opacity duration-300 z-40 ${
+					isClosing ? "opacity-0" : isOpening ? "opacity-0" : "opacity-20"
+				}`}
+				onClick={handleClose}
 			/>
 
 			{/* 사이드바 */}
-			<div className="fixed z-50 top-0 right-0 w-full md:w-auto md:min-w-[500px] lg:min-w-[600px] h-full bg-white overflow-y-auto">
+			<div
+				className={`fixed z-50 top-0 right-0 w-full md:w-auto md:min-w-[500px] lg:min-w-[600px] h-full bg-white overflow-y-auto transition-transform duration-300 ${
+					isClosing ? "translate-x-full" : isOpening ? "translate-x-full" : "translate-x-0"
+				}`}
+			>
 				<div className="px-4 md:px-8 py-4 md:py-6 space-y-6 md:space-y-8">
 					<section className="flex justify-between items-center sticky top-0 bg-white pb-4 border-b border-black/10">
 						<h3 className="text-xl md:text-2xl font-bold">
@@ -187,9 +209,7 @@ export default function MyPageSidebar({
 						</h3>
 						<X
 							className="cursor-pointer w-5 h-5 md:w-4 md:h-4"
-							onClick={() => {
-								setSidebarOpen(null);
-							}}
+							onClick={handleClose}
 						/>
 					</section>
 					<section className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-8 pb-6">
