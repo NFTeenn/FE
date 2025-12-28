@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import santa_hat from "@/shared/assets/santas_hat.svg";
+import santa_dondon from "@/shared/assets/shop/santa_dondon.svg"
 import { getMyInfo } from "../api/getMyInfo";
 
 export const useGetMyInfo = () => {
@@ -10,7 +10,7 @@ export const useGetMyInfo = () => {
 			...data,
 			latestDondon: {
 				...data.latestDondon,
-				accessory: data.latestDondon.accId === 1 ? santa_hat : null,
+				accessory: data.latestDondon.accId === 1 ? santa_dondon : null,
 			},
 		}),
 	});
