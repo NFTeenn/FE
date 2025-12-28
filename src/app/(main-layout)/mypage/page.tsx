@@ -150,14 +150,13 @@ export default function MyPage() {
 						<Image src={bowl} alt="bowl" className="w-[25vw] md:w-[19vw] max-w-[150px] md:max-w-none" />
 					</div>
 					<div className="absolute bottom-0 right-4 md:right-10">
-						<MyPageDondon className="w-[30vw] h-fit md:w-[25vw] max-w-[180px] md:max-w-none" />
 						{myInfo?.latestDondon.accId ? (
 							<Image
 								src={myInfo?.latestDondon.accessory}
 								alt="accessory"
-								className="w-[20vw] h-fit md:w-[15vw] max-w-[120px] md:max-w-none absolute -top-[15%] left-[33%] -translate-x-1/2 z-10"
+								className="w-[30vw] h-fit md:w-[25vw] max-w-[180px] md:max-w-none"
 							/>
-						) : null}
+						) : <MyPageDondon className="w-[30vw] h-fit md:w-[25vw] max-w-[180px] md:max-w-none" />}
 					</div>
 				</section>
 
