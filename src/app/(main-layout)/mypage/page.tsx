@@ -5,7 +5,7 @@ import { useEditDonDonNickName } from "@/entities/dondon/model/useEditDonDonNick
 import { useGetMyInfo } from "@/entities/user/model/useGetMyInfo";
 import bowl from "@/shared/assets/bowl.svg";
 import medal from "@/shared/assets/medal.svg";
-import { MyPageDondon } from "@/shared/assets/mypage_dondon";
+import { MyPageDondon } from "@/shared/assets/shop/mypage_dondon";
 import shop from "@/shared/assets/shop.svg";
 import storage from "@/shared/assets/storage.svg";
 import { Modal } from "@/widgets/modal/ui";

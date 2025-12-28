@@ -9,7 +9,7 @@ import { useBuyAccessory } from "@/features/shop/model/useBuyAccessory";
 import { useEquipAccessory } from "@/features/shop/model/useEquipAccessory";
 import { useGetAccessories } from "@/features/shop/model/useGetAccessories";
 import { useUnEquipAccessory } from "@/features/shop/model/useUnEquipAccessory";
-import { MyPageDondon } from "@/shared/assets/mypage_dondon";
+import { MyPageDondon } from "@/shared/assets/shop/mypage_dondon";
 import santas_hat from "@/shared/assets/santas_hat.svg";
 import X from "@/shared/assets/x";
 
