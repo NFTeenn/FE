@@ -61,13 +61,13 @@ const Achievement = () => {
 					<Image
 						src={achievement.image}
 						alt="achievement"
-						className="w-16 h-16 md:w-20 md:h-20"
+						className={`w-16 h-16 md:w-20 md:h-20 ${!achievement.achieved ? "grayscale opacity-80" : ""}`}
 					/>
 					<b className="mt-2 text-sm md:text-base text-center">
 						{achievement.title}
 					</b>
 					<small className="text-black/40 text-xs md:text-sm text-center">
-						{achievement.description}
+						{achievement.achieved ? achievement.description : "업적을 아직 달성하지 못 했어요."}
 					</small>
 				</article>
 			))}
