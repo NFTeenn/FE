@@ -161,10 +161,10 @@ export default function MyPage() {
 					</div>
 				</section>
 
-				<section className="flex flex-col md:flex-row gap-6 md:flex-1 items-end z-10">
+				<section className="flex flex-col lg:flex-row flex-wrap gap-6 lg:flex-1 items-end z-10">
 					{/* 코인 및 성장도 */}
-					<article className="flex flex-col md:flex-row w-full md:flex-1 items-start gap-4 md:gap-6">
-						<div className="flex flex-col w-full md:w-auto md:min-w-40">
+					<article className="flex flex-col md:flex-row w-full lg:flex-1 items-start gap-4 md:gap-6 min-w-0">
+						<div className="flex flex-col w-full md:w-auto md:min-w-40 shrink-0">
 							<span className="text-gray-500 mb-2 text-sm md:text-base">
 								누적된 코인:
 							</span>
@@ -173,7 +173,7 @@ export default function MyPage() {
 								<p className="text-sm md:text-base">{myInfo?.myInfo.coin}</p>
 							</div>
 						</div>
-						<div className="flex flex-col w-full md:flex-1 md:min-w-[300px]">
+						<div className="flex flex-col w-full md:flex-1 min-w-0">
 							<span className="text-gray-500 mb-2 text-sm md:text-base">
 								성장도: {myInfo?.latestDondon.level ?? 0}%
 							</span>
@@ -187,13 +187,13 @@ export default function MyPage() {
 					</article>
 
 					{/* 돈돈 이름 */}
-					<article className="flex flex-col items-center md:items-end w-full md:w-auto">
-						<div className="w-24 md:w-[6rem] h-6 md:h-[1.5rem] bg-brand-main md:mr-2 rounded-t-md flex items-center justify-center text-xs md:text-sm">
+					<article className="flex flex-col items-center lg:items-end w-full lg:w-auto lg:max-w-[50%]">
+						<div className="w-24 lg:w-[6rem] h-6 lg:h-[1.5rem] bg-brand-main lg:mr-2 rounded-t-md flex items-center justify-center text-xs md:text-sm">
 							돈돈의 이름
 						</div>
-						<div className="text-3xl md:text-6xl font-bold py-4 md:py-6 px-6 md:px-8 bg-white border border-gray-300 rounded-xl inline-flex items-center justify-center w-full md:w-auto">
+						<div className="text-3xl md:text-6xl font-bold py-4 md:py-6 px-6 md:px-8 bg-white border border-gray-300 rounded-xl inline-flex items-center justify-center w-full lg:w-auto max-w-full box-border">
 							<input
-								className="outline-none text-center w-full"
+								className="outline-none text-center w-full min-w-0"
 								size={nickname?.length || 1}
 								value={nickname}
 								maxLength={10}
