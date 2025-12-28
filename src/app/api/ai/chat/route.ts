@@ -1,7 +1,5 @@
 import { type NextRequest, NextResponse } from "next/server";
-import { GoogleGenerativeAI } from "@google/generative-ai";
-
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
+import { getGeminiModel } from "@/shared/lib/gemini";
 
 export async function POST(req: NextRequest) {
 	try {
@@ -14,9 +12,7 @@ export async function POST(req: NextRequest) {
 			);
 		}
 
-		const model = genAI.getGenerativeModel({
-			model: "gemini-2.5-flash",
-		});
+		const model = getGeminiModel();
 
 		// 대화 기록을 Gemini 형식으로 변환
 		const conversationHistory = history.slice(-6).map((msg: any) => ({
@@ -30,8 +26,14 @@ export async function POST(req: NextRequest) {
 				maxOutputTokens: 300,
 				temperature: 0.7,
 			},
-			systemInstruction:
-				"당신은 친절한 학생들에게 경제관련 단어를 설명해주기 위한 한국어 AI 어시스턴트입니다. 오로지 한국어만 사용을 해야해. 항상 한국어로만 답변해주세요. 답변은 간결하고 명확하게 해주세요.",
+			systemInstruction: {
+				role: "user",
+				parts: [
+					{
+						text: "당신은 친절한 학생들에게 경제관련 단어를 설명해주기 위한 한국어 AI 어시스턴트입니다. 오로지 한국어만 사용을 해야해. 항상 한국어로만 답변해주세요. 답변은 간결하고 명확하게 해주세요.",
+					},
+				],
+			},
 		});
 
 		const result = await chat.sendMessage(message);
