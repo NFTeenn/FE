@@ -13,9 +13,12 @@ import { useUnEquipAccessory } from "@/features/shop/model/useUnEquipAccessory";
 import { MyPageDondon } from "@/shared/assets/shop/mypage_dondon";
 import santas_hat from "@/shared/assets/santas_hat.svg";
 import X from "@/shared/assets/x";
+import Loading from "@/shared/ui/loading";
 
 const Storage = () => {
-	const { data: dondons } = useGetHallOfFame();
+	const { data: dondons, isLoading } = useGetHallOfFame();
+
+	if (isLoading) return <Loading />
 
 	if (!dondons?.length)
 		return (
@@ -43,7 +46,9 @@ const Storage = () => {
 };
 
 const Achievement = () => {
-	const { data: achievements } = useGetAchievement();
+	const { data: achievements, isLoading } = useGetAchievement();
+
+	if (isLoading) return <Loading />
 
 	if (!achievements?.length)
 		return (
@@ -140,7 +145,9 @@ const ShopItem = ({ accessory }: { accessory: Accessory }) => {
 };
 
 const Shop = () => {
-	const { data: accessories } = useGetAccessories();
+	const { data: accessories, isLoading } = useGetAccessories();
+
+	if (isLoading) return <Loading />
 
 	if (!accessories?.length)
 		return (
@@ -190,17 +197,15 @@ export default function MyPageSidebar({
 		<>
 			{/* 오버레이 배경 */}
 			<button
-				className={`fixed inset-0 bg-black transition-opacity duration-300 z-40 ${
-					isClosing ? "opacity-0" : isOpening ? "opacity-0" : "opacity-20"
-				}`}
+				className={`fixed inset-0 bg-black transition-opacity duration-300 z-40 ${isClosing ? "opacity-0" : isOpening ? "opacity-0" : "opacity-20"
+					}`}
 				onClick={handleClose}
 			/>
 
 			{/* 사이드바 */}
 			<div
-				className={`fixed z-50 top-0 right-0 w-full md:w-auto md:min-w-[500px] lg:min-w-[600px] h-full bg-white overflow-y-auto transition-transform duration-300 ${
-					isClosing ? "translate-x-full" : isOpening ? "translate-x-full" : "translate-x-0"
-				}`}
+				className={`fixed z-50 top-0 right-0 w-full md:w-auto md:min-w-[500px] lg:min-w-[600px] h-full bg-white overflow-y-auto transition-transform duration-300 ${isClosing ? "translate-x-full" : isOpening ? "translate-x-full" : "translate-x-0"
+					}`}
 			>
 				<div className="px-4 md:px-8 py-4 md:py-6 space-y-6 md:space-y-8">
 					<section className="flex justify-between items-center sticky top-0 bg-white pb-4 border-b border-black/10">
