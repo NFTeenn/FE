@@ -54,7 +54,7 @@ export default function Main() {
 		<>
 			<div className="min-h-screen bg-gray-50">
 				<div className="w-full px-4 sm:px-6 lg:px-20 py-6 lg:py-[4vh]">
-					<div className="grid grid-cols-1 lg:grid-cols-6 gap-4 lg:gap-[5vw]">
+					<div className="grid grid-cols-1 xl:grid-cols-6 gap-4 lg:gap-[5vw]">
 						{/* 메인 콘텐츠 영역 */}
 						<div className="lg:col-span-4 flex flex-col gap-4">
 							{/* 프로세스 컴포넌트 */}
