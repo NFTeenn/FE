@@ -21,7 +21,7 @@ export default function ChatBotModal({ onClose }: { onClose: () => void }) {
 		setLoading(true);
 
 		try {
-			const res = await axios.post("/api/chat", {
+			const res = await axios.post("/api/ai/chat", {
 				message: userMsg,
 				history: messages.slice(-6),
 			});
@@ -70,11 +70,10 @@ export default function ChatBotModal({ onClose }: { onClose: () => void }) {
 						className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
 					>
 						<div
-							className={`p-3 rounded-lg max-w-[85%] ${
-								msg.role === "user"
-									? "bg-blue-500 text-white"
-									: "bg-gray-100 text-gray-800"
-							}`}
+							className={`p-3 rounded-lg max-w-[85%] ${msg.role === "user"
+								? "bg-blue-500 text-white"
+								: "bg-gray-100 text-gray-800"
+								}`}
 						>
 							{msg.content}
 						</div>
