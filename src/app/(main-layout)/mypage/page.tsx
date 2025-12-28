@@ -72,12 +72,12 @@ export default function MyPage() {
 	};
 
 	return (
-		<div className="w-full h-screen flex flex-col overflow-hidden">
+		<div className="w-full min-h-screen flex flex-col overflow-y-auto">
 			{isModalOpen && <Modal setIsModalOpen={setIsModalOpen} />}
 
 			{/* 상단 정보 영역 */}
-			<div className="flex w-full bg-brand-b4 h-[50vh] md:h-[70vh]">
-				<div className="w-full flex flex-col md:justify-between m-4 md:m-12 overflow-x-hidden">
+			<div className="flex w-full bg-brand-b4 min-h-[50vh] md:min-h-[70vh] shrink-0">
+				<div className="w-full flex flex-col m-4 md:m-12 overflow-x-hidden">
 					{/* 사용자 정보 */}
 					<div className="flex flex-col md:flex-row gap-0">
 						<div className="flex flex-col items-start justify-center px-4 md:px-8 py-3 md:py-4 h-auto md:h-20 bg-white border border-gray-300 rounded-t-2xl md:rounded-l-2xl md:rounded-tr-none">
@@ -117,7 +117,7 @@ export default function MyPage() {
 					</div>
 
 					{/* 카드 목록 */}
-					<div className="hidden md:flex flex-col items-end gap-4 mt-auto">
+					<div className="hidden md:flex flex-col items-end gap-4">
 						{cardList.map((item) => (
 							<button
 								type="button"
@@ -144,18 +144,18 @@ export default function MyPage() {
 			</div>
 
 			{/* 하단 돈돈 영역 */}
-			<div className="flex flex-col justify-end bg-white flex-1 pb-8 md:pb-[3rem] px-4 md:px-[6rem]">
-				<section className="relative flex flex-1 gap-4 h-full">
+			<div className="flex flex-col justify-end bg-white flex-1 min-h-[50vh] pb-8 md:pb-[3rem] px-4 md:px-[6rem]">
+				<section className="relative flex flex-1 gap-4 h-full min-h-[200px] md:min-h-[300px]">
 					<div className="absolute bottom-0 left-4 md:left-10">
-						<Image src={bowl} alt="bowl" className="w-[30vw] md:w-[19vw]" />
+						<Image src={bowl} alt="bowl" className="w-[25vw] md:w-[19vw] max-w-[150px] md:max-w-none" />
 					</div>
 					<div className="absolute bottom-0 right-4 md:right-10">
-						<MyPageDondon className="w-[35vw] h-fit md:w-[25vw]" />
+						<MyPageDondon className="w-[30vw] h-fit md:w-[25vw] max-w-[180px] md:max-w-none" />
 						{myInfo?.latestDondon.accId ? (
 							<Image
 								src={myInfo?.latestDondon.accessory}
 								alt="accessory"
-								className="w-[25vw] h-fit md:w-[15vw] absolute -top-[15%] left-[33%] -translate-x-1/2 z-10"
+								className="w-[20vw] h-fit md:w-[15vw] max-w-[120px] md:max-w-none absolute -top-[15%] left-[33%] -translate-x-1/2 z-10"
 							/>
 						) : null}
 					</div>
