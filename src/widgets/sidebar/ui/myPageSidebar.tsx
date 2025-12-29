@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { useEffect, useState } from "react";
 import type { MyPageSidebarOperation } from "@/app/(main-layout)/mypage/page";
 import { useGetHallOfFame } from "@/entities/dondon/model/useGetHallOfFame";
 import { useGetAchievement } from "@/entities/user/model/useGetAchievement";
@@ -9,8 +10,8 @@ import { useBuyAccessory } from "@/features/shop/model/useBuyAccessory";
 import { useEquipAccessory } from "@/features/shop/model/useEquipAccessory";
 import { useGetAccessories } from "@/features/shop/model/useGetAccessories";
 import { useUnEquipAccessory } from "@/features/shop/model/useUnEquipAccessory";
-import { MyPageDondon } from "@/shared/assets/shop/mypage_dondon";
 import santas_hat from "@/shared/assets/santas_hat.svg";
+import { MyPageDondon } from "@/shared/assets/shop/mypage_dondon";
 import X from "@/shared/assets/x";
 import Loading from "@/shared/ui/loading";
 
@@ -66,13 +67,13 @@ const Achievement = () => {
 					<Image
 						src={achievement.image}
 						alt="achievement"
-						className={`w-16 h-16 md:w-20 md:h-20 ${!achievement.achieved ? "grayscale opacity-80" : ""}`}
+						className="w-16 h-16 md:w-20 md:h-20"
 					/>
 					<b className="mt-2 text-sm md:text-base text-center">
 						{achievement.title}
 					</b>
 					<small className="text-black/40 text-xs md:text-sm text-center">
-						{achievement.achieved ? achievement.description : "업적을 아직 달성하지 못 했어요."}
+						{achievement.description}
 					</small>
 				</article>
 			))}
@@ -89,10 +90,10 @@ const ShopItem = ({ accessory }: { accessory: Accessory }) => {
 		useUnEquipAccessory();
 
 	return (
-		<article className={`flex flex-col items-center w-full rounded-2xl ${accessory.equipped ? "border-3 border-brand-b1" : "border border-black/20 "}`}>
+		<article className="flex flex-col items-center w-full border border-black/20 rounded-2xl">
 			<div className="w-full px-4 md:px-8 py-3 md:py-4 flex flex-col items-center">
 				<Image
-					src={accessory.image || santas_hat}
+					src={santas_hat}
 					alt="santa"
 					className="mt-2 w-16 h-16 md:w-20 md:h-20"
 				/>
@@ -177,16 +178,39 @@ export default function MyPageSidebar({
 	operation: MyPageSidebarOperation;
 	setSidebarOpen: (operation: MyPageSidebarOperation | null) => void;
 }) {
+	const [isClosing, setIsClosing] = useState(false);
+	const [isOpening, setIsOpening] = useState(true);
+
+	useEffect(() => {
+		// 마운트 시 애니메이션 시작
+		setIsOpening(false);
+	}, []);
+
+	const handleClose = () => {
+		setIsClosing(true);
+		setTimeout(() => {
+			setSidebarOpen(null);
+		}, 300);
+	};
+
 	return (
 		<>
-			{/* 모바일: 오버레이 배경 */}
+			{/* 오버레이 배경 */}
 			<button
-				className="fixed inset-0 bg-black/20 z-40 md:hidden"
-				onClick={() => setSidebarOpen(null)}
+				className={`fixed inset-0 bg-black transition-opacity duration-300 z-40 ${isClosing ? "opacity-0" : isOpening ? "opacity-0" : "opacity-20"
+					}`}
+				onClick={handleClose}
 			/>
 
 			{/* 사이드바 */}
-			<div className="fixed z-50 top-0 right-0 w-full md:w-auto md:min-w-[500px] lg:min-w-[600px] h-full bg-white overflow-y-auto">
+			<div
+				className={`fixed z-50 top-0 right-0 w-full md:w-auto md:min-w-[500px] lg:min-w-[600px] h-full bg-white overflow-y-auto transition-transform duration-300 ${isClosing
+					? "translate-x-full"
+					: isOpening
+						? "translate-x-full"
+						: "translate-x-0"
+					}`}
+			>
 				<div className="px-4 md:px-8 py-4 md:py-6 space-y-6 md:space-y-8">
 					<section className="flex justify-between items-center sticky top-0 bg-white pb-4 border-b border-black/10">
 						<h3 className="text-xl md:text-2xl font-bold">
@@ -194,9 +218,7 @@ export default function MyPageSidebar({
 						</h3>
 						<X
 							className="cursor-pointer w-5 h-5 md:w-4 md:h-4"
-							onClick={() => {
-								setSidebarOpen(null);
-							}}
+							onClick={handleClose}
 						/>
 					</section>
 					<section className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-8 pb-6">
